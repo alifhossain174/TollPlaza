@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 31, 2025 at 11:47 PM
+-- Generation Time: Feb 01, 2025 at 12:00 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -150,8 +150,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (106, '2024_10_17_124400_create_buy_sell_categories_table', 54),
 (107, '2024_10_17_163447_create_buy_sell_configs_table', 55),
 (108, '2025_02_01_005127_create_vehicle_types_table', 56),
-(109, '2025_02_01_020057_create_terminals_table', 57),
-(110, '2025_02_01_025155_create_toll_tickets_table', 58);
+(111, '2025_02_01_020057_create_terminals_table', 57),
+(112, '2025_02_01_025155_create_toll_tickets_table', 57);
 
 -- --------------------------------------------------------
 
@@ -781,8 +781,8 @@ CREATE TABLE `terminals` (
 --
 
 INSERT INTO `terminals` (`id`, `name`, `description`, `slug`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'Terminal-1', 'Terminal No 1', '1738355374mzds6', 1, '2025-02-01 01:29:34', '2025-02-01 01:48:19'),
-(4, 'Terminal-2', 'Terminal No 2', '17383564887GuIF', 1, '2025-02-01 01:48:08', NULL);
+(1, 'Terminal-1', 'Terminal No 1', '1738364362CaKRr', 1, '2025-02-01 03:59:22', NULL),
+(2, 'Terminal-2', 'Terminal No 2', '1738364376r2zzE', 1, '2025-02-01 03:59:36', NULL);
 
 -- --------------------------------------------------------
 
@@ -794,7 +794,9 @@ CREATE TABLE `toll_tickets` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `ticket_no` varchar(255) DEFAULT NULL,
   `terminal_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `terminal_name` varchar(255) DEFAULT NULL,
   `user_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `user_name` varchar(255) DEFAULT NULL,
   `vehicle_type_id` bigint(20) UNSIGNED DEFAULT NULL,
   `vehicle_type_name` varchar(255) DEFAULT NULL,
   `ticket_price` double NOT NULL DEFAULT 0,
@@ -806,6 +808,13 @@ CREATE TABLE `toll_tickets` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `toll_tickets`
+--
+
+INSERT INTO `toll_tickets` (`id`, `ticket_no`, `terminal_id`, `terminal_name`, `user_id`, `user_name`, `vehicle_type_id`, `vehicle_type_name`, `ticket_price`, `driver_name`, `driver_contact`, `vehicle_reg_no`, `slug`, `status`, `created_at`, `updated_at`) VALUES
+(1, '1738364402QWm', 2, 'Terminal-2', 1, 'Admin', 9, 'হালকা ইঞ্জিন চালিত যান', 80, 'Fahim', '4915736108363', 'DHAKA-KA-65498', '1738364402qljQy', 1, '2025-02-01 04:00:02', NULL);
 
 -- --------------------------------------------------------
 
@@ -1018,7 +1027,7 @@ ALTER TABLE `general_infos`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=111;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=113;
 
 --
 -- AUTO_INCREMENT for table `permission_routes`
@@ -1042,13 +1051,13 @@ ALTER TABLE `role_permissions`
 -- AUTO_INCREMENT for table `terminals`
 --
 ALTER TABLE `terminals`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `toll_tickets`
 --
 ALTER TABLE `toll_tickets`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `users`
