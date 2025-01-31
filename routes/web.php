@@ -11,6 +11,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserRoleController;
 use App\Http\Controllers\VehicleTypeController;
 use App\Http\Controllers\TerminalController;
+use App\Http\Controllers\TollTicketController;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Middleware\CheckUserType;
 use App\Http\Middleware\DemoMode;
@@ -104,6 +105,14 @@ Route::group(['middleware' => ['auth', 'CheckUserType', 'DemoMode']], function (
 
     // Terminal
     Route::get('/create/terminal', [TerminalController::class, 'createTerminal'])->name('CreateTerminal');
+    Route::post('/save/terminal', [TerminalController::class, 'saveTerminal'])->name('SaveTerminal');
+    Route::get('/view/terminals', [TerminalController::class, 'viewTerminals'])->name('ViewTerminals');
+    Route::get('/delete/terminal/{id}', [TerminalController::class, 'deleteTerminal'])->name('DeleteTerminal');
+    Route::get('/edit/terminal/{id}', [TerminalController::class, 'editTerminal'])->name('EditTerminal');
+    Route::post('/update/terminal', [TerminalController::class, 'updateTerminal'])->name('UpdateTerminal');
+
+    // Toll Ticket
+    Route::get('/create/toll/ticket', [TollTicketController::class, 'createTollTicket'])->name('CreateTollTicket');
 
     // customers and system users routes
     Route::get('/view/all/customers', [UserController::class, 'viewAllCustomers'])->name('ViewAllCustomers');

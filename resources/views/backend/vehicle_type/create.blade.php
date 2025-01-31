@@ -2,6 +2,7 @@
 
 @section('header_css')
     <link href="{{url('assets')}}/css/spectrum.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{url('assets')}}/plugins/dropify/dropify.min.css" rel="stylesheet" type="text/css" />
 @endsection
 
 @section('page_title')
@@ -50,6 +51,13 @@
                             </div>
                         </div>
 
+                        <div class="form-group row">
+                            <label for="colFormLabel" class="col-sm-2 col-form-label">Vehicle Type Icon</label>
+                            <div class="col-sm-3">
+                                <input type="file" name="icon" class="dropify" data-height="150" data-max-file-size="1M" accept="image/*"/>
+                            </div>
+                        </div>
+
                         <div class="form-group row pt-3">
                             <div class="col-sm-2"></div>
                             <div class="col-sm-10">
@@ -64,6 +72,8 @@
 @endsection
 
 @section('footer_js')
+    <script src="{{url('assets')}}/plugins/dropify/dropify.min.js"></script>
+    <script src="{{url('assets')}}/pages/fileuploads-demo.js"></script>
     <script src="{{url('assets')}}/js/spectrum.min.js"></script>
     <script>
         $("#color_code").spectrum({

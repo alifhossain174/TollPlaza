@@ -2,6 +2,7 @@
 
 @section('header_css')
     <link href="{{url('assets')}}/css/spectrum.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{url('assets')}}/plugins/dropify/dropify.min.css" rel="stylesheet" type="text/css" />
 @endsection
 
 @section('page_title')
@@ -33,7 +34,7 @@
                         <div class="form-group row">
                             <label for="price" class="col-sm-2 col-form-label">Price for Vehicle <span class="text-danger">*</span></label>
                             <div class="col-sm-3">
-                                <input type="number" name="price" value="0" class="form-control" value="{{$vehicleTypeInfo->price}}" id="price" required>
+                                <input type="number" name="price" class="form-control" value="{{$vehicleTypeInfo->price}}" id="price" required>
                             </div>
                         </div>
 
@@ -49,6 +50,13 @@
                             <label for="description" class="col-sm-2 col-form-label">Short Description</label>
                             <div class="col-sm-8">
                                 <textarea name="description" rows="3" class="form-control" id="description">{{$vehicleTypeInfo->description}}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="colFormLabel" class="col-sm-2 col-form-label">Vehicle Type Icon</label>
+                            <div class="col-sm-3">
+                                <input type="file" name="icon" class="dropify" data-height="150" data-max-file-size="1M" accept="image/*"/>
                             </div>
                         </div>
 
@@ -78,10 +86,19 @@
 
 @section('footer_js')
     <script src="{{url('assets')}}/js/spectrum.min.js"></script>
+    <script src="{{url('assets')}}/plugins/dropify/dropify.min.js"></script>
+    <script src="{{url('assets')}}/pages/fileuploads-demo.js"></script>
     <script>
         $("#color_code").spectrum({
             preferredFormat: 'hex',
         });
+
+        @if($vehicleTypeInfo->icon && file_exists(public_path($vehicleTypeInfo->icon)))
+            $(".dropify-preview").eq(0).css("display", "block");
+            $(".dropify-clear").eq(0).css("display", "block");
+            $(".dropify-filename-inner").eq(0).html("{{$vehicleTypeInfo->icon}}");
+            $("span.dropify-render").eq(0).html("<img src='{{url($vehicleTypeInfo->icon)}}'>");
+        @endif
     </script>
 @endsection
 

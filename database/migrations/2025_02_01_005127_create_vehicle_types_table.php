@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('vehicle_types', function (Blueprint $table) {
             $table->id();
+            $table->string('icon')->nullable();
             $table->string('type_name')->nullable();
             $table->double('price')->default(0);
             $table->longText('description')->nullable();

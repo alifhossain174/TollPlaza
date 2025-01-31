@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 31, 2025 at 07:23 PM
+-- Generation Time: Jan 31, 2025 at 09:16 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -148,7 +148,9 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (104, '2024_10_17_123804_create_buy_sells_table', 52),
 (105, '2024_10_17_123954_create_buy_sell_images_table', 53),
 (106, '2024_10_17_124400_create_buy_sell_categories_table', 54),
-(107, '2024_10_17_163447_create_buy_sell_configs_table', 55);
+(107, '2024_10_17_163447_create_buy_sell_configs_table', 55),
+(108, '2025_02_01_005127_create_vehicle_types_table', 56),
+(109, '2025_02_01_020057_create_terminals_table', 57);
 
 -- --------------------------------------------------------
 
@@ -760,6 +762,22 @@ CREATE TABLE `role_permissions` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `terminals`
+--
+
+CREATE TABLE `terminals` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `description` longtext DEFAULT NULL,
+  `slug` varchar(255) DEFAULT NULL,
+  `status` tinyint(4) NOT NULL DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -829,6 +847,42 @@ CREATE TABLE `user_role_permissions` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `vehicle_types`
+--
+
+CREATE TABLE `vehicle_types` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `type_name` varchar(255) DEFAULT NULL,
+  `price` double NOT NULL DEFAULT 0,
+  `description` longtext DEFAULT NULL,
+  `color_code` varchar(255) DEFAULT NULL COMMENT 'For Toll Collection Receipt',
+  `slug` varchar(255) DEFAULT NULL,
+  `status` tinyint(4) NOT NULL DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `vehicle_types`
+--
+
+INSERT INTO `vehicle_types` (`id`, `type_name`, `price`, `description`, `color_code`, `slug`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'ট্রাক (বোঝাই/খালি)', 65, 'ফোরটন বা তার অধিকধারী ভারী যানবাহন', '#e06666', '1738350778zFRpj', 1, '2025-02-01 00:12:58', NULL),
+(2, 'কোচ/বাস (বোঝাই/খালি)', 25, 'তিন চাকার রিকশা বা মাইক্রোবাস ব্যতীত যাত্রী পরিবহনকারী বাস', '#f6b26b', '1738350803U10dn', 1, '2025-02-01 00:13:23', NULL),
+(3, 'মিনি ট্রাক (বোঝাই/খালি)', 30, 'তিন টনের নিচে পণ্য পরিবহনের ক্ষুদ্র ট্রাক', '#ffd966', '1738350824fs146', 1, '2025-02-01 00:13:44', NULL),
+(4, 'মিনিবাস (বোঝাই/খালি)', 20, 'ছোট যাত্রী পরিবহনকারী যানবাহন', '#93c47d', '1738350841jT6nT', 1, '2025-02-01 00:14:01', NULL),
+(5, 'সিএনজি অটোরিকশা', 10, 'চাকা চালিত তিন চাকার গাড়ি', '#76a5af', '1738350859NgN7J', 1, '2025-02-01 00:14:19', NULL),
+(6, 'কৃষি কাজে ব্যবহৃত যান', 15, 'পণ্যবাহী ট্রাক্টর ও অন্যান্য', '#6fa8dc', '1738350876M3Yr5', 1, '2025-02-01 00:14:36', NULL),
+(7, 'সাইকেল (বোঝাই/খালি)', 0, 'দুই চাকার যন্ত্রচালিত বা ম্যানুয়াল সাইকেল', '#8e7cc3', '1738350894Rqa2H', 1, '2025-02-01 00:14:54', NULL),
+(8, 'রিকশা', 0, 'মানব চালিত তিন চাকার যান', '#c27ba0', '173835090990bBL', 1, '2025-02-01 00:15:09', NULL),
+(9, 'হালকা ইঞ্জিন চালিত যান', 80, 'প্রাইভেট কার, মাইক্রোবাস', '#f44336', '1738350938J7kAb', 1, '2025-02-01 00:15:38', NULL),
+(10, 'মোটরসাইকেল', 10, 'দুই চাকার মোটরচালিত যান', '#ce7e00', '17383509581mOyp', 1, '2025-02-01 00:15:58', NULL),
+(11, '৩/৪ চাকার মোটর চালিত যান', 30, 'ইজিবাইক, অটোরিকশা', '#8fce00', '1738350973Wi6Zc', 1, '2025-02-01 00:16:13', NULL),
+(12, 'পণ্য পরিবহন যান', 0, 'পণ্য পরিবহনের বিশেষ যান', '#2986cc', '1738350995cTXOl', 1, '2025-02-01 00:16:35', NULL);
+
 --
 -- Indexes for dumped tables
 --
@@ -879,6 +933,12 @@ ALTER TABLE `role_permissions`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `terminals`
+--
+ALTER TABLE `terminals`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -895,6 +955,12 @@ ALTER TABLE `user_roles`
 -- Indexes for table `user_role_permissions`
 --
 ALTER TABLE `user_role_permissions`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `vehicle_types`
+--
+ALTER TABLE `vehicle_types`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -917,7 +983,7 @@ ALTER TABLE `general_infos`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=108;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=110;
 
 --
 -- AUTO_INCREMENT for table `permission_routes`
@@ -938,6 +1004,12 @@ ALTER TABLE `role_permissions`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `terminals`
+--
+ALTER TABLE `terminals`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
@@ -954,6 +1026,12 @@ ALTER TABLE `user_roles`
 --
 ALTER TABLE `user_role_permissions`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `vehicle_types`
+--
+ALTER TABLE `vehicle_types`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

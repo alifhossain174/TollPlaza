@@ -20,21 +20,15 @@
         tfoot th{
             text-align: center;
         }
-        img.gridProductImage{
-            transition: all .1s linear;
-        }
-        img.gridProductImage:hover{
-            scale: 2;
-            cursor: pointer;
-        }
+
     </style>
 @endsection
 
 @section('page_title')
-    Vehicle Type
+    Toll Terminal
 @endsection
 @section('page_heading')
-    View All Vehicle Types
+    View All Toll Terminals
 @endsection
 
 @section('content')
@@ -42,21 +36,19 @@
         <div class="col-lg-12 col-xl-12">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title mb-3">Vehicle Type List</h4>
+                    <h4 class="card-title mb-3">Toll Terminal List</h4>
                     <div class="table-responsive">
 
                         <label id="customFilter">
-                            <a href="{{url('create/vehicle/type')}}" class="btn btn-success btn-sm" style="margin-left: 5px"><b><i class="fas fa-plus"></i> Add Vehicle Type</b></a>
+                            <a href="{{url('create/terminal')}}" class="btn btn-success btn-sm" style="margin-left: 5px"><b><i class="fas fa-plus"></i> Create Terminal</b></a>
                         </label>
 
                         <table class="table table-bordered mb-0 data-table">
                             <thead>
                                 <tr>
                                     <th class="text-center">SL</th>
-                                    <th class="text-center">Icon</th>
-                                    <th class="text-center">Vehicle Type</th>
-                                    <th class="text-center">Price</th>
-                                    <th class="text-center">Receipt Color</th>
+                                    <th class="text-center">Terminal</th>
+                                    <th class="text-center">Created At</th>
                                     <th class="text-center">Status</th>
                                     <th class="text-center">Action</th>
                                 </tr>
@@ -85,34 +77,19 @@
             processing: true,
             serverSide: true,
             stateSave: true,
-            ajax: "{{ url('view/vehicle/types') }}",
+            ajax: "{{ url('view/terminals') }}",
             columns: [
                 {
                     data: 'DT_RowIndex',
                     name: 'DT_RowIndex'
                 },
                 {
-                    data: 'icon',
-                    name: 'icon',
-                    render: function( data, type, full, meta ) {
-                        if(data){
-                            return "<img class=\"gridProductImage\" src=\"/" + data + "\" width=\"40\"/>";
-                        } else {
-                            return '';
-                        }
-                    }
+                    data: 'name',
+                    name: 'name'
                 },
                 {
-                    data: 'type_name',
-                    name: 'type_name'
-                },
-                {
-                    data: 'price',
-                    name: 'price'
-                },
-                {
-                    data: 'color_code',
-                    name: 'color_code'
+                    data: 'created_at',
+                    name: 'created_at'
                 },
                 {data: 'status', name: 'status'},
                 {data: 'action', name: 'action', orderable: false, searchable: false},
@@ -131,14 +108,14 @@
         });
 
         $('body').on('click', '.deleteBtn', function () {
-            var veicleTypeId = $(this).data("id");
+            var terminalId = $(this).data("id");
             if(confirm("Are You sure want to delete !")){
                 $.ajax({
                     type: "GET",
-                    url: "{{ url('delete/vehicle/type') }}"+'/'+veicleTypeId,
+                    url: "{{ url('delete/terminal') }}"+'/'+terminalId,
                     success: function (data) {
                         table.draw(false);
-                        toastr.error("Vehicle Type has been Deleted", "Deleted Successfully");
+                        toastr.error("Terminal has been Deleted", "Deleted Successfully");
                     },
                     error: function (data) {
                         console.log('Error:', data);

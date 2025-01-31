@@ -16,7 +16,18 @@ class VehicleTypeController extends Controller
     }
 
     public function saveVehicleType(Request $request){
+
+        $icon = null;
+        if ($request->hasFile('icon')){
+            $get_image = $request->file('icon');
+            $image_name = str::random(5) . time() . '.' . $get_image->getClientOriginalExtension();
+            $location = public_path('vehicle_type_icons/');
+            $get_image->move($location, $image_name);
+            $icon = "vehicle_type_icons/" . $image_name;
+        }
+
         VehicleType::insert([
+            'icon' => $icon,
             'type_name' => $request->type_name,
             'price' => $request->price,
             'color_code' => $request->color_code,
@@ -40,6 +51,11 @@ class VehicleTypeController extends Controller
                             return '<span style="color:green; font-weight: 600">Active</span>';
                         } else {
                             return '<span style="color:#DF3554; font-weight: 600">Inactive</span>';
+                        }
+                    })
+                    ->editColumn('icon', function($data) {
+                        if($data->icon && file_exists(public_path($data->icon))){
+                            return $data->icon;
                         }
                     })
                     ->editColumn('color_code', function($data) {
@@ -72,7 +88,22 @@ class VehicleTypeController extends Controller
 
     public function updateVehicleType(Request $request){
 
+        $data = VehicleType::where('id', $request->vehicle_type_id)->first();
+
+        $icon = $data->icon;
+        if ($request->hasFile('icon')){
+            if($icon != '' && file_exists(public_path($icon))){
+                unlink(public_path($icon));
+            }
+            $get_image = $request->file('icon');
+            $image_name = str::random(5) . time() . '.' . $get_image->getClientOriginalExtension();
+            $location = public_path('vehicle_type_icons/');
+            $get_image->move($location, $image_name);
+            $icon = "vehicle_type_icons/" . $image_name;
+        }
+
         VehicleType::where('id', $request->vehicle_type_id)->update([
+            'icon' => $icon,
             'type_name' => $request->type_name,
             'price' => $request->price,
             'color_code' => $request->color_code,
