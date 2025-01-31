@@ -113,6 +113,7 @@ Route::group(['middleware' => ['auth', 'CheckUserType', 'DemoMode']], function (
 
     // Toll Ticket
     Route::get('/create/toll/ticket', [TollTicketController::class, 'createTollTicket'])->name('CreateTollTicket');
+    Route::post('/save/toll/ticket', [TollTicketController::class, 'saveTollTicket'])->name('SaveTollTicket');
 
     // customers and system users routes
     Route::get('/view/all/customers', [UserController::class, 'viewAllCustomers'])->name('ViewAllCustomers');

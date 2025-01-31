@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 31, 2025 at 09:16 PM
+-- Generation Time: Jan 31, 2025 at 11:47 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -150,7 +150,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (106, '2024_10_17_124400_create_buy_sell_categories_table', 54),
 (107, '2024_10_17_163447_create_buy_sell_configs_table', 55),
 (108, '2025_02_01_005127_create_vehicle_types_table', 56),
-(109, '2025_02_01_020057_create_terminals_table', 57);
+(109, '2025_02_01_020057_create_terminals_table', 57),
+(110, '2025_02_01_025155_create_toll_tickets_table', 58);
 
 -- --------------------------------------------------------
 
@@ -775,6 +776,37 @@ CREATE TABLE `terminals` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `terminals`
+--
+
+INSERT INTO `terminals` (`id`, `name`, `description`, `slug`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'Terminal-1', 'Terminal No 1', '1738355374mzds6', 1, '2025-02-01 01:29:34', '2025-02-01 01:48:19'),
+(4, 'Terminal-2', 'Terminal No 2', '17383564887GuIF', 1, '2025-02-01 01:48:08', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `toll_tickets`
+--
+
+CREATE TABLE `toll_tickets` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `ticket_no` varchar(255) DEFAULT NULL,
+  `terminal_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `vehicle_type_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `vehicle_type_name` varchar(255) DEFAULT NULL,
+  `ticket_price` double NOT NULL DEFAULT 0,
+  `driver_name` varchar(255) DEFAULT NULL,
+  `driver_contact` varchar(255) DEFAULT NULL,
+  `vehicle_reg_no` varchar(255) DEFAULT NULL,
+  `slug` varchar(255) DEFAULT NULL,
+  `status` tinyint(4) NOT NULL DEFAULT 1 COMMENT '1=>Active; 0=>Inactive',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- --------------------------------------------------------
 
 --
@@ -783,6 +815,7 @@ CREATE TABLE `terminals` (
 
 CREATE TABLE `users` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `terminal_id` int(11) DEFAULT NULL,
   `image` varchar(255) DEFAULT NULL,
   `name` varchar(255) NOT NULL,
   `phone` varchar(255) DEFAULT NULL,
@@ -790,14 +823,9 @@ CREATE TABLE `users` (
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `verification_code` varchar(255) DEFAULT NULL COMMENT 'Used for Forget Password Verification',
   `password` varchar(255) DEFAULT NULL,
-  `provider_name` varchar(255) DEFAULT NULL,
-  `provider_id` varchar(255) DEFAULT NULL,
   `remember_token` varchar(100) DEFAULT NULL,
   `user_type` tinyint(4) NOT NULL DEFAULT 3 COMMENT '1=>Admin; 2=>User/Shop; 3=>Customer',
   `address` longtext DEFAULT NULL,
-  `balance` double NOT NULL DEFAULT 0 COMMENT 'In BDT',
-  `delete_request_submitted` tinyint(4) NOT NULL DEFAULT 0 COMMENT '0=>No; 1=>Yes',
-  `delete_request_submitted_at` datetime DEFAULT NULL,
   `status` tinyint(4) NOT NULL DEFAULT 1 COMMENT '1=>Active; 0=>Inactive',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -807,13 +835,13 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `image`, `name`, `phone`, `email`, `email_verified_at`, `verification_code`, `password`, `provider_name`, `provider_id`, `remember_token`, `user_type`, `address`, `balance`, `delete_request_submitted`, `delete_request_submitted_at`, `status`, `created_at`, `updated_at`) VALUES
-(1, NULL, 'Admin', '01969005035', 'admin@gmail.com', '2024-03-02 08:18:31', '320215', '$2y$12$oHWN0HLlomKGtI9bp503POf.uujhNJmq6bS3M8f3u0PAcrHZYLzEq', NULL, NULL, NULL, 1, 'Dhaka, Bangladesh', 0, 0, NULL, 1, '2023-03-28 10:20:00', '2024-04-25 07:52:00'),
-(17, NULL, 'Delilah Manning', '+1 (816) 469-7934', 'sosako7271@chysir.com', '2024-10-16 14:06:35', '848882', '$2y$12$Xx2dWLRND1rlz6gKpCMyXOrgj2lDtNQVrgD/Y4ZWxMSqPl3jT4Y5G', NULL, NULL, NULL, 4, NULL, 0, 0, NULL, 1, '2024-10-16 14:06:11', '2024-10-16 20:50:03'),
-(18, NULL, 'Md Fahim Hossain', NULL, 'alifhossain164@gmail.com', '2024-10-16 14:40:56', '267791', '$2y$12$zKSwoEohaozqpfNKKWW0AO6J4gFu/apGH5.nPE.b7jlsF6fhZQFZy', NULL, NULL, NULL, 3, NULL, 0, 0, NULL, 1, '2024-10-16 14:37:20', '2024-10-16 14:40:56'),
-(19, NULL, 'Fahad Hossain', '01969887744', 'fahad@gmail.com', '2024-10-26 20:50:04', '0', '$2y$10$CRJPxYEEPt2ifmjDElTFj.XzA/75K3258c4iys7GxHbhIQ2TTcjAu', NULL, NULL, NULL, 3, NULL, 0, 0, NULL, 1, '2024-10-26 20:50:04', NULL),
-(20, NULL, 'Olga Flowers', '+1 (979) 759-1711', 'alifhossain174@gmail.com', '2024-10-26 20:51:56', '0', '$2y$10$yYHz5hUa7.kqbq/TUdFTCeV033JeeGLLn72DtTltjchAEZu7svaNa', NULL, NULL, NULL, 3, NULL, 6, 0, NULL, 1, '2024-10-26 20:51:56', '2024-11-02 22:50:25'),
-(22, NULL, 'Test User', NULL, 'testcustomer@gmail.com', NULL, '883377', '$2y$12$bRQfeSB74h9BMiQpf4GqBuGCtSCBtlx/DS9.7eX5qHBpKIMp0DNzu', NULL, NULL, NULL, 3, NULL, 0, 0, NULL, 1, '2024-11-13 21:13:21', '2024-11-13 21:13:21');
+INSERT INTO `users` (`id`, `terminal_id`, `image`, `name`, `phone`, `email`, `email_verified_at`, `verification_code`, `password`, `remember_token`, `user_type`, `address`, `status`, `created_at`, `updated_at`) VALUES
+(1, NULL, NULL, 'Admin', '01969005035', 'admin@gmail.com', '2024-03-02 08:18:31', '320215', '$2y$12$oHWN0HLlomKGtI9bp503POf.uujhNJmq6bS3M8f3u0PAcrHZYLzEq', NULL, 1, 'Dhaka, Bangladesh', 1, '2023-03-28 10:20:00', '2024-04-25 07:52:00'),
+(17, NULL, NULL, 'Delilah Manning', '+1 (816) 469-7934', 'sosako7271@chysir.com', '2024-10-16 14:06:35', '848882', '$2y$12$Xx2dWLRND1rlz6gKpCMyXOrgj2lDtNQVrgD/Y4ZWxMSqPl3jT4Y5G', NULL, 4, NULL, 1, '2024-10-16 14:06:11', '2024-10-16 20:50:03'),
+(18, NULL, NULL, 'Md Fahim Hossain', NULL, 'alifhossain164@gmail.com', '2024-10-16 14:40:56', '267791', '$2y$12$zKSwoEohaozqpfNKKWW0AO6J4gFu/apGH5.nPE.b7jlsF6fhZQFZy', NULL, 3, NULL, 1, '2024-10-16 14:37:20', '2024-10-16 14:40:56'),
+(19, NULL, NULL, 'Fahad Hossain', '01969887744', 'fahad@gmail.com', '2024-10-26 20:50:04', '0', '$2y$10$CRJPxYEEPt2ifmjDElTFj.XzA/75K3258c4iys7GxHbhIQ2TTcjAu', NULL, 3, NULL, 1, '2024-10-26 20:50:04', NULL),
+(20, NULL, NULL, 'Olga Flowers', '+1 (979) 759-1711', 'alifhossain174@gmail.com', '2024-10-26 20:51:56', '0', '$2y$10$yYHz5hUa7.kqbq/TUdFTCeV033JeeGLLn72DtTltjchAEZu7svaNa', NULL, 3, NULL, 1, '2024-10-26 20:51:56', '2024-11-02 22:50:25'),
+(22, NULL, NULL, 'Test User', NULL, 'testcustomer@gmail.com', NULL, '883377', '$2y$12$bRQfeSB74h9BMiQpf4GqBuGCtSCBtlx/DS9.7eX5qHBpKIMp0DNzu', NULL, 3, NULL, 1, '2024-11-13 21:13:21', '2024-11-13 21:13:21');
 
 -- --------------------------------------------------------
 
@@ -855,6 +883,7 @@ CREATE TABLE `user_role_permissions` (
 
 CREATE TABLE `vehicle_types` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `icon` varchar(255) DEFAULT NULL,
   `type_name` varchar(255) DEFAULT NULL,
   `price` double NOT NULL DEFAULT 0,
   `description` longtext DEFAULT NULL,
@@ -869,19 +898,19 @@ CREATE TABLE `vehicle_types` (
 -- Dumping data for table `vehicle_types`
 --
 
-INSERT INTO `vehicle_types` (`id`, `type_name`, `price`, `description`, `color_code`, `slug`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'ট্রাক (বোঝাই/খালি)', 65, 'ফোরটন বা তার অধিকধারী ভারী যানবাহন', '#e06666', '1738350778zFRpj', 1, '2025-02-01 00:12:58', NULL),
-(2, 'কোচ/বাস (বোঝাই/খালি)', 25, 'তিন চাকার রিকশা বা মাইক্রোবাস ব্যতীত যাত্রী পরিবহনকারী বাস', '#f6b26b', '1738350803U10dn', 1, '2025-02-01 00:13:23', NULL),
-(3, 'মিনি ট্রাক (বোঝাই/খালি)', 30, 'তিন টনের নিচে পণ্য পরিবহনের ক্ষুদ্র ট্রাক', '#ffd966', '1738350824fs146', 1, '2025-02-01 00:13:44', NULL),
-(4, 'মিনিবাস (বোঝাই/খালি)', 20, 'ছোট যাত্রী পরিবহনকারী যানবাহন', '#93c47d', '1738350841jT6nT', 1, '2025-02-01 00:14:01', NULL),
-(5, 'সিএনজি অটোরিকশা', 10, 'চাকা চালিত তিন চাকার গাড়ি', '#76a5af', '1738350859NgN7J', 1, '2025-02-01 00:14:19', NULL),
-(6, 'কৃষি কাজে ব্যবহৃত যান', 15, 'পণ্যবাহী ট্রাক্টর ও অন্যান্য', '#6fa8dc', '1738350876M3Yr5', 1, '2025-02-01 00:14:36', NULL),
-(7, 'সাইকেল (বোঝাই/খালি)', 0, 'দুই চাকার যন্ত্রচালিত বা ম্যানুয়াল সাইকেল', '#8e7cc3', '1738350894Rqa2H', 1, '2025-02-01 00:14:54', NULL),
-(8, 'রিকশা', 0, 'মানব চালিত তিন চাকার যান', '#c27ba0', '173835090990bBL', 1, '2025-02-01 00:15:09', NULL),
-(9, 'হালকা ইঞ্জিন চালিত যান', 80, 'প্রাইভেট কার, মাইক্রোবাস', '#f44336', '1738350938J7kAb', 1, '2025-02-01 00:15:38', NULL),
-(10, 'মোটরসাইকেল', 10, 'দুই চাকার মোটরচালিত যান', '#ce7e00', '17383509581mOyp', 1, '2025-02-01 00:15:58', NULL),
-(11, '৩/৪ চাকার মোটর চালিত যান', 30, 'ইজিবাইক, অটোরিকশা', '#8fce00', '1738350973Wi6Zc', 1, '2025-02-01 00:16:13', NULL),
-(12, 'পণ্য পরিবহন যান', 0, 'পণ্য পরিবহনের বিশেষ যান', '#2986cc', '1738350995cTXOl', 1, '2025-02-01 00:16:35', NULL);
+INSERT INTO `vehicle_types` (`id`, `icon`, `type_name`, `price`, `description`, `color_code`, `slug`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'vehicle_type_icons/qL6kG1738359465.webp', 'ট্রাক (বোঝাই/খালি)', 65, 'ফোরটন বা তার অধিকধারী ভারী যানবাহন', '#e06666', '1738350778zFRpj', 1, '2025-02-01 00:12:58', '2025-02-01 02:37:45'),
+(2, 'vehicle_type_icons/z8YGP1738359430.webp', 'কোচ/বাস (বোঝাই/খালি)', 25, 'তিন চাকার রিকশা বা মাইক্রোবাস ব্যতীত যাত্রী পরিবহনকারী বাস', '#f6b26b', '1738350803U10dn', 1, '2025-02-01 00:13:23', '2025-02-01 02:37:10'),
+(3, 'vehicle_type_icons/j8scE1738359386.webp', 'মিনি ট্রাক (বোঝাই/খালি)', 30, 'তিন টনের নিচে পণ্য পরিবহনের ক্ষুদ্র ট্রাক', '#ffd966', '1738350824fs146', 1, '2025-02-01 00:13:44', '2025-02-01 02:36:26'),
+(4, 'vehicle_type_icons/49WVW1738359331.webp', 'মিনিবাস (বোঝাই/খালি)', 20, 'ছোট যাত্রী পরিবহনকারী যানবাহন', '#93c47d', '1738350841jT6nT', 1, '2025-02-01 00:14:01', '2025-02-01 02:35:31'),
+(5, 'vehicle_type_icons/H03121738359302.webp', 'সিএনজি অটোরিকশা', 10, 'চাকা চালিত তিন চাকার গাড়ি', '#76a5af', '1738350859NgN7J', 1, '2025-02-01 00:14:19', '2025-02-01 02:35:02'),
+(6, 'vehicle_type_icons/0dc6P1738358728.webp', 'কৃষি কাজে ব্যবহৃত যান', 15, 'পণ্যবাহী ট্রাক্টর ও অন্যান্য', '#6fa8dc', '1738350876M3Yr5', 1, '2025-02-01 00:14:36', '2025-02-01 02:29:16'),
+(7, 'vehicle_type_icons/SIsly1738358642.webp', 'সাইকেল (বোঝাই/খালি)', 0, 'দুই চাকার যন্ত্রচালিত বা ম্যানুয়াল সাইকেল', '#8e7cc3', '1738350894Rqa2H', 1, '2025-02-01 00:14:54', '2025-02-01 02:24:02'),
+(8, 'vehicle_type_icons/sccNo1738358572.webp', 'রিকশা', 0, 'মানব চালিত তিন চাকার যান', '#c27ba0', '173835090990bBL', 1, '2025-02-01 00:15:09', '2025-02-01 02:22:52'),
+(9, 'vehicle_type_icons/Dy6Q71738358531.webp', 'হালকা ইঞ্জিন চালিত যান', 80, 'প্রাইভেট কার, মাইক্রোবাস', '#f44336', '1738350938J7kAb', 1, '2025-02-01 00:15:38', '2025-02-01 02:29:00'),
+(10, 'vehicle_type_icons/owahN1738358489.webp', 'মোটরসাইকেল', 10, 'দুই চাকার মোটরচালিত যান', '#ce7e00', '17383509581mOyp', 1, '2025-02-01 00:15:58', '2025-02-01 02:28:47'),
+(11, 'vehicle_type_icons/6rv1n1738358450.webp', '৩/৪ চাকার মোটর যান', 30, 'ইজিবাইক, অটোরিকশা', '#8fce00', '1738350973Wi6Zc', 1, '2025-02-01 00:16:13', '2025-02-01 03:02:58'),
+(12, 'vehicle_type_icons/nXPuK1738358346.webp', 'পণ্য পরিবহন যান', 0, 'পণ্য পরিবহনের বিশেষ যান', '#2986cc', '1738350995cTXOl', 1, '2025-02-01 00:16:35', '2025-02-01 02:28:27');
 
 --
 -- Indexes for dumped tables
@@ -939,6 +968,12 @@ ALTER TABLE `terminals`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `toll_tickets`
+--
+ALTER TABLE `toll_tickets`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -983,7 +1018,7 @@ ALTER TABLE `general_infos`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=110;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=111;
 
 --
 -- AUTO_INCREMENT for table `permission_routes`
@@ -1007,6 +1042,12 @@ ALTER TABLE `role_permissions`
 -- AUTO_INCREMENT for table `terminals`
 --
 ALTER TABLE `terminals`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `toll_tickets`
+--
+ALTER TABLE `toll_tickets`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
@@ -1031,7 +1072,7 @@ ALTER TABLE `user_role_permissions`
 -- AUTO_INCREMENT for table `vehicle_types`
 --
 ALTER TABLE `vehicle_types`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

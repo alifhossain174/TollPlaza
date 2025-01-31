@@ -17,7 +17,9 @@ return new class extends Migration
             $table->id();
             $table->string('ticket_no')->nullable();
             $table->unsignedBigInteger('terminal_id')->nullable();
+            $table->string('terminal_name')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
+            $table->string('user_name')->nullable();
             $table->unsignedBigInteger('vehicle_type_id')->nullable();
             $table->string('vehicle_type_name')->nullable();
             $table->double('ticket_price')->default(0);

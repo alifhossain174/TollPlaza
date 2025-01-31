@@ -17,7 +17,7 @@
         </ul>
     </li>
     <li>
-        <a href="javascript: void(0);" class="has-arrow"><i class="fas fa-charging-station"></i><span>Terminal Config</span></a>
+        <a href="javascript: void(0);" class="has-arrow"><i class="fas fa-charging-station"></i><span>Toll Terminal Config</span></a>
         <ul class="sub-menu" aria-expanded="false">
             <li><a href="{{ url('/create/terminal') }}">Add New Terminal</a></li>
             <li><a href="{{ url('/view/terminals') }}">View All Terminals</a></li>
