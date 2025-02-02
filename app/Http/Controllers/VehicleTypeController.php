@@ -77,7 +77,13 @@ class VehicleTypeController extends Controller
     }
 
     public function deleteVehicleType($id){
-        VehicleType::where('id', $id)->delete();
+        $data = VehicleType::where('id', $id)->first();
+        if($data->icon){
+            if(file_exists(public_path($data->icon))){
+                unlink(public_path($data->icon));
+            }
+        }
+        $data->delete();
         return response()->json(['success' => 'Vehicle Type deleted successfully.']);
     }
 

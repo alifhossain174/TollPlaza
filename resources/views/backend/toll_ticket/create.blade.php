@@ -74,7 +74,9 @@
                                 <div id="search_results">
                                     @foreach ($vehicleTypes as $vehicleType)
                                         <label class="rides" style="background: {{$vehicleType->color_code}}">
+                                            @if(file_exists(public_path($vehicleType->icon)))
                                             <img src="{{url($vehicleType->icon)}}" style="width: 60px; height: 60px; margin: auto;" class="d-block mb-2">
+                                            @endif
                                             <input type="radio" name="vehicle_type_id" onchange="calculateTicketPrice({{$vehicleType->price}})" data-price="{{$vehicleType->price}}" value="{{$vehicleType->id}}" required>
                                             {{$vehicleType->type_name}}
                                             <span class="d-inline-block vehicle_type_price">৳{{$vehicleType->price}}</span>

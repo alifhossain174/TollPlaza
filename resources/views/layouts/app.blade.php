@@ -1,13 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 
-@php
-    $generalInfo = DB::table('general_infos')
-        ->where('id', 1)
-        ->select('fav_icon')
-        ->first();
-@endphp
-
 <head>
     <meta charset="utf-8" />
     <title>Login</title>
@@ -15,17 +8,8 @@
     <meta content="" name="description" />
     <meta content="MyraStudio" name="author" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="shortcut icon" href="{{ url('assets') }}/images/favicon.ico">
 
-    <!-- App favicon -->
-    @if (
-        $generalInfo &&
-            $generalInfo->fav_icon != '' &&
-            $generalInfo->fav_icon != null &&
-            file_exists(public_path($generalInfo->fav_icon)))
-        <link rel="shortcut icon" href="{{ url($generalInfo->fav_icon) }}">
-    @else
-        <link rel="shortcut icon" href="{{ url('assets') }}/images/favicon.ico">
-    @endif
 
     <!-- App css -->
     <link href="{{ url('assets') }}/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
