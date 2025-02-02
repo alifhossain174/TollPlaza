@@ -87,14 +87,21 @@
 
                             <div class="col-lg-7 pt-4">
                                 <div class="form-group row">
-                                    <label for="terminal_id" class="col-sm-3 col-form-label text-right">Select Terminal<span class="text-danger">*</span> : </label>
+                                    <label for="terminal_id" class="col-sm-3 col-form-label text-right">From Terminal<span class="text-danger">*</span> : </label>
                                     <div class="col-sm-9">
+                                        @if(Auth::user()->user_type == 1)
                                         <select class="form-control" name="terminal_id" id="terminal_id" required>
                                             <option value="">Select One</option>
                                             @foreach ($terminals as $terminal)
                                             <option value="{{$terminal->id}}">{{$terminal->name}}</option>
                                             @endforeach
                                         </select>
+                                        @else
+                                        @php
+                                            $userTerminal = App\Models\Terminal::where('id', Auth::user()->terminal_id)->first();
+                                        @endphp
+                                        <input type="text" class="form-control" id="terminal_id" value="{{$userTerminal->name}}" required readonly>
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="form-group row">

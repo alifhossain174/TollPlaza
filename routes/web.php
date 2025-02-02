@@ -119,7 +119,6 @@ Route::group(['middleware' => ['auth', 'CheckUserType', 'DemoMode']], function (
     Route::get('/print/toll/ticket/{slug}', [TollTicketController::class, 'printTollTicket'])->name('PrintTollTicket');
 
     // customers and system users routes
-    Route::get('/view/all/customers', [UserController::class, 'viewAllCustomers'])->name('ViewAllCustomers');
     Route::get('/view/system/users', [UserController::class, 'viewAllSystemUsers'])->name('ViewAllSystemUsers');
     Route::get('/add/new/system/user', [UserController::class, 'addNewSystemUsers'])->name('AddNewSystemUsers');
     Route::post('/create/system/user', [UserController::class, 'createSystemUsers'])->name('CreateSystemUsers');

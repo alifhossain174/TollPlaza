@@ -144,6 +144,7 @@
 
         $('[data-toggle="select2"]').select2();
 
+        @if(Auth::user()->user_type == 1)
         // Date Range Picker
         var defaultOptions = {
             "cancelClass": "btn-light",
@@ -190,6 +191,8 @@
             }
         });
         observer.observe(targetNode, { childList: true, characterData: true, subtree: true });
+
+        @endif
 
         var table = $(".data-table").DataTable({
             processing: true,

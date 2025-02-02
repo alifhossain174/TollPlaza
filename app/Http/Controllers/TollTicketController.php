@@ -28,7 +28,7 @@ class TollTicketController extends Controller
             $terminalId = $request->terminal_id;
             $terminalInfo = Terminal::where('id', $terminalId)->first();
         } else {
-            $terminalId = Auth::user()->terminal__id;
+            $terminalId = Auth::user()->terminal_id;
             $terminalInfo = Terminal::where('id', $terminalId)->first();
         }
 

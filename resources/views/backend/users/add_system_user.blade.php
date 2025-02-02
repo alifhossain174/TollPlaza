@@ -1,10 +1,10 @@
 @extends('backend.master')
 
 @section('page_title')
-    System User
+    System Operators
 @endsection
 @section('page_heading')
-    Add New System User
+    Add New System Operator
 @endsection
 
 @section('header_css')
@@ -23,14 +23,14 @@
         <div class="col-lg-12 col-xl-12">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title mb-3">System User Create Form</h4>
+                    <h4 class="card-title mb-3">System Operator Create Form</h4>
 
                     <form class="needs-validation" method="POST" action="{{url('create/system/user')}}" enctype="multipart/form-data">
                         @csrf
 
                         <div class="form-group row">
-                            <label for="colFormLabel" class="col-sm-2 col-form-label">Name <span class="text-danger">*</span></label>
-                            <div class="col-sm-10">
+                            <label for="colFormLabel" class="col-sm-2 col-form-label">Full Name <span class="text-danger">*</span></label>
+                            <div class="col-sm-8">
                                 <input type="text" name="name" class="form-control" id="colFormLabel" placeholder="Full Name" required>
                                 <div class="invalid-feedback" style="display: block;">
                                     @error('name')
@@ -41,8 +41,8 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="email" class="col-sm-2 col-form-label">Email <span class="text-danger">*</span></label>
-                            <div class="col-sm-10">
+                            <label for="email" class="col-sm-2 col-form-label">Login Email <span class="text-danger">*</span></label>
+                            <div class="col-sm-8">
                                 <input type="email" name="email" class="form-control" id="email" placeholder="example@GenericCommerceV1.com" required>
                                 <div class="invalid-feedback" style="display: block;">
                                     @error('email')
@@ -53,8 +53,33 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="phone" class="col-sm-2 col-form-label">Phone</label>
-                            <div class="col-sm-10">
+                            <label for="password" class="col-sm-2 col-form-label">Login Password <span class="text-danger">*</span></label>
+                            <div class="col-sm-8">
+                                <input type="password" name="password" class="form-control d-inline-block" id="password" placeholder="********" required>
+                                <i class="bi bi-eye-slash" id="togglePassword"></i>
+                                <div class="invalid-feedback" style="display: block;">
+                                    @error('password')
+                                        {{ $message }}
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="email" class="col-sm-2 col-form-label">Select Terminal <span class="text-danger">*</span></label>
+                            <div class="col-sm-8">
+                                <select class="form-control" name="terminal_id" id="terminal_id" required>
+                                    <option value="">Select One</option>
+                                    @foreach ($terminals as $terminal)
+                                    <option value="{{$terminal->id}}">{{$terminal->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="phone" class="col-sm-2 col-form-label">Contact No</label>
+                            <div class="col-sm-8">
                                 <input type="phone" name="phone" class="form-control" id="phone" placeholder="+8801*********">
                                 <div class="invalid-feedback" style="display: block;">
                                     @error('phone')
@@ -66,8 +91,8 @@
 
                         <div class="form-group row">
                             <label for="address" class="col-sm-2 col-form-label">Address</label>
-                            <div class="col-sm-10">
-                                <input type="address" name="address" class="form-control" id="address" placeholder="Dhaka, Bangladesh">
+                            <div class="col-sm-8">
+                                <input type="address" name="address" class="form-control" id="address" placeholder="e.g. Dhaka, Bangladesh">
                                 <div class="invalid-feedback" style="display: block;">
                                     @error('address')
                                         {{ $message }}
@@ -77,20 +102,10 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="password" class="col-sm-2 col-form-label">Password <span class="text-danger">*</span></label>
-                            <div class="col-sm-10">
-                                <input type="password" name="password" class="form-control d-inline-block" id="password" placeholder="********" required>
-                                <i class="bi bi-eye-slash" id="togglePassword"></i>
-                                <div class="invalid-feedback" style="display: block;">
-                                    @error('password')
-                                        {{ $message }}
-                                    @enderror
-                                </div>
+                            <label for="email" class="col-sm-2 col-form-label"></label>
+                            <div class="col-sm-8">
+                                <button class="btn btn-primary" type="submit">Create Operator</button>
                             </div>
-                        </div>
-
-                        <div class="form-group">
-                            <button class="btn btn-primary" type="submit">Create User</button>
                         </div>
                     </form>
                 </div>

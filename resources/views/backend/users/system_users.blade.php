@@ -62,7 +62,7 @@
                     <h4 class="card-title mb-3">System Users List</h4>
                     <div class="table-responsive">
                         <label id="customFilter">
-                            <a href="{{url('add/new/system/user')}}" class="btn btn-success btn-sm" id="addNewFlag" style="margin-left: 5px"><i class="feather-plus"></i> Add New User</a>
+                            <a href="{{url('add/new/system/user')}}" class="btn btn-success btn-sm" id="addNewFlag" style="margin-left: 5px"><i class="feather-plus"></i> Add Operator</a>
                         </label>
                         <table class="table table-bordered mb-0 data-table">
                             <thead>
