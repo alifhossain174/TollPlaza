@@ -37,14 +37,14 @@
     <li>
         <a href="javascript: void(0);" class="has-arrow"><i class="feather-printer"></i><span>Generate Report</span></a>
         <ul class="sub-menu" aria-expanded="false">
-            <li><a href="{{ url('/sales/report') }}">Sales Report</a></li>
+            <li><a href="{{ url('/toll/ticket/report') }}">Toll Ticket Report</a></li>
         </ul>
     </li>
     <li>
         <a href="javascript: void(0);" class="has-arrow"><i class="feather-download-cloud"></i><span>Download Backup</span></a>
         <ul class="sub-menu" aria-expanded="false">
             <li><a href="{{ url('/download/database/backup') }}">Database Backup</a></li>
-            <li><a href="{{ url('/download/other/files/backup') }}">Other Images Backup</a></li>
+            <li><a href="{{ url('/download/vehicle/icon/backup') }}">Vehicle Icon Backup</a></li>
         </ul>
     </li>
 

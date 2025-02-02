@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 01, 2025 at 12:00 AM
+-- Generation Time: Feb 02, 2025 at 04:37 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -814,7 +814,33 @@ CREATE TABLE `toll_tickets` (
 --
 
 INSERT INTO `toll_tickets` (`id`, `ticket_no`, `terminal_id`, `terminal_name`, `user_id`, `user_name`, `vehicle_type_id`, `vehicle_type_name`, `ticket_price`, `driver_name`, `driver_contact`, `vehicle_reg_no`, `slug`, `status`, `created_at`, `updated_at`) VALUES
-(1, '1738364402QWm', 2, 'Terminal-2', 1, 'Admin', 9, 'হালকা ইঞ্জিন চালিত যান', 80, 'Fahim', '4915736108363', 'DHAKA-KA-65498', '1738364402qljQy', 1, '2025-02-01 04:00:02', NULL);
+(1, '1738364402QWm', 2, 'Terminal-2', 1, 'Admin', 9, 'হালকা ইঞ্জিন চালিত যান', 80, 'Fahim', '4915736108363', 'DHAKA-KA-65498', '1738364402qljQy', 1, '2025-02-01 04:00:02', NULL),
+(2, '1738461110pbN', 1, 'Terminal-1', 1, 'Admin', 11, '৩/৪ চাকার মোটর যান', 30, 'Fahim', '4915736108363', 'DHAKA-KA-65498', '17384611100rFPq', 1, '2025-02-02 06:51:50', NULL),
+(3, '1738461131e4k', 1, 'Terminal-1', 1, 'Admin', 11, '৩/৪ চাকার মোটর যান', 30, 'Fahim', '4915736108363', 'DHAKA-KA-65498', '1738461131AVtTn', 1, '2025-02-02 06:52:11', NULL),
+(4, '17384612407az', 1, 'Terminal-1', 1, 'Admin', 11, '৩/৪ চাকার মোটর যান', 30, 'Fahim', '4915736108363', 'DHAKA-KA-65498', '17384612404iTiu', 1, '2025-02-02 06:54:00', NULL),
+(5, '1738461314D56', 1, 'Terminal-1', 1, 'Admin', 11, '৩/৪ চাকার মোটর যান', 30, 'Fahim', '4915736108363', 'DHAKA-KA-65498', '1738461314Sh4fH', 1, '2025-02-02 06:55:14', NULL),
+(6, '1738461327L3W', 1, 'Terminal-1', 1, 'Admin', 11, '৩/৪ চাকার মোটর যান', 30, 'Fahim', '4915736108363', 'DHAKA-KA-65498', '1738461327l4sOg', 1, '2025-02-02 06:55:27', NULL),
+(7, '1738461447nWt', 1, 'Terminal-1', 1, 'Admin', 11, '৩/৪ চাকার মোটর যান', 30, 'Fahim', '4915736108363', 'DHAKA-KA-65498', '1738461447mh0Vq', 1, '2025-02-02 06:57:27', NULL),
+(8, '1738461557HIV', 1, 'Terminal-1', 1, 'Admin', 11, '৩/৪ চাকার মোটর যান', 30, 'Fahim', '4915736108363', 'DHAKA-KA-65498', '1738461557En67f', 1, '2025-02-02 06:59:17', NULL),
+(9, '1738461654Tgs', 1, 'Terminal-1', 1, 'Admin', 11, '৩/৪ চাকার মোটর যান', 30, 'Fahim', '4915736108363', 'DHAKA-KA-65498', '1738461654ZuTi9', 1, '2025-02-02 07:00:54', NULL),
+(10, '1738461719glM', 1, 'Terminal-1', 1, 'Admin', 11, '৩/৪ চাকার মোটর যান', 30, 'Fahim', '4915736108363', 'DHAKA-KA-65498', '17384617190nULV', 1, '2025-02-02 07:01:59', NULL),
+(11, '1738461801A1W', 1, 'Terminal-1', 1, 'Admin', 11, '৩/৪ চাকার মোটর যান', 30, 'Fahim', '4915736108363', 'DHAKA-KA-65498', '1738461801QeRW0', 1, '2025-02-02 07:03:21', NULL),
+(12, '1738461830aBe', 1, 'Terminal-1', 1, 'Admin', 11, '৩/৪ চাকার মোটর যান', 30, 'Fahim', '4915736108363', 'DHAKA-KA-65498', '1738461830Lz823', 1, '2025-02-02 07:03:50', NULL),
+(13, '1738461885MbD', 1, 'Terminal-1', 1, 'Admin', 11, '৩/৪ চাকার মোটর যান', 30, 'Fahim', '4915736108363', 'DHAKA-KA-65498', '1738461885VbvFN', 1, '2025-02-02 07:04:45', NULL),
+(14, '17384619355zB', 1, 'Terminal-1', 1, 'Admin', 11, '৩/৪ চাকার মোটর যান', 30, 'Fahim', '4915736108363', 'DHAKA-KA-65498', '1738461935SA8oX', 1, '2025-02-02 07:05:35', NULL),
+(15, '1738461983Dcf', 1, 'Terminal-1', 1, 'Admin', 11, '৩/৪ চাকার মোটর যান', 30, 'Fahim', '4915736108363', 'DHAKA-KA-65498', '1738461983k7khP', 1, '2025-02-02 07:06:23', NULL),
+(16, '1738461994RQT', 1, 'Terminal-1', 1, 'Admin', 11, '৩/৪ চাকার মোটর যান', 30, 'Fahim', NULL, 'DHAKA-KA-65498', '1738461994dS8kY', 1, '2025-02-02 07:06:34', NULL),
+(17, '173846203805R', 1, 'Terminal-1', 1, 'Admin', 11, '৩/৪ চাকার মোটর যান', 30, 'Fahim', NULL, 'DHAKA-KA-65498', '1738462038vxq7B', 1, '2025-02-02 07:07:18', NULL),
+(18, '1738462059dGx', 1, 'Terminal-1', 1, 'Admin', 11, '৩/৪ চাকার মোটর যান', 30, 'Fahim', NULL, 'DHAKA-KA-65498', '1738462059KGvDI', 1, '2025-02-02 07:07:39', NULL),
+(19, '1738462083eWa', 1, 'Terminal-1', 1, 'Admin', 11, '৩/৪ চাকার মোটর যান', 30, 'Fahim', NULL, 'DHAKA-KA-65498', '1738462083EGZW6', 1, '2025-02-02 07:08:03', NULL),
+(20, '1738462100n86', 1, 'Terminal-1', 1, 'Admin', 11, '৩/৪ চাকার মোটর যান', 30, 'Fahim', NULL, 'DHAKA-KA-65498', '1738462100fbvfz', 1, '2025-02-02 07:08:20', NULL),
+(21, '1738462141QuW', 1, 'Terminal-1', 1, 'Admin', 11, '৩/৪ চাকার মোটর যান', 30, 'Fahim', NULL, 'DHAKA-KA-65498', '1738462141ANn1B', 1, '2025-02-02 07:09:01', NULL),
+(22, '1738462244oHI', 1, 'Terminal-1', 1, 'Admin', 11, '৩/৪ চাকার মোটর যান', 30, 'Fahim', NULL, 'DHAKA-KA-65498', '1738462244gnsua', 1, '2025-02-02 07:10:44', NULL),
+(23, '1738462254nUP', 1, 'Terminal-1', 1, 'Admin', 11, '৩/৪ চাকার মোটর যান', 30, 'Fahim', NULL, 'DHAKA-KA-65498', '1738462254tphPY', 1, '2025-02-02 07:10:54', NULL),
+(24, '17384622668Aw', 1, 'Terminal-1', 1, 'Admin', 11, '৩/৪ চাকার মোটর যান', 30, 'Fahim', NULL, 'DHAKA-KA-65498', '1738462266e0YRi', 1, '2025-02-02 07:11:06', NULL),
+(25, '1738462352v7L', 1, 'Terminal-1', 1, 'Admin', 11, '৩/৪ চাকার মোটর যান', 30, 'Fahim', NULL, 'DHAKA-KA-65498', '1738462352C8Jg1', 1, '2025-02-02 07:12:32', NULL),
+(26, '1738462409oZY', 1, 'Terminal-1', 1, 'Admin', 11, '৩/৪ চাকার মোটর যান', 30, 'Fahim', NULL, 'DHAKA-KA-65498', '1738462409Lif37', 1, '2025-02-02 07:13:29', NULL),
+(27, '17384624451bb', 2, 'Terminal-2', 1, 'Admin', 10, 'মোটরসাইকেল', 10, 'Meghan Osborn', 'Consectetur magna id', 'Quisquam culpa eaqu', '1738462445eLvD8', 1, '2025-02-02 07:14:05', NULL);
 
 -- --------------------------------------------------------
 
@@ -1057,7 +1083,7 @@ ALTER TABLE `terminals`
 -- AUTO_INCREMENT for table `toll_tickets`
 --
 ALTER TABLE `toll_tickets`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `users`

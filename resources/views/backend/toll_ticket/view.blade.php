@@ -3,7 +3,19 @@
 @section('header_css')
     <link href="{{ url('dataTable') }}/css/jquery.dataTables.min.css" rel="stylesheet">
     <link href="{{ url('dataTable') }}/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+    <link href="{{ url('assets') }}/plugins/select2/select2.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{ url('dataTable') }}/css/buttons.dataTables.min.css" rel="stylesheet">
+    <link href="{{ url('assets') }}/plugins/daterangepicker/daterangepicker.css" rel="stylesheet" type="text/css" />
+    <link href="{{ url('assets') }}/plugins/bootstrap-datepicker/bootstrap-datepicker.min.css" rel="stylesheet"/>
     <style>
+        .select2-selection{
+            height: 34px !important;
+            border: 1px solid #ced4da !important;
+        }
+        .select2 {
+            width: 100% !important;
+        }
         .dataTables_wrapper .dataTables_paginate .paginate_button{
             padding: 0px;
             border-radius: 4px;
@@ -20,12 +32,30 @@
         tfoot th{
             text-align: center;
         }
-        img.gridProductImage{
-            transition: all .1s linear;
+
+        .dt-buttons{
+            margin-left: 15px;
         }
-        img.gridProductImage:hover{
-            scale: 2;
-            cursor: pointer;
+        button.dt-button{
+            padding: 0.3em 1em !important;
+        }
+        button.buttons-excel, button.buttons-excel:hover{
+            background: #008000db !important;
+            color: white !important;
+            border: 1px solid #129912 !important;
+            border-radius: 4px !important;
+        }
+        button.buttons-pdf, button.buttons-pdf:hover{
+            background: #af0000de !important;
+            color: white !important;
+            border-radius: 4px !important;
+            border-color: #ad0000 !important;
+        }
+        button.buttons-print, button.buttons-print:hover{
+            background: #0087bee0 !important;
+            color: white !important;
+            border-radius: 4px !important;
+            border-color: #007eb2 !important;
         }
     </style>
 @endsection
@@ -38,6 +68,13 @@
 @endsection
 
 @section('content')
+
+    @if(Auth::user()->user_type == 1)
+    <div id="accordion">
+        @include('backend.toll_ticket.filter_entries')
+    </div>
+    @endif
+
     <div class="row">
         <div class="col-lg-12 col-xl-12">
             <div class="card">
@@ -67,6 +104,13 @@
                             <tbody>
 
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th colspan="5"></th>
+                                    <th></th>
+                                    <th colspan="4"></th>
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
                 </div>
@@ -83,12 +127,93 @@
     <script src="{{ url('dataTable') }}/js/jquery.dataTables.min.js"></script>
     <script src="{{ url('dataTable') }}/js/dataTables.bootstrap4.min.js"></script>
 
+    <script src="{{ url('assets') }}/plugins/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
+    <script src="{{ url('assets') }}/plugins/moment/moment.js"></script>
+    <script src="{{ url('assets') }}/plugins/daterangepicker/daterangepicker.js"></script>
+
+    <script src="{{ url('dataTable') }}/js/dataTables.buttons.min.js"></script>
+    <script src="{{ url('dataTable') }}/js/jszip.min.js"></script>
+    <script src="{{ url('dataTable') }}/js/pdfmake.min.js"></script>
+    <script src="{{ url('dataTable') }}/js/vfs_fonts.js"></script>
+    <script src="{{ url('dataTable') }}/js/buttons.html5.min.js"></script>
+    <script src="{{ url('dataTable') }}/js/buttons.print.min.js"></script>
+
+    <script src="{{ url('assets') }}/plugins/select2/select2.min.js"></script>
+
     <script type="text/javascript">
+
+        $('[data-toggle="select2"]').select2();
+
+        // Date Range Picker
+        var defaultOptions = {
+            "cancelClass": "btn-light",
+            "applyButtonClasses": "btn-success"
+        };
+
+        // // date pickers
+        $('[data-toggle="daterangepicker"]').each(function (idx, obj) {
+            var objOptions = $.extend({}, defaultOptions, $(obj).data());
+            $(obj).daterangepicker(objOptions);
+        });
+
+        var start = moment().subtract(29, 'days');
+        var end = moment();
+        var defaultRangeOptions = {
+            startDate: start,
+            endDate: end,
+            ranges: {
+            'Today': [moment(), moment()],
+            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+            'This Month': [moment().startOf('month'), moment().endOf('month')],
+            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            }
+        };
+
+        $('[data-toggle="date-picker-range"]').each(function (idx, obj) {
+            var objOptions = $.extend({}, defaultRangeOptions, $(obj).data());
+            var target = objOptions["targetDisplay"];
+            //rendering
+            $(obj).daterangepicker(objOptions, function(start, end) {
+                if (target)
+                    $(target).html(start.format('MMM D, YYYY') + ' - ' + end.format('MMM D, YYYY'));
+            });
+        });
+
+        const targetNode = document.getElementById("selectedValue");
+        const observer = new MutationObserver((mutationsList) => {
+            for (const mutation of mutationsList) {
+                if (mutation.type === "characterData" || mutation.type === "childList") {
+                    filterEntryData();
+                }
+            }
+        });
+        observer.observe(targetNode, { childList: true, characterData: true, subtree: true });
+
         var table = $(".data-table").DataTable({
             processing: true,
             serverSide: true,
             stateSave: true,
-            ajax: "{{ url('view/toll/tickets') }}",
+            pageLength: 20,
+            lengthMenu: [
+                [20, 50, 100, 200, -1],
+                [20, 50, 100, 200, "All"]
+            ],
+            // ajax: "{{ url('view/toll/tickets') }}",
+            ajax: {
+                url: "{{ url('view/toll/tickets') }}",
+                data: function(d) {
+                    d.ticket_no = $("#ticket_no").val() || "";
+                    d.vehicle_type_id = $("#vehicle_type_id").val();
+                    d.terminal_id = $("#terminal_id").val();
+                    d.user_id = $("#user_id").val();
+                    d.driver_name = $("#driver_name").val();
+                    d.driver_contact = $("#driver_contact").val();
+                    d.vehicle_reg_no = $("#vehicle_reg_no").val();
+                    d.purchase_date_range = $("#selectedValue").text();
+                }
+            },
             columns: [
                 {
                     data: 'DT_RowIndex',
@@ -128,6 +253,40 @@
                 },
                 {data: 'action', name: 'action', orderable: false, searchable: false},
             ],
+            footerCallback: function(row, data, start, end, display) {
+                var api = this.api();
+                var totalFee = api.column(5, { page: 'current' }).data().reduce(function(a, b) {
+                    return parseFloat(a) + parseFloat(b);
+                }, 0);
+                $(api.column(5).footer()).html("৳ "+totalFee);
+            },
+            dom: 'lBfrtip', // Include 'l' for length changing input (Show Entries)
+            buttons: [
+                {
+                    extend: 'excelHtml5',
+                    title: 'Orders Data',
+                    text: '<i class="far fa-file-excel"></i> Excel',
+                    exportOptions: {
+                        columns: ':visible' // Export only visible columns
+                    }
+                },
+                {
+                    extend: 'pdfHtml5',
+                    title: 'Orders Data',
+                    text: '<i class="far fa-file-pdf"></i> PDF',
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                },
+                {
+                    extend: 'print',
+                    title: 'Orders Data',
+                    text: '<i class="fas fa-print"></i> Print',
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                }
+            ]
         });
 
         $(".dataTables_filter").append($("#customFilter"));
@@ -140,6 +299,22 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+
+        function filterEntryData(){
+            table.draw(false);
+        }
+
+        function clearFilters(){
+            $("#ticket_no").val("");
+            $("#terminal_id").val("");
+            $("#vehicle_type_id").val("");
+            $("#user_id").val("");
+            $("#driver_name").val("");
+            $("#driver_contact").val("");
+            $("#vehicle_reg_no").val("");
+            $("#selectedValue").text("");
+            table.draw(false);
+        }
 
         $('body').on('click', '.deleteBtn', function () {
             var tollTicketId = $(this).data("id");

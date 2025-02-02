@@ -6,8 +6,10 @@ use App\Models\GeneralInfo;
 use Carbon\Carbon;
 use App\Models\Terminal;
 use App\Models\TollTicket;
+use App\Models\User;
 use Illuminate\Support\Str;
 use App\Models\VehicleType;
+use DateTime;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Auth;
@@ -58,7 +60,42 @@ class TollTicketController extends Controller
         if ($request->ajax()) {
 
             if(Auth::user()->user_type == 1){
-                $data = TollTicket::orderBy('id', 'desc')->get();
+                $query = TollTicket::orderBy('id', 'desc');
+
+                // Continue with filtering
+                if ($request->ticket_no != '') {
+                    $query->where('ticket_no', 'LIKE', '%' . $request->ticket_no . '%');
+                }
+                if ($request->vehicle_type_id != '') {
+                    $query->where('vehicle_type_id', $request->vehicle_type_id);
+                }
+                if ($request->terminal_id != '') {
+                    $query->where('terminal_id', $request->terminal_id);
+                }
+                if ($request->user_id != '') {
+                    $query->where('user_id', $request->user_id);
+                }
+                if ($request->driver_name != '') {
+                    $query->where('driver_name', 'LIKE', '%' . $request->driver_name . '%');
+                }
+                if ($request->driver_contact != '') {
+                    $query->where('driver_contact', 'LIKE', '%' . $request->driver_contact . '%');
+                }
+                if ($request->vehicle_reg_no != '') {
+                    $query->where('vehicle_reg_no', 'LIKE', '%' . $request->vehicle_reg_no . '%');
+                }
+                if ($request->purchase_date_range != '') {
+                    $dateRange = $request->purchase_date_range;
+                    list($startDateStr, $endDateStr) = explode(" - ", $dateRange);
+                    $startDate = DateTime::createFromFormat("M j, Y", trim($startDateStr));
+                    $endDate = DateTime::createFromFormat("M j, Y", trim($endDateStr));
+                    $formattedStartDate = $startDate ? $startDate->format("Y-m-d")." 00:00:00" : null;
+                    $formattedEndDate = $endDate ? $endDate->format("Y-m-d"). " 23:59:59" : null;
+                    $query->whereBetween('created_at', [$formattedStartDate, $formattedEndDate]);
+                }
+
+                $data = $query->get();
+
             } else {
                 $data = TollTicket::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->get();
             }
@@ -69,6 +106,13 @@ class TollTicketController extends Controller
                     })
                     ->editColumn('ticket_price', function($data) {
                         return $data->ticket_price." BDT";
+                    })
+                    ->editColumn('driver_name', function($data) {
+                        $driverInfo = $data->driver_name;
+                        if($data->driver_contact){
+                            $driverInfo .= " (".$data->driver_contact.")";
+                        }
+                        return $driverInfo;
                     })
                     ->addIndexColumn()
                     ->addColumn('action', function($data){
@@ -81,7 +125,11 @@ class TollTicketController extends Controller
                     ->rawColumns(['action'])
                     ->make(true);
         }
-        return view('backend.toll_ticket.view');
+
+        $vehicleTypes = VehicleType::orderBy('id', 'desc')->get();
+        $terminals = Terminal::orderBy('name', 'asc')->get();
+        $users = User::get();
+        return view('backend.toll_ticket.view', compact('terminals', 'users', 'vehicleTypes'));
     }
 
     public function deleteTollTicket($id){

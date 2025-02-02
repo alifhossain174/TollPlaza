@@ -23,7 +23,7 @@
     Report
 @endsection
 @section('page_heading')
-    Sales Report
+    Toll Ticket Report
 @endsection
 
 @section('content')
@@ -31,7 +31,7 @@
         <div class="col-lg-12 col-xl-12">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title mb-3">Sales Report Criteria</h4>
+                    <h4 class="card-title mb-3">Toll Ticket Report Criteria</h4>
 
                     <form class="needs-validation row" id="sales_report_form">
                         <div class="form-group col">
@@ -43,33 +43,30 @@
                             <input type="text" class="form-control date_field" value="{{date("d/m/Y")}}" id="end_date" placeholder="End Date" required>
                         </div>
                         <div class="form-group col">
-                            <label for="order_status">Order Status</label>
-                            <select name="order_status" id="order_status" data-toggle="select2" class="form-control">
-                                <option value="">Change Status</option>
-                                <option value="0">Pending</option>
-                                <option value="1">Approved</option>
-                                <option value="2">Intransit</option>
-                                <option value="3">Delivered</option>
-                                <option value="4">Cancel</option>
+                            <label for="vehicle_type_id">Vehicle Type</label>
+                            <select class="form-control" data-toggle="select2" id="vehicle_type_id">
+                                <option value="">Select One</option>
+                                @foreach ($vehicleTypes as $vehicleType)
+                                <option value="{{$vehicleType->id}}">{{$vehicleType->type_name}}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="form-group col">
-                            <label for="order_status">Payment Status</label>
-                            <select name="payment_status" id="payment_status" data-toggle="select2" class="form-control">
-                                <option value="">Change Status</option>
-                                <option value="0">Unpaid</option>
-                                <option value="1">Payment Successfull</option>
-                                <option value="2">Payment Failed</option>
+                            <label for="terminal_id">Select Terminal</label>
+                            <select class="form-control" data-toggle="select2" id="terminal_id">
+                                <option value="">Select One</option>
+                                @foreach ($terminals as $terminal)
+                                <option value="{{$terminal->id}}">{{$terminal->name}}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="form-group col">
-                            <label for="payment_method">Payment Method</label>
-                            <select name="payment_method" id="payment_method" data-toggle="select2" class="form-control">
-                                <option value="">Change Method</option>
-                                <option value="1">Cash On Delivery</option>
-                                <option value="2">Bkash</option>
-                                <option value="3">Nagad</option>
-                                <option value="4">Card</option>
+                            <label for="user_id">Select Operator</label>
+                            <select class="form-control" data-toggle="select2" id="user_id">
+                                <option value="">Select One</option>
+                                @foreach ($users as $user)
+                                <option value="{{$user->id}}">{{$user->name}}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="form-group col-lg-12 text-right">
@@ -111,21 +108,23 @@
         function generateReport(){
 
             $("#generate_sales_report_btn").html("Generating...");
+
             var startDate = $("#start_date").val();
             var endDate = $("#end_date").val();
-            var orderStatus = $("#order_status").val();
-            var paymentStatus = $("#payment_status").val();
-            var paymentMethod = $("#payment_method").val();
+
+            var vehicle_type_id = $("#vehicle_type_id").val();
+            var terminal_id = $("#terminal_id").val();
+            var user_id = $("#user_id").val();
 
             $.ajax({
                 data: {
                     start_date: startDate,
                     end_date: endDate,
-                    order_status: orderStatus,
-                    payment_status: paymentStatus,
-                    payment_method: paymentMethod
+                    vehicle_type_id: vehicle_type_id,
+                    terminal_id: terminal_id,
+                    user_id: user_id
                 },
-                url: "{{ url('generate/sales/report') }}",
+                url: "{{ url('generate/toll/ticket/report') }}",
                 type: "POST",
                 dataType: 'json',
                 success: function(data) {

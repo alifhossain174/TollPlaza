@@ -78,13 +78,13 @@ class BackupController extends Controller
         // unlink($file_name);
     }
 
-    public function downloadProductFilesBackup(){
+    public function downloadVehicleIconBackup(){
         $zip = new ZipArchive;
-        $fileName = 'ProductImagesBackup.zip';
+        $fileName = 'VehicleIconBackup.zip';
 
         if ($zip->open(public_path($fileName), ZipArchive::CREATE) === TRUE)
         {
-            $files = File::files(public_path('productImages'));
+            $files = File::files(public_path('vehicle_type_icons'));
             foreach ($files as $key => $value) {
                 $relativeNameInZipFile = basename($value);
                 $zip->addFile($value, $relativeNameInZipFile);
@@ -96,219 +96,9 @@ class BackupController extends Controller
         if(file_exists(public_path($fileName))){
             return response()->download(public_path($fileName));
         } else {
-            Toastr::error('No Product Images Found', 'Success');
+            Toastr::error('No Vehicle Icon Found', 'Success');
             return back();
         }
     }
 
-    public function downloadUserFilesBackup(){
-        $zip = new ZipArchive;
-        $fileName = 'UserImagesBackup.zip';
-
-        if ($zip->open(public_path($fileName), ZipArchive::CREATE) === TRUE)
-        {
-            $files = File::files(public_path('userProfileImages'));
-            foreach ($files as $key => $value) {
-                $relativeNameInZipFile = basename($value);
-                $zip->addFile($value, $relativeNameInZipFile);
-            }
-            $zip->close();
-        }
-
-        // return response()->download(public_path($fileName));
-        if(file_exists(public_path($fileName))){
-            return response()->download(public_path($fileName));
-        } else {
-            Toastr::error('No User Images Found', 'Success');
-            return back();
-        }
-    }
-
-    public function downloadBannerFilesBackup(){
-        $zip = new ZipArchive;
-        $fileName = 'BannerImagesBackup.zip';
-
-        if ($zip->open(public_path($fileName), ZipArchive::CREATE) === TRUE)
-        {
-            $files = File::files(public_path('banner'));
-            foreach ($files as $key => $value) {
-                $relativeNameInZipFile = basename($value);
-                $zip->addFile($value, $relativeNameInZipFile);
-            }
-            $zip->close();
-        }
-
-        // return response()->download(public_path($fileName));
-        if(file_exists(public_path($fileName))){
-            return response()->download(public_path($fileName));
-        } else {
-            Toastr::error('No Banner Images Found', 'Success');
-            return back();
-        }
-    }
-
-    public function downloadCategoryFilesBackup(){
-        $zip = new ZipArchive;
-        $fileName = 'CategoryImagesBackup.zip';
-
-        if ($zip->open(public_path($fileName), ZipArchive::CREATE) === TRUE)
-        {
-            $files = File::files(public_path('category_images'));
-            foreach ($files as $key => $value) {
-                $relativeNameInZipFile = basename($value);
-                $zip->addFile($value, $relativeNameInZipFile);
-            }
-            $zip->close();
-        }
-
-        // return response()->download(public_path($fileName));
-        if(file_exists(public_path($fileName))){
-            return response()->download(public_path($fileName));
-        } else {
-            Toastr::error('No Category Images Found', 'Success');
-            return back();
-        }
-    }
-
-    public function downloadSubcategoryFilesBackup(){
-        $zip = new ZipArchive;
-        $fileName = 'SubcategoryImagesBackup.zip';
-
-        if ($zip->open(public_path($fileName), ZipArchive::CREATE) === TRUE)
-        {
-            $files = File::files(public_path('subcategory_images'));
-            foreach ($files as $key => $value) {
-                $relativeNameInZipFile = basename($value);
-                $zip->addFile($value, $relativeNameInZipFile);
-            }
-            $zip->close();
-        }
-
-        // return response()->download(public_path($fileName));
-        if(file_exists(public_path($fileName))){
-            return response()->download(public_path($fileName));
-        } else {
-            Toastr::error('No Subcategory Images Found', 'Success');
-            return back();
-        }
-    }
-
-    public function downloadTicketFilesBackup(){
-        $zip = new ZipArchive;
-        $fileName = 'TicketFilesBackup.zip';
-
-        if ($zip->open(public_path($fileName), ZipArchive::CREATE) === TRUE)
-        {
-            $files = File::files(public_path('support_ticket_attachments'));
-            foreach ($files as $key => $value) {
-                $relativeNameInZipFile = basename($value);
-                $zip->addFile($value, $relativeNameInZipFile);
-            }
-            $zip->close();
-        }
-
-        if(file_exists(public_path($fileName))){
-            return response()->download(public_path($fileName));
-        } else {
-            Toastr::error('No Ticket Attachments Found', 'Success');
-            return back();
-        }
-    }
-
-    public function downloadBlogFilesBackup(){
-        $zip = new ZipArchive;
-        $fileName = 'BlogFilesBackup.zip';
-
-        if ($zip->open(public_path($fileName), ZipArchive::CREATE) === TRUE)
-        {
-            $files = File::files(public_path('blogImages'));
-            foreach ($files as $key => $value) {
-                $relativeNameInZipFile = basename($value);
-                $zip->addFile($value, $relativeNameInZipFile);
-            }
-            $zip->close();
-        }
-
-        if(file_exists(public_path($fileName))){
-            return response()->download(public_path($fileName));
-        } else {
-            Toastr::error('No Blog Images Found', 'Success');
-            return back();
-        }
-    }
-
-    public function downloadOtherFilesBackup(){
-        $zip = new ZipArchive;
-        $fileName = 'OtherImagesBackup.zip';
-
-        if ($zip->open(public_path($fileName), ZipArchive::CREATE) === TRUE)
-        {
-            $files = File::files(public_path('images'));
-            foreach ($files as $key => $value) {
-                $relativeNameInZipFile = basename($value);
-                $zip->addFile($value, $relativeNameInZipFile);
-            }
-            $zip->close();
-        }
-
-        if(file_exists(public_path($fileName))){
-            return response()->download(public_path($fileName));
-        } else {
-            Toastr::error('No Other Images Found', 'Success');
-            return back();
-        }
-    }
-
-    public function downloadFlagFilesBackup(){
-        $zip = new ZipArchive;
-        $fileName = 'FlagImagesBackup.zip';
-
-        if ($zip->open(public_path($fileName), ZipArchive::CREATE) === TRUE)
-        {
-            $files = File::files(public_path('flag_icons'));
-            foreach ($files as $key => $value) {
-                $relativeNameInZipFile = basename($value);
-                $zip->addFile($value, $relativeNameInZipFile);
-            }
-            $zip->close();
-        }
-
-        if(file_exists(public_path($fileName))){
-            return response()->download(public_path($fileName));
-        } else {
-            Toastr::error('No Flag Icons Found', 'Success');
-            return back();
-        }
-
-        // $storagePath = storage_path('app');
-        // $zipFileName = 'storage.zip';
-        // $zipFilePath = storage_path($zipFileName);
-
-        // // Create a new zip archive
-        // $zip = new ZipArchive;
-        // if ($zip->open($zipFilePath, ZipArchive::CREATE | ZipArchive::OVERWRITE) === true) {
-        //     // Add all files and directories in the storage folder to the zip archive
-        //     $files = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($storagePath));
-        //     foreach ($files as $file) {
-        //         if (!$file->isDir()) {
-        //             $filePath = $file->getRealPath();
-        //             $relativePath = 'storage/' . substr($filePath, strlen($storagePath) + 1);
-        //             $zip->addFile($filePath, $relativePath);
-        //         }
-        //     }
-
-        //     // Close the zip archive
-        //     $zip->close();
-
-        //     // Set appropriate headers for the download
-        //     $headers = [
-        //         'Content-Type' => 'application/octet-stream',
-        //         'Content-Disposition' => 'attachment; filename=' . $zipFileName,
-        //     ];
-
-        //     // Return the zip file as a response
-        //     return response()->download($zipFilePath, $zipFileName, $headers);
-        // }
-        // return back()->with('error', 'Failed to create the zip archive.');
-    }
 }

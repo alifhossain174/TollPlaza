@@ -139,20 +139,12 @@ Route::group(['middleware' => ['auth', 'CheckUserType', 'DemoMode']], function (
 
     // backup download
     Route::get('/download/database/backup', [BackupController::class, 'downloadDBBackup'])->name('DownloadDBBackup');
-    Route::get('/download/product/files/backup', [BackupController::class, 'downloadProductFilesBackup'])->name('DownloadProductFilesBackup');
-    Route::get('/download/user/files/backup', [BackupController::class, 'downloadUserFilesBackup'])->name('DownloadUserFilesBackup');
-    Route::get('/download/banner/files/backup', [BackupController::class, 'downloadBannerFilesBackup'])->name('DownloadBannerFilesBackup');
-    Route::get('/download/category/files/backup', [BackupController::class, 'downloadCategoryFilesBackup'])->name('DownloadCategoryFilesBackup');
-    Route::get('/download/subcategory/files/backup', [BackupController::class, 'downloadSubcategoryFilesBackup'])->name('DownloadSubcategoryFilesBackup');
-    Route::get('/download/flag/files/backup', [BackupController::class, 'downloadFlagFilesBackup'])->name('DownloadFlagFilesBackup');
-    Route::get('/download/ticket/files/backup', [BackupController::class, 'downloadTicketFilesBackup'])->name('DownloadTicketFilesBackup');
-    Route::get('/download/blog/files/backup', [BackupController::class, 'downloadBlogFilesBackup'])->name('DownloadBlogFilesBackup');
-    Route::get('/download/other/files/backup', [BackupController::class, 'downloadOtherFilesBackup'])->name('DownloadOtherFilesBackup');
+    Route::get('/download/vehicle/icon/backup', [BackupController::class, 'downloadVehicleIconBackup'])->name('DownloadVehicleIconBackup');
 
 
     // generate report
-    Route::get('sales/report', [ReportController::class, 'salesReport'])->name('SalesReport');
-    Route::post('generate/sales/report', [ReportController::class, 'generateSalesReport'])->name('GenerateSalesReport');
+    Route::get('toll/ticket/report', [ReportController::class, 'tollTicketReport'])->name('TollTicketReport');
+    Route::post('generate/toll/ticket/report', [ReportController::class, 'generateTollTicketReport'])->name('GenerateTollTicketReport');
 
 
     // user role permission routes
