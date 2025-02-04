@@ -102,6 +102,8 @@ Route::group(['middleware' => ['auth', 'CheckUserType', 'DemoMode']], function (
     Route::get('/delete/vehicle/type/{id}', [VehicleTypeController::class, 'deleteVehicleType'])->name('DeleteVehicleType');
     Route::get('/edit/vehicle/type/{id}', [VehicleTypeController::class, 'editVehicleType'])->name('EditVehicleType');
     Route::post('/update/vehicle/type', [VehicleTypeController::class, 'updateVehicleType'])->name('UpdateVehicleType');
+    Route::get('/rearrange/vehicle/types', [VehicleTypeController::class, 'rearrangeVehicleType'])->name('RearrangeVehicleType');
+    Route::post('/save/rearranged/order', [VehicleTypeController::class, 'saveRearrangedVehicleType'])->name('SaveRearrangedVehicleType');
 
     // Terminal
     Route::get('/create/terminal', [TerminalController::class, 'createTerminal'])->name('CreateTerminal');

@@ -35,28 +35,34 @@
                         <div class="col-lg-9">
 
                             <div class="form-group row">
-                                <label for="company_name" class="col-sm-2 col-form-label">Company Name <span class="text-danger">*</span></label>
-                                <div class="col-sm-10">
+                                <label for="company_name" class="col-sm-3 col-form-label">Company Name <span class="text-danger">*</span></label>
+                                <div class="col-sm-9">
                                     <input type="text" id="company_name" name="company_name" value="{{$data->company_name}}" class="form-control" placeholder="Enter Company Name Here" required>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="ticket_header" class="col-sm-2 col-form-label">Ticket Header <span class="text-danger">*</span></label>
-                                <div class="col-sm-10">
+                                <label for="ticket_header" class="col-sm-3 col-form-label">Ticket Header <span class="text-danger">*</span></label>
+                                <div class="col-sm-9">
                                     <input type="text" id="ticket_header" name="ticket_header" value="{{$data->ticket_header}}" class="form-control" placeholder="Enter Ticket Header" required>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="ticket_title" class="col-sm-2 col-form-label">Ticket Ttile <span class="text-danger">*</span></label>
-                                <div class="col-sm-10">
+                                <label for="ticket_title" class="col-sm-3 col-form-label">Ticket Ttile <span class="text-danger">*</span></label>
+                                <div class="col-sm-9">
                                     <input type="text" id="ticket_title" name="ticket_title" value="{{$data->ticket_title}}" class="form-control" placeholder="Enter Ticket Title" required>
                                 </div>
                             </div>
 
+                            <div class="form-group row">
+                                <label for="ticket_width" class="col-sm-3 col-form-label">Ticket Print Width (mm) <span class="text-danger">*</span></label>
+                                <div class="col-sm-9">
+                                    <input type="number" id="ticket_width" name="ticket_width" value="{{$data->ticket_width}}" class="form-control" placeholder="e.g. 80mm" required>
+                                </div>
+                            </div>
 
                             <div class="form-group row">
-                                <label for="contact" class="col-sm-2 col-form-label">Contact Info</label>
-                                <div class="col-sm-5">
+                                <label for="contact" class="col-sm-3 col-form-label">Contact Info</label>
+                                <div class="col-sm-4">
                                     <input type="text" id="contact" name="contact" value="{{$data->contact}}" class="form-control" placeholder="01*********">
                                 </div>
                                 <div class="col-sm-5">
@@ -65,8 +71,8 @@
                             </div>
 
                             <div class="form-group row">
-                                <label for="short_description" class="col-sm-2 col-form-label">Short Description</label>
-                                <div class="col-sm-10">
+                                <label for="short_description" class="col-sm-3 col-form-label">Short Description</label>
+                                <div class="col-sm-9">
                                     <textarea id="short_description" rows="3" name="short_description" class="form-control">{!! $data->short_description !!}</textarea>
                                     <div class="invalid-feedback" style="display: block;">
                                         @error('short_description')
@@ -76,12 +82,11 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="address" class="col-sm-2 col-form-label">Toll Plaza Address</label>
-                                <div class="col-sm-10">
+                                <label for="address" class="col-sm-3 col-form-label">Toll Plaza Address</label>
+                                <div class="col-sm-9">
                                     <input type="text" id="address" name="address" class="form-control" value="{{$data->address}}" placeholder="Enter Company Address Here">
                                 </div>
                             </div>
-
 
                             <div class="form-group text-center">
                                 <a href="{{url('/home')}}" style="width: 130px;"

@@ -70,6 +70,19 @@
                         </div>
                     </div>
 
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label for="payment_method">Payment Method</label>
+                            <select class="form-control" onchange="filterEntryData()" id="payment_method">
+                                <option value="">Select One</option>
+                                <option value="1">Cash</option>
+                                <option value="2">bKash</option>
+                                <option value="3">Nagad</option>
+                                <option value="4">Card</option>
+                            </select>
+                        </div>
+                    </div>
+
                     <div class="col-lg-3">
                         <div class="form-group">
                             <label>Entry Date Range</label>

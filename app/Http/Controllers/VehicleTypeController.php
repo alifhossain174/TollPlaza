@@ -34,6 +34,7 @@ class VehicleTypeController extends Controller
             'description' => $request->description,
             'status' => 1,
             'slug' => time().str::random(5),
+            'serial' => VehicleType::min('serial') - 1,
             'created_at' => Carbon::now()
         ]);
 
@@ -43,7 +44,7 @@ class VehicleTypeController extends Controller
 
     public function viewVehicleTypes(Request $request){
         if ($request->ajax()) {
-            $data = VehicleType::orderBy('id', 'desc')->get();
+            $data = VehicleType::orderBy('serial', 'asc')->get();
 
             return Datatables::of($data)
                     ->editColumn('status', function($data) {
@@ -121,4 +122,22 @@ class VehicleTypeController extends Controller
         Toastr::success('Vehicle Type Updated', 'Success');
         return redirect('/view/vehicle/types');
     }
+
+    public function rearrangeVehicleType(){
+        $vehicleTypes = VehicleType::orderBy('serial', 'asc')->get();
+        return view('backend.vehicle_type.rearrange', compact('vehicleTypes'));
+    }
+
+    public function saveRearrangedVehicleType(Request $request){
+        $sl = 1;
+        foreach($request->slug as $slug){
+            VehicleType::where('slug', $slug)->update([
+                'serial' => $sl
+            ]);
+            $sl++;
+        }
+        Toastr::success('Vehicle Types has been Rerranged', 'Success');
+        return redirect('/view/vehicle/types');
+    }
+
 }

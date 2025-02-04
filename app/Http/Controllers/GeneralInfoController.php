@@ -27,6 +27,7 @@ class GeneralInfoController extends Controller
             'address' => $request->address,
             'ticket_header' => $request->ticket_header,
             'ticket_title' => $request->ticket_title,
+            'ticket_width' => $request->ticket_width,
             'updated_at' => Carbon::now()
         ]);
 

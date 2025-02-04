@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Auth;
 class TollTicketController extends Controller
 {
     public function createTollTicket(){
-        $vehicleTypes = VehicleType::where('status', 1)->orderBy('id', 'desc')->get();
+        $vehicleTypes = VehicleType::where('status', 1)->orderBy('serial', 'asc')->get();
         $terminals = Terminal::where('status', 1)->orderBy('name', 'asc')->get();
         return view('backend.toll_ticket.create', compact('vehicleTypes', 'terminals'));
     }
@@ -43,6 +43,9 @@ class TollTicketController extends Controller
             'vehicle_type_id' => $vehicleTypeInfo->id,
             'vehicle_type_name' => $vehicleTypeInfo->type_name,
             'ticket_price' => $vehicleTypeInfo->price,
+            'amount_given' => $vehicleTypeInfo->amount_given,
+            'return_change' => $vehicleTypeInfo->return_change,
+            'payment_method' => $request->payment_method,
             'driver_name' => $request->driver_name,
             'driver_contact' => $request->driver_contact,
             'vehicle_reg_no' => $request->vehicle_reg_no,
@@ -75,6 +78,9 @@ class TollTicketController extends Controller
                 if ($request->user_id != '') {
                     $query->where('user_id', $request->user_id);
                 }
+                if ($request->payment_method != '') {
+                    $query->where('payment_method', $request->payment_method);
+                }
                 if ($request->driver_name != '') {
                     $query->where('driver_name', 'LIKE', '%' . $request->driver_name . '%');
                 }
@@ -102,10 +108,22 @@ class TollTicketController extends Controller
 
             return Datatables::of($data)
                     ->editColumn('created_at', function($data) {
-                        return date("Y-m-d h:i:s a", strtotime($data->created_at));
+                        return date("Y-m-d", strtotime($data->created_at))."<br>".date("h:i a", strtotime($data->created_at));
                     })
                     ->editColumn('ticket_price', function($data) {
                         return $data->ticket_price." BDT";
+                    })
+                    ->editColumn('payment_method', function($data) {
+                        if($data->payment_method == 1)
+                            return "Cash";
+                        elseif($data->payment_method == 2)
+                            return "bKash";
+                        elseif($data->payment_method == 3)
+                            return "nagad";
+                        elseif($data->payment_method == 4)
+                            return "card";
+                        else
+                            return "N/A";
                     })
                     ->editColumn('driver_name', function($data) {
                         $driverInfo = $data->driver_name;
@@ -122,11 +140,11 @@ class TollTicketController extends Controller
                         }
                         return $btn;
                     })
-                    ->rawColumns(['action'])
+                    ->rawColumns(['action', 'payment_method', 'created_at'])
                     ->make(true);
         }
 
-        $vehicleTypes = VehicleType::orderBy('id', 'desc')->get();
+        $vehicleTypes = VehicleType::orderBy('serial', 'asc')->get();
         $terminals = Terminal::orderBy('name', 'asc')->get();
         $users = User::get();
         return view('backend.toll_ticket.view', compact('terminals', 'users', 'vehicleTypes'));

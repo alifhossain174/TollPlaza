@@ -23,9 +23,16 @@ return new class extends Migration
             $table->unsignedBigInteger('vehicle_type_id')->nullable();
             $table->string('vehicle_type_name')->nullable();
             $table->double('ticket_price')->default(0);
+
+            $table->string('amount_given')->nullable()->comment("During Transaction");
+            $table->string('return_change')->nullable()->comment("During Transaction");
+
             $table->string('driver_name')->nullable();
             $table->string('driver_contact')->nullable();
             $table->string('vehicle_reg_no')->nullable();
+
+            $table->tinyInteger('payment_method')->comment('1=>Cash;2=>bKash;3=>nagad;4=>Card')->default(1);
+
             $table->string('slug')->nullable();
             $table->tinyInteger('status')->default(1)->comment('1=>Active; 0=>Inactive');
             $table->timestamps();

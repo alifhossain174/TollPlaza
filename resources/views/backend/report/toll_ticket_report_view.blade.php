@@ -19,6 +19,7 @@
                     <th class="text-center">Operator</th>
                     <th class="text-center">Vehicle Type</th>
                     <th class="text-center">Price</th>
+                    <th class="text-center">Payment</th>
                     <th class="text-center">Driver Info</th>
                     <th class="text-center">Vehcile Reg. No</th>
                     <th class="text-center">Entered At</th>
@@ -41,9 +42,22 @@
                     <td class="text-center">{{$item->user_name}}</td>
                     <td class="text-center">{{$item->vehicle_type_name}}</td>
                     <td class="text-center">{{$item->ticket_price}}</td>
+                    <td class="text-center">
+                        @if($item->payment_method == 1)
+                            Cash
+                        @elseif($item->payment_method == 2)
+                            bKash
+                        @elseif($item->payment_method == 3)
+                            Nagad
+                        @elseif($item->payment_method == 4)
+                            Card
+                        @else
+                            N/A
+                        @endif
+                    </td>
                     <td class="text-center">{{$item->driver_name}} @if($item->driver_contact)({{$item->driver_contact}})@endif</td>
                     <td class="text-center">{{$item->vehicle_reg_no}}</td>
-                    <td class="text-center">{{date("d-m-Y h:i:s a",strtotime($item->created_at))}}</td>
+                    <td class="text-center">{{date("d-m-Y h:i a",strtotime($item->created_at))}}</td>
                 </tr>
                 @endforeach
 

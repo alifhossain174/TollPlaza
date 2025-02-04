@@ -81,7 +81,11 @@
             body {
                 margin: 0;
                 padding: 0;
+                @if($generalInfo->ticket_width)
+                width: {{$generalInfo->ticket_width}}mm;
+                @else
                 width: 80mm;
+                @endif
                 font-size: 12px;
                 background-color: #fff; /* Remove background colors */
             }
@@ -107,34 +111,58 @@
         }
     </style>
 </head>
-    <div class="ticket" style="background: {{$vehicleTypeInfo->color_code}}">
+    <div class="ticket">
         <div class="ticket_container">
             <h3>{{$generalInfo->ticket_header}}</h3>
             <p style="margin: 0px; font-size: 16px">{{$generalInfo->company_name}}</p>
 
             <div class="divider" style="margin: 4px 0px"></div>
             <h3>{{$generalInfo->ticket_title}}</h3>
-            <div class="divider" style="margin: 4px 0px"></div>
+            <div class="divider" style="margin: 4px 0px; margin-bottom: 15px;"></div>
 
-            <p style="margin: 0px; font-size: 16px">Ticket No: {{$ticketInfo->ticket_no}}</p>
-            <p style="margin: 0px; font-size: 16px">Date: {{$ticketInfo->created_at}}</p>
-
-            <div class="divider" style="margin: 4px 0px"></div>
-
+            {{-- <p style="margin: 0px; font-size: 16px">Date: {{$ticketInfo->created_at}}</p> --}}
 
 
             <table border="0" style="margin: 4px 0;" cellpadding="0" cellspacing="0">
                 <tr>
-                    <th style="text-align: left; padding: 2px; font-size: 14px;">Driver Contact</th>
-                    <td style="text-align: right; padding: 2px; font-size: 14px;">@if($ticketInfo->driver_contact){{$ticketInfo->driver_contact}}@else N/A @endif</td>
+                    <th style="text-align: left; padding: 2px; font-size: 14px; width: 40%;">Ticket No </th>
+                    <td style="text-align: left; padding: 2px; font-size: 14px;">: {{$ticketInfo->ticket_no}}</td>
                 </tr>
                 <tr>
-                    <th style="text-align: left; padding: 2px; font-size: 14px;">Vehicle Reg. No</th>
-                    <td style="text-align: right; padding: 2px; font-size: 14px;">@if($ticketInfo->vehicle_reg_no){{$ticketInfo->vehicle_reg_no}}@else N/A @endif</td>
+                    <th style="text-align: left; padding: 2px; font-size: 14px; width: 40%;">DateTime </th>
+                    <td style="text-align: left; padding: 2px; font-size: 14px;">: {{date("Y-m-d h:i a", strtotime($ticketInfo->created_at))}}</td>
+                </tr>
+                <tr>
+                    <th style="text-align: left; padding: 2px; font-size: 14px; width: 40%;">Terminal </th>
+                    <td style="text-align: left; padding: 2px; font-size: 14px;">: {{$ticketInfo->terminal_name}}</td>
+                </tr>
+                <tr>
+                    <th style="text-align: left; padding: 2px; font-size: 14px; width: 40%;">Vehicle </th>
+                    <td style="text-align: left; padding: 2px; font-size: 12px;">: {{$ticketInfo->vehicle_type_name}}</td>
+                </tr>
+                <tr>
+                    <th style="text-align: left; padding: 2px; font-size: 14px;">Fee </th>
+                    <td style="text-align: left; padding: 2px; font-size: 14px;">: {{$ticketInfo->ticket_price}}/=</td>
+                </tr>
+                <tr>
+                    <th style="text-align: left; padding: 2px; font-size: 14px;">Payment </th>
+                    <td style="text-align: left; padding: 2px; font-size: 14px;">:
+                        @if($ticketInfo->payment_method == 1)
+                            Cash
+                        @elseif($ticketInfo->payment_method == 2)
+                            bKash
+                        @elseif($ticketInfo->payment_method == 3)
+                            Nagad
+                        @elseif($ticketInfo->payment_method == 4)
+                            Card
+                        @else
+                            N/A
+                        @endif
+                    </td>
                 </tr>
             </table>
 
-            <p style="margin: 0px; font-size: 18px; margin-top: 16px; border: 2px solid black; display: inline-block; padding: 1px 10px; border-radius: 4px;">{{$ticketInfo->ticket_price}}/=</p>
+            <p style="margin: 0px; font-size: 14px; margin-top: 16px;">Have a Safe Journey</p>
         </div>
     </div>
 

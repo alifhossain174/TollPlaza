@@ -46,7 +46,8 @@
                     <div class="table-responsive">
 
                         <label id="customFilter">
-                            <a href="{{url('create/vehicle/type')}}" class="btn btn-success btn-sm" style="margin-left: 5px"><b><i class="fas fa-plus"></i> Add Vehicle Type</b></a>
+                            <a href="{{url('create/vehicle/type')}}" class="btn btn-success btn-sm" style="margin-left: 10px"><b><i class="fas fa-plus"></i> Add Vehicle Type</b></a>
+                            <a href="{{url('rearrange/vehicle/types')}}" class="btn btn-info btn-sm" style="margin-left: 5px"><b><i class="fas fa-sort-amount-up"></i> Rearrange</b></a>
                         </label>
 
                         <table class="table table-bordered mb-0 data-table">

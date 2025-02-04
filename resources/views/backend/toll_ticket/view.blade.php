@@ -91,13 +91,13 @@
                                 <tr>
                                     <th class="text-center">SL</th>
                                     <th class="text-center">Ticket No</th>
+                                    <th class="text-center">Entry Time</th>
                                     <th class="text-center">Terminal</th>
                                     <th class="text-center">Operator</th>
                                     <th class="text-center">Vehicle Type</th>
                                     <th class="text-center">Price</th>
                                     <th class="text-center">Driver Info</th>
                                     <th class="text-center">Reg. No</th>
-                                    <th class="text-center">Entered At</th>
                                     <th class="text-center">Action</th>
                                 </tr>
                             </thead>
@@ -106,9 +106,9 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <th colspan="5"></th>
+                                    <th colspan="6"></th>
                                     <th></th>
-                                    <th colspan="4"></th>
+                                    <th colspan="3"></th>
                                 </tr>
                             </tfoot>
                         </table>
@@ -214,6 +214,7 @@
                     d.driver_name = $("#driver_name").val();
                     d.driver_contact = $("#driver_contact").val();
                     d.vehicle_reg_no = $("#vehicle_reg_no").val();
+                    d.payment_method = $("#payment_method").val();
                     d.purchase_date_range = $("#selectedValue").text();
                 }
             },
@@ -225,6 +226,10 @@
                 {
                     data: 'ticket_no',
                     name: 'ticket_no'
+                },
+                {
+                    data: 'created_at',
+                    name: 'created_at'
                 },
                 {
                     data: 'terminal_name',
@@ -250,18 +255,14 @@
                     data: 'vehicle_reg_no',
                     name: 'vehicle_reg_no'
                 },
-                {
-                    data: 'created_at',
-                    name: 'created_at'
-                },
                 {data: 'action', name: 'action', orderable: false, searchable: false},
             ],
             footerCallback: function(row, data, start, end, display) {
                 var api = this.api();
-                var totalFee = api.column(5, { page: 'current' }).data().reduce(function(a, b) {
+                var totalFee = api.column(6, { page: 'current' }).data().reduce(function(a, b) {
                     return parseFloat(a) + parseFloat(b);
                 }, 0);
-                $(api.column(5).footer()).html("৳ "+totalFee);
+                $(api.column(6).footer()).html("৳ "+totalFee);
             },
             dom: 'lBfrtip', // Include 'l' for length changing input (Show Entries)
             buttons: [
@@ -315,6 +316,7 @@
             $("#driver_name").val("");
             $("#driver_contact").val("");
             $("#vehicle_reg_no").val("");
+            $("#payment_method").val("");
             $("#selectedValue").text("");
             table.draw(false);
         }

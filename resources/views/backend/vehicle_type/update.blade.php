@@ -32,6 +32,13 @@
                         </div>
 
                         <div class="form-group row">
+                            <label for="description" class="col-sm-2 col-form-label">Short Description</label>
+                            <div class="col-sm-8">
+                                <textarea name="description" rows="3" class="form-control" placeholder="Write Short Description Here" id="description">{{$vehicleTypeInfo->description}}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
                             <label for="price" class="col-sm-2 col-form-label">Price for Vehicle <span class="text-danger">*</span></label>
                             <div class="col-sm-3">
                                 <input type="number" name="price" class="form-control" value="{{$vehicleTypeInfo->price}}" id="price" required>
@@ -43,13 +50,6 @@
                             <div class="col-sm-3">
                                 <input type="text" name="color_code" class="form-control" value="{{$vehicleTypeInfo->color_code}}" placeholder="#00000" id="color_code">
                                 <small>For Toll Collection Receipt</small>
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="description" class="col-sm-2 col-form-label">Short Description</label>
-                            <div class="col-sm-8">
-                                <textarea name="description" rows="3" class="form-control" id="description">{{$vehicleTypeInfo->description}}</textarea>
                             </div>
                         </div>
 

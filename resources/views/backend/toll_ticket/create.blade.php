@@ -2,20 +2,30 @@
 
 @section('header_css')
     <style>
+        .vehicle_types{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px; /* Adjust spacing between items */
+        }
         label.rides{
-            display: inline-block;
+            flex: 1 1 calc(25% - 12px); /* 25% width per item minus gap */
+            min-height: 120px; /* Adjust as needed */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             text-align: center;
-            font-size: 15px;
-            padding: 8px 2px;
-            width: 48%;
+            box-sizing: border-box;
+
+            /* my css */
+            position: relative;
             border-radius: 4px;
-            margin: 4px 2px;
+            padding: 8px 2px;
             cursor: pointer;
             border: 3px solid transparent;
             transition: all linear 0.1s;
             color: white;
             text-shadow: 1px 1px 2px black;
-            position: relative;
         }
         label.rides:hover{
             box-shadow: 2px 2px 5px gray;
@@ -23,17 +33,20 @@
         }
 
         .ride_selection_box{
-            height: 390px;
-            overflow-y: scroll;
+            /* height: 500px;
+            overflow-y: scroll; */
             border: 1px solid lightgray;
-            padding: 15px;
+            padding: 12px 12px;
             border-radius: 4px;
         }
 
         label.rides input[type="radio"] {
-            width: 16px;
-            height: 16px;
-            accent-color: rgb(255, 98, 0); /* Changes the color of the radio button (modern browsers) */
+            accent-color: rgb(255, 98, 0);
+            /* hide this */
+            width: 0px;
+            height: 0px;
+            opacity: 0;
+            pointer-events: none;
         }
 
         label.rides span.vehicle_type_price{
@@ -68,12 +81,12 @@
 
                         <div class="row">
 
-                            <div class="col-lg-5 ride_selection_box">
+                            <div class="col-lg-7 ride_selection_box">
                                 <h6 class="mb-2">Select Vehicle Type</h6>
 
-                                <div id="search_results">
+                                <div class="vehicle_types">
                                     @foreach ($vehicleTypes as $vehicleType)
-                                        <label class="rides" style="background: {{$vehicleType->color_code}}">
+                                        <label class="rides m-0" style="background: {{$vehicleType->color_code}}">
                                             @if(file_exists(public_path($vehicleType->icon)))
                                             <img src="{{url($vehicleType->icon)}}" style="width: 60px; height: 60px; margin: auto;" class="d-block mb-2">
                                             @endif
@@ -85,57 +98,96 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-7 pt-4">
-                                <div class="form-group row">
-                                    <label for="terminal_id" class="col-sm-3 col-form-label text-right">From Terminal<span class="text-danger">*</span> : </label>
-                                    <div class="col-sm-9">
-                                        @if(Auth::user()->user_type == 1)
-                                        <select class="form-control" name="terminal_id" id="terminal_id" required>
-                                            <option value="">Select One</option>
-                                            @foreach ($terminals as $terminal)
-                                            <option value="{{$terminal->id}}">{{$terminal->name}}</option>
-                                            @endforeach
-                                        </select>
-                                        @else
-                                        @php
-                                            $userTerminal = App\Models\Terminal::where('id', Auth::user()->terminal_id)->first();
-                                        @endphp
-                                        <input type="text" class="form-control" id="terminal_id" value="{{$userTerminal->name}}" required readonly>
-                                        @endif
+                            <div class="col-lg-5 pt-4 pl-4">
+
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="terminal_id">From Terminal<span class="text-danger">*</span> </label>
+                                            @if(Auth::user()->user_type == 1)
+                                            <select class="form-control" name="terminal_id" id="terminal_id" required>
+                                                <option value="">Select One</option>
+                                                @foreach ($terminals as $terminal)
+                                                <option value="{{$terminal->id}}">{{$terminal->name}}</option>
+                                                @endforeach
+                                            </select>
+                                            @else
+                                            @php
+                                                $userTerminal = App\Models\Terminal::where('id', Auth::user()->terminal_id)->first();
+                                            @endphp
+                                            <input type="text" class="form-control" id="terminal_id" value="{{$userTerminal->name}}" required readonly>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="user_id">Operator Name<span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" id="user_id" value="{{Auth::user()->name}}" required readonly>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="form-group row">
-                                    <label for="user_id" class="col-sm-3 col-form-label text-right">Terminal Operator<span class="text-danger">*</span> : </label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="user_id" value="{{Auth::user()->name}}" required readonly>
+
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="driver">Driver Information</label>
+                                            <input type="text" class="form-control" name="driver_name" id="driver" placeholder="Mr.">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="driver">&nbsp;</label>
+                                            <input type="text" class="form-control" name="driver_contact" id="driver" placeholder="+8801">
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="form-group row">
-                                    <label for="driver" class="col-sm-3 col-form-label text-right">Driver Information : </label>
-                                    <div class="col-sm-5">
-                                        <input type="text" class="form-control" name="driver_name" id="driver" placeholder="Mr.">
+
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="vehicle_reg_no">Vehicle Reg. No</label>
+                                            <input type="text" class="form-control" name="vehicle_reg_no" id="vehicle_reg_no" placeholder="e.g. Dhaka-Metro-KA">
+                                        </div>
                                     </div>
-                                    <div class="col-sm-4">
-                                        <input type="text" class="form-control" name="driver_contact" id="driver" placeholder="+8801">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="payment_method">Payment Method<span class="text-danger">*</span> </label>
+                                            <select class="form-control" name="payment_method" id="payment_method" required>
+                                                <option value="">Select One</option>
+                                                <option value="1" selected>Cash</option>
+                                                <option value="2">bKash</option>
+                                                <option value="3">Nagad</option>
+                                                <option value="4">Card</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="form-group row">
-                                    <label for="vehicle_reg_no" class="col-sm-3 col-form-label text-right">Vehicle Reg. No : </label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" name="vehicle_reg_no" id="vehicle_reg_no" placeholder="e.g. Dhaka-Metro-KA">
+
+                                <hr>
+
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label for="ticket_price">Ticket Price<span class="text-danger">*</span> </label>
+                                            <input type="text" class="form-control" name="ticket_price" id="ticket_price" placeholder="0" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label for="amount_given">Amount Given</label>
+                                            <input type="text" class="form-control" name="amount_given" id="amount_given">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label for="return_change">Return Change</label>
+                                            <input type="text" class="form-control" name="return_change" id="return_change" readonly>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="form-group row">
-                                    <label for="ticket_price" class="col-sm-3 col-form-label text-right">Ticket Price<span class="text-danger">*</span> : </label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" name="ticket_price" id="ticket_price" placeholder="0" readonly>
-                                    </div>
-                                </div>
-                                <div class="form-group row pt-2">
-                                    <div class="col-sm-3"></div>
-                                    <div class="col-sm-9">
-                                        <button class="btn btn-primary" type="submit"><i class="fas fa-save"></i> Print Ticket</button>
-                                    </div>
+
+                                <div class="form-group text-center pt-2">
+                                    <button class="btn btn-primary" type="submit"><i class="fas fa-save"></i> Print Ticket</button>
                                 </div>
                             </div>
                         </div>
@@ -155,7 +207,31 @@
 
         function calculateTicketPrice(price){
             $("#ticket_price").val(price);
+            calculateChange();
         }
+
+        function calculateChange() {
+            const ticketPriceInputed = document.getElementById("ticket_price");
+            const amountGivenInputed = document.getElementById("amount_given");
+            const returnChangeInputed = document.getElementById("return_change");
+
+            const ticketPrice = parseFloat(ticketPriceInputed.value) || 0;
+            const amountGiven = parseFloat(amountGivenInputed.value) || 0;
+            const returnChange = amountGiven - ticketPrice;
+            returnChangeInputed.value = returnChange >= 0 ? returnChange : "";
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const ticketPriceInput = document.getElementById("ticket_price");
+            const amountGivenInput = document.getElementById("amount_given");
+
+            ticketPriceInput.addEventListener("input", calculateChange);
+            amountGivenInput.addEventListener("input", calculateChange);
+
+            // Perform initial calculation on page load
+            calculateChange();
+        });
+
     </script>
 @endsection
 

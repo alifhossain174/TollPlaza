@@ -21,6 +21,7 @@ return new class extends Migration
             $table->longText('description')->nullable();
             $table->string('color_code')->nullable()->comment('For Toll Collection Receipt');
             $table->string('slug')->nullable();
+            $table->integer('serial')->default(1);
             $table->tinyInteger('status')->default(1);
             $table->timestamps();
         });
