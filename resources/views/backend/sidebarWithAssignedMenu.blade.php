@@ -22,7 +22,7 @@
     <li>
         <a href="javascript: void(0);" class="has-arrow"><i class="fas fa-ticket-alt"></i><span>Toll Tickets</span></a>
         <ul class="sub-menu" aria-expanded="false">
-            @if(checkAuth("create/toll/ticket"))<li><a href="{{ url('/create/toll/ticket') }}">Create Toll Ticket</a></li>@endif
+            @if(checkAuth("create/toll/ticket"))<li><a href="{{ url('/create/toll/ticket') }}">Toll Fee Collection</a></li>@endif
             @if(checkAuth("view/toll/tickets"))<li><a href="{{ url('/view/toll/tickets') }}">View All Tickets</a></li>@endif
         </ul>
     </li>
