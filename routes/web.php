@@ -12,6 +12,7 @@ use App\Http\Controllers\UserRoleController;
 use App\Http\Controllers\VehicleTypeController;
 use App\Http\Controllers\TerminalController;
 use App\Http\Controllers\TollTicketController;
+use App\Http\Controllers\CounterController;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Middleware\CheckUserType;
 use App\Http\Middleware\DemoMode;
@@ -112,6 +113,14 @@ Route::group(['middleware' => ['auth', 'CheckUserType', 'DemoMode']], function (
     Route::get('/delete/terminal/{id}', [TerminalController::class, 'deleteTerminal'])->name('DeleteTerminal');
     Route::get('/edit/terminal/{id}', [TerminalController::class, 'editTerminal'])->name('EditTerminal');
     Route::post('/update/terminal', [TerminalController::class, 'updateTerminal'])->name('UpdateTerminal');
+
+    // Counter
+    Route::get('/create/counter', [CounterController::class, 'createCounter'])->name('CreateCounter');
+    Route::post('/save/counter', [CounterController::class, 'saveCounter'])->name('SaveCounter');
+    Route::get('/view/counters', [CounterController::class, 'viewCounters'])->name('ViewCounters');
+    Route::get('/delete/counter/{id}', [CounterController::class, 'deleteCounter'])->name('DeleteCounter');
+    Route::get('/edit/counter/{slug}', [CounterController::class, 'editCounter'])->name('EditCounter');
+    Route::post('/update/counter', [CounterController::class, 'updateCounter'])->name('UpdateCounter');
 
     // Toll Ticket
     Route::get('/create/toll/ticket', [TollTicketController::class, 'createTollTicket'])->name('CreateTollTicket');

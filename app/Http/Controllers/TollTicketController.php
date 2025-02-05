@@ -12,6 +12,7 @@ use App\Models\VehicleType;
 use DateTime;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class TollTicketController extends Controller
@@ -34,27 +35,45 @@ class TollTicketController extends Controller
 
         $vehicleTypeInfo = VehicleType::where('id', $request->vehicle_type_id)->first();
 
-        $lastInsertId = TollTicket::insertGetId([
-            'ticket_no' => time().str::random(3),
-            'terminal_id' => $terminalId,
-            'terminal_name' => $terminalInfo ? $terminalInfo->name : null,
-            'user_id' => Auth::user()->id,
-            'user_name' => Auth::user()->name,
-            'vehicle_type_id' => $vehicleTypeInfo->id,
-            'vehicle_type_name' => $vehicleTypeInfo->type_name,
-            'ticket_price' => $vehicleTypeInfo->price,
-            'amount_given' => $vehicleTypeInfo->amount_given,
-            'return_change' => $vehicleTypeInfo->return_change,
-            'payment_method' => $request->payment_method,
-            'driver_name' => null, //not used
-            'driver_contact' => null, //not used
-            'vehicle_reg_no' => $request->vehicle_reg_no,
-            'slug' => time().str::random(5),
-            'status' => 1,
-            'created_at' => Carbon::now()
-        ]);
 
-        $ticketInfo = TollTicket::where('id', $lastInsertId)->first();
+        $datePrefix = Carbon::now()->format('ymd'); // YYMMDD format
+        $ticketNo = DB::transaction(function () use ($datePrefix) {
+            // Lock the row to prevent other users from reading it simultaneously
+            $lastTicket = TollTicket::where('ticket_no', 'like', "{$datePrefix}-%")
+                ->lockForUpdate() // Forces other transactions to wait
+                ->orderBy('id', 'desc')
+                ->first();
+
+            // Determine the next sequence number
+            $lastSequence = $lastTicket ? (int)substr($lastTicket->ticket_no, 7) : 0;
+            $nextSequence = $lastSequence + 1;
+
+            // Generate the new ticket number
+            return "{$datePrefix}-{$nextSequence}";
+        });
+
+        // Now insert the new ticket safely with the generated ticket_no
+        $ticket = new TollTicket();
+        $ticket->ticket_no = $ticketNo;
+        $ticket->terminal_id = $terminalId;
+        $ticket->terminal_name = $terminalInfo ? $terminalInfo->name : null;
+        $ticket->user_id = Auth::user()->id;
+        $ticket->user_name = Auth::user()->name;
+        $ticket->vehicle_type_id = $vehicleTypeInfo->id;
+        $ticket->vehicle_type_name = $vehicleTypeInfo->type_name;
+        $ticket->ticket_price = $vehicleTypeInfo->price;
+        $ticket->amount_given = $vehicleTypeInfo->amount_given;
+        $ticket->return_change = $vehicleTypeInfo->return_change;
+        $ticket->payment_method = $request->payment_method;
+        $ticket->vehicle_reg_no = $request->vehicle_reg_no;
+        $ticket->slug = time() . Str::random(5);
+        $ticket->status = 1;
+        $ticket->created_at = Carbon::now();
+
+        // Save the ticket
+        $ticket->save();
+
+        $ticketInfo = TollTicket::where('id', $ticket->id)->first();
         $generalInfo = GeneralInfo::where('id', 1)->first();
         return view('backend.toll_ticket.ticket_print', compact('ticketInfo', 'generalInfo', 'vehicleTypeInfo'));
     }

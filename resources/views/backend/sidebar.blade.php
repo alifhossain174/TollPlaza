@@ -25,6 +25,13 @@
             <li><a href="{{ url('/view/terminals') }}">View All Terminals</a></li>
         </ul>
     </li>
+    <li>
+        <a href="javascript: void(0);" class="has-arrow"><i class="fas fa-road"></i><span>Counter Config</span></a>
+        <ul class="sub-menu" aria-expanded="false">
+            <li><a href="{{ url('/create/counter') }}">Add New Counter</a></li>
+            <li><a href="{{ url('/view/counters') }}">View All Counters</a></li>
+        </ul>
+    </li>
 
     <hr style="border-color: #c8c8c836; margin-top: 12px; margin-bottom: 5px;">
     <li class="menu-title" style="color: khaki; text-shadow: 1px 1px 2px black;">System Config</li>

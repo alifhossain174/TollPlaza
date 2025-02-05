@@ -56,9 +56,9 @@
 
 
                             @php
-                                $permissionRoutes1 = App\Models\PermissionRoutes::orderBy('id', 'desc')->orderBy('route', 'asc')->skip(0)->limit(150)->get();
-                                $permissionRoutes2 = App\Models\PermissionRoutes::orderBy('id', 'desc')->orderBy('route', 'asc')->skip(150)->limit(150)->get();
-                                $permissionRoutes3 = App\Models\PermissionRoutes::orderBy('id', 'desc')->orderBy('route', 'asc')->skip(300)->limit(150)->get();
+                                $permissionRoutes1 = App\Models\PermissionRoutes::orderBy('id', 'desc')->orderBy('route', 'asc')->skip(0)->limit(50)->get();
+                                $permissionRoutes2 = App\Models\PermissionRoutes::orderBy('id', 'desc')->orderBy('route', 'asc')->skip(50)->limit(50)->get();
+                                $permissionRoutes3 = App\Models\PermissionRoutes::orderBy('id', 'desc')->orderBy('route', 'asc')->skip(100)->limit(50)->get();
                             @endphp
 
                             <h4 class="card-title mb-4 mt-4">Assign Permission to this User</h4>

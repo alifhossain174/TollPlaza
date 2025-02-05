@@ -7,7 +7,7 @@
     <style>
         body {
             width: 80mm;
-            margin: 0;
+            margin: auto;
             font-family: Arial, sans-serif;
             font-size: 14px;
             font-weight: 600;
@@ -125,28 +125,32 @@
 
             <table border="0" style="margin: 4px 0;" cellpadding="0" cellspacing="0">
                 <tr>
-                    <th style="text-align: left; padding: 2px; font-size: 14px; width: 40%;">Ticket No </th>
-                    <td style="text-align: left; padding: 2px; font-size: 14px;">: {{$ticketInfo->ticket_no}}</td>
+                    <th style="text-align: left; padding: 2px; font-size: 13px; width: 41%;">Ticket No </th>
+                    <td style="text-align: left; padding: 2px; font-size: 13px;">: {{$ticketInfo->ticket_no}}</td>
                 </tr>
                 <tr>
-                    <th style="text-align: left; padding: 2px; font-size: 14px; width: 40%;">DateTime </th>
-                    <td style="text-align: left; padding: 2px; font-size: 14px;">: {{date("Y-m-d h:i a", strtotime($ticketInfo->created_at))}}</td>
+                    <th style="text-align: left; padding: 2px; font-size: 13px;">Date </th>
+                    <td style="text-align: left; padding: 2px; font-size: 13px;">: {{date("Y/m/d", strtotime($ticketInfo->created_at))}}</td>
                 </tr>
                 <tr>
-                    <th style="text-align: left; padding: 2px; font-size: 14px; width: 40%;">Terminal </th>
-                    <td style="text-align: left; padding: 2px; font-size: 14px;">: {{$ticketInfo->terminal_name}}</td>
+                    <th style="text-align: left; padding: 2px; font-size: 13px;">Time </th>
+                    <td style="text-align: left; padding: 2px; font-size: 13px;">: {{date("h:i a", strtotime($ticketInfo->created_at))}}</td>
                 </tr>
                 <tr>
-                    <th style="text-align: left; padding: 2px; font-size: 14px; width: 40%;">Vehicle </th>
-                    <td style="text-align: left; padding: 2px; font-size: 12px;">: {{$ticketInfo->vehicle_type_name}}</td>
+                    <th style="text-align: left; padding: 2px; font-size: 13px;">Terminal </th>
+                    <td style="text-align: left; padding: 2px; font-size: 13px;">: {{$ticketInfo->terminal_name}}</td>
                 </tr>
                 <tr>
-                    <th style="text-align: left; padding: 2px; font-size: 14px;">Fee </th>
-                    <td style="text-align: left; padding: 2px; font-size: 14px;">: {{$ticketInfo->ticket_price}}/=</td>
+                    <th style="text-align: left; padding: 2px; font-size: 13px;">Vehicle Type </th>
+                    <td style="text-align: left; padding: 2px; font-size: 11px;">: {{$ticketInfo->vehicle_type_name}}</td>
                 </tr>
                 <tr>
-                    <th style="text-align: left; padding: 2px; font-size: 14px;">Payment </th>
-                    <td style="text-align: left; padding: 2px; font-size: 14px;">:
+                    <th style="text-align: left; padding: 2px; font-size: 13px;">Fee </th>
+                    <td style="text-align: left; padding: 2px; font-size: 13px;">: {{$ticketInfo->ticket_price}}/=</td>
+                </tr>
+                <tr>
+                    <th style="text-align: left; padding: 2px; font-size: 13px;">Payment Method </th>
+                    <td style="text-align: left; padding: 2px; font-size: 13px;">:
                         @if($ticketInfo->payment_method == 1)
                             Cash
                         @elseif($ticketInfo->payment_method == 2)
