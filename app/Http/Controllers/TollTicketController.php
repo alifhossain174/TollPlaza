@@ -46,8 +46,8 @@ class TollTicketController extends Controller
             'amount_given' => $vehicleTypeInfo->amount_given,
             'return_change' => $vehicleTypeInfo->return_change,
             'payment_method' => $request->payment_method,
-            'driver_name' => $request->driver_name,
-            'driver_contact' => $request->driver_contact,
+            'driver_name' => null, //not used
+            'driver_contact' => null, //not used
             'vehicle_reg_no' => $request->vehicle_reg_no,
             'slug' => time().str::random(5),
             'status' => 1,
@@ -80,12 +80,6 @@ class TollTicketController extends Controller
                 }
                 if ($request->payment_method != '') {
                     $query->where('payment_method', $request->payment_method);
-                }
-                if ($request->driver_name != '') {
-                    $query->where('driver_name', 'LIKE', '%' . $request->driver_name . '%');
-                }
-                if ($request->driver_contact != '') {
-                    $query->where('driver_contact', 'LIKE', '%' . $request->driver_contact . '%');
                 }
                 if ($request->vehicle_reg_no != '') {
                     $query->where('vehicle_reg_no', 'LIKE', '%' . $request->vehicle_reg_no . '%');
@@ -124,13 +118,6 @@ class TollTicketController extends Controller
                             return "card";
                         else
                             return "N/A";
-                    })
-                    ->editColumn('driver_name', function($data) {
-                        $driverInfo = $data->driver_name;
-                        if($data->driver_contact){
-                            $driverInfo .= " (".$data->driver_contact.")";
-                        }
-                        return $driverInfo;
                     })
                     ->addIndexColumn()
                     ->addColumn('action', function($data){

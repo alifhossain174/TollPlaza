@@ -96,7 +96,6 @@
                                     <th class="text-center">Operator</th>
                                     <th class="text-center">Vehicle Type</th>
                                     <th class="text-center">Price</th>
-                                    <th class="text-center">Driver Info</th>
                                     <th class="text-center">Reg. No</th>
                                     <th class="text-center">Action</th>
                                 </tr>
@@ -108,7 +107,7 @@
                                 <tr>
                                     <th colspan="6"></th>
                                     <th></th>
-                                    <th colspan="3"></th>
+                                    <th colspan="2"></th>
                                 </tr>
                             </tfoot>
                         </table>
@@ -211,8 +210,6 @@
                     d.vehicle_type_id = $("#vehicle_type_id").val();
                     d.terminal_id = $("#terminal_id").val();
                     d.user_id = $("#user_id").val();
-                    d.driver_name = $("#driver_name").val();
-                    d.driver_contact = $("#driver_contact").val();
                     d.vehicle_reg_no = $("#vehicle_reg_no").val();
                     d.payment_method = $("#payment_method").val();
                     d.purchase_date_range = $("#selectedValue").text();
@@ -246,10 +243,6 @@
                 {
                     data: 'ticket_price',
                     name: 'ticket_price'
-                },
-                {
-                    data: 'driver_name',
-                    name: 'driver_name'
                 },
                 {
                     data: 'vehicle_reg_no',
@@ -313,8 +306,6 @@
             $("#terminal_id").val("");
             $("#vehicle_type_id").val("");
             $("#user_id").val("");
-            $("#driver_name").val("");
-            $("#driver_contact").val("");
             $("#vehicle_reg_no").val("");
             $("#payment_method").val("");
             $("#selectedValue").text("");

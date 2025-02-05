@@ -51,20 +51,6 @@
 
                     <div class="col-lg-2">
                         <div class="form-group">
-                            <label for="driver_name">Driver Name</label>
-                            <input class="form-control" type="text" onkeyup="filterEntryData()" id="driver_name" placeholder="Mr.">
-                        </div>
-                    </div>
-
-                    <div class="col-lg-2">
-                        <div class="form-group">
-                            <label for="driver_contact">Driver Contact</label>
-                            <input class="form-control" type="text" onkeyup="filterEntryData()" id="driver_contact" placeholder="ex. 017***">
-                        </div>
-                    </div>
-
-                    <div class="col-lg-2">
-                        <div class="form-group">
                             <label for="vehicle_reg_no">Vehicle Reg. No</label>
                             <input class="form-control" type="text" onkeyup="filterEntryData()" id="vehicle_reg_no" placeholder="ex. DM-KHA-65498">
                         </div>

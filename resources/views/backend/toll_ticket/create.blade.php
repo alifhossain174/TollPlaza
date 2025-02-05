@@ -22,10 +22,9 @@
             border-radius: 4px;
             padding: 8px 2px;
             cursor: pointer;
-            border: 3px solid transparent;
+            border: 2px solid lightgray;
             transition: all linear 0.1s;
-            color: white;
-            text-shadow: 1px 1px 2px black;
+            color: #1e1e1e;
         }
         label.rides:hover{
             box-shadow: 2px 2px 5px gray;
@@ -53,6 +52,8 @@
             position: absolute;
             top: 5px;
             left: 5px;
+            font-size: 16px;
+            font-weight: 600;
         }
 
         label.rides:has(input[type="radio"]:checked) {
@@ -86,11 +87,11 @@
 
                                 <div class="vehicle_types">
                                     @foreach ($vehicleTypes as $vehicleType)
-                                        <label class="rides m-0" style="background: {{$vehicleType->color_code}}">
+                                        <label class="rides m-0" style="@if($vehicleType->color_code) background: {{$vehicleType->color_code}} @else background:transparent @endif">
                                             @if(file_exists(public_path($vehicleType->icon)))
                                             <img src="{{url($vehicleType->icon)}}" style="width: 60px; height: 60px; margin: auto;" class="d-block mb-2">
                                             @endif
-                                            <input type="radio" name="vehicle_type_id" onchange="calculateTicketPrice({{$vehicleType->price}})" data-price="{{$vehicleType->price}}" value="{{$vehicleType->id}}" required>
+                                            <input type="radio" name="vehicle_type_id" onchange="calculateTicketPrice({{$vehicleType->price}}, '{{$vehicleType->type_name}}')" data-price="{{$vehicleType->price}}" value="{{$vehicleType->id}}" required>
                                             {{$vehicleType->type_name}}
                                             <span class="d-inline-block vehicle_type_price">৳{{$vehicleType->price}}</span>
                                         </label>
@@ -130,14 +131,14 @@
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <label for="driver">Driver Information</label>
-                                            <input type="text" class="form-control" name="driver_name" id="driver" placeholder="Mr.">
+                                            <label for="vehicle_reg_no">Vehicle Type</label>
+                                            <input type="text" class="form-control" id="vehicle_type_text" placeholder="Vehicle Type" readonly>
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <label for="driver">&nbsp;</label>
-                                            <input type="text" class="form-control" name="driver_contact" id="driver" placeholder="+8801">
+                                            <label for="vehicle_reg_no">Vehicle Reg. No</label>
+                                            <input type="text" class="form-control" name="vehicle_reg_no" id="vehicle_reg_no" placeholder="e.g. Dhaka-Metro-KA">
                                         </div>
                                     </div>
                                 </div>
@@ -145,8 +146,8 @@
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <label for="vehicle_reg_no">Vehicle Reg. No</label>
-                                            <input type="text" class="form-control" name="vehicle_reg_no" id="vehicle_reg_no" placeholder="e.g. Dhaka-Metro-KA">
+                                            <label for="ticket_price">Ticket Price<span class="text-danger">*</span> </label>
+                                            <input type="text" class="form-control" name="ticket_price" id="ticket_price" placeholder="0" readonly>
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
@@ -166,19 +167,13 @@
                                 <hr>
 
                                 <div class="row">
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <label for="ticket_price">Ticket Price<span class="text-danger">*</span> </label>
-                                            <input type="text" class="form-control" name="ticket_price" id="ticket_price" placeholder="0" readonly>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4">
+                                    <div class="col-lg-6">
                                         <div class="form-group">
                                             <label for="amount_given">Amount Given</label>
                                             <input type="text" class="form-control" name="amount_given" id="amount_given">
                                         </div>
                                     </div>
-                                    <div class="col-lg-4">
+                                    <div class="col-lg-6">
                                         <div class="form-group">
                                             <label for="return_change">Return Change</label>
                                             <input type="text" class="form-control" name="return_change" id="return_change" readonly>
@@ -205,8 +200,10 @@
             preferredFormat: 'hex',
         });
 
-        function calculateTicketPrice(price){
+        function calculateTicketPrice(price, type_name){
             $("#ticket_price").val(price);
+            $("#vehicle_type_text").val(type_name);
+
             calculateChange();
         }
 

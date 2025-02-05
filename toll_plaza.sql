@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Feb 04, 2025 at 02:51 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Host: localhost:3306
+-- Generation Time: Feb 05, 2025 at 03:49 AM
+-- Server version: 8.0.38
+-- PHP Version: 7.4.33
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `toll_plaza`
+-- Database: `getupdemo_tollplaza`
 --
 
 -- --------------------------------------------------------
@@ -28,13 +28,13 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `failed_jobs` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `uuid` varchar(255) NOT NULL,
-  `connection` text NOT NULL,
-  `queue` text NOT NULL,
-  `payload` longtext NOT NULL,
-  `exception` longtext NOT NULL,
-  `failed_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `id` bigint UNSIGNED NOT NULL,
+  `uuid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `connection` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `queue` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `exception` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -44,15 +44,15 @@ CREATE TABLE `failed_jobs` (
 --
 
 CREATE TABLE `general_infos` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `company_name` varchar(255) DEFAULT NULL,
-  `short_description` longtext DEFAULT NULL,
-  `contact` varchar(255) DEFAULT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `address` longtext DEFAULT NULL,
-  `ticket_header` varchar(255) DEFAULT NULL,
-  `ticket_title` varchar(255) DEFAULT NULL,
-  `ticket_width` varchar(255) DEFAULT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `company_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `short_description` longtext COLLATE utf8mb4_unicode_ci,
+  `contact` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address` longtext COLLATE utf8mb4_unicode_ci,
+  `ticket_header` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ticket_title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ticket_width` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -62,7 +62,7 @@ CREATE TABLE `general_infos` (
 --
 
 INSERT INTO `general_infos` (`id`, `company_name`, `short_description`, `contact`, `email`, `address`, `ticket_header`, `ticket_title`, `ticket_width`, `created_at`, `updated_at`) VALUES
-(1, 'তিস্তা সড়ক সেতু', 'তিস্তা সড়ক সেতু বাংলাদেশের রংপুর বিভাগের লালমনিরহাট জেলায় অবস্থিত একটি গুরুত্বপূর্ণ সেতু। এটি তিস্তা নদীর ওপর নির্মিত হয়ে রংপুর ও লালমনিরহাট জেলার মধ্যে সংযোগ স্থাপন করেছে। সেতুটি যানবাহন ও সাধারণ মানুষের যাতায়াত সহজতর করার পাশাপাশি বাণিজ্যিক ও অর্থনৈতিক কার্যক্রমে গুরুত্বপূর্ণ ভূমিকা রাখে।', '+88012345647890', 'sample@example.com', 'রংপুর, বাংলাদেশ', 'গণপ্রজাতন্ত্রী বাংলাদেশ সরকার সেতু বিভাগ, লালমনিরহাট', 'টোল আদায় রসিদ', '80', NULL, '2025-02-04 06:46:20');
+(1, 'Bangladesh Bridge Authority', 'Minstry of Road Teansport and Bridges.', '+88012345647890', 'sample@example.com', 'Tista Bridge Toll Plaza', 'Tista Bridge Toll Ticket', 'Tista Bridge Toll Plaza', '80', NULL, '2025-02-04 09:28:45');
 
 -- --------------------------------------------------------
 
@@ -71,9 +71,9 @@ INSERT INTO `general_infos` (`id`, `company_name`, `short_description`, `contact
 --
 
 CREATE TABLE `migrations` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `migration` varchar(255) NOT NULL,
-  `batch` int(11) NOT NULL
+  `id` int UNSIGNED NOT NULL,
+  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `batch` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -161,8 +161,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 --
 
 CREATE TABLE `password_resets` (
-  `email` varchar(255) NOT NULL,
-  `token` varchar(255) NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -173,10 +173,10 @@ CREATE TABLE `password_resets` (
 --
 
 CREATE TABLE `permission_routes` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `route` varchar(255) DEFAULT NULL,
-  `name` varchar(255) DEFAULT NULL,
-  `method` varchar(255) DEFAULT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `route` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `method` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -294,12 +294,12 @@ INSERT INTO `permission_routes` (`id`, `route`, `name`, `method`, `created_at`, 
 --
 
 CREATE TABLE `personal_access_tokens` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `tokenable_type` varchar(255) NOT NULL,
-  `tokenable_id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `token` varchar(64) NOT NULL,
-  `abilities` text DEFAULT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `tokenable_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tokenable_id` bigint UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `abilities` text COLLATE utf8mb4_unicode_ci,
   `last_used_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -423,12 +423,12 @@ INSERT INTO `personal_access_tokens` (`id`, `tokenable_type`, `tokenable_id`, `n
 --
 
 CREATE TABLE `role_permissions` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `role_id` bigint(20) UNSIGNED NOT NULL,
-  `role_name` varchar(255) DEFAULT NULL,
-  `permission_id` bigint(20) UNSIGNED NOT NULL,
-  `route` varchar(255) NOT NULL,
-  `route_name` varchar(255) DEFAULT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `role_id` bigint UNSIGNED NOT NULL,
+  `role_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `permission_id` bigint UNSIGNED NOT NULL,
+  `route` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `route_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -506,11 +506,11 @@ INSERT INTO `role_permissions` (`id`, `role_id`, `role_name`, `permission_id`, `
 --
 
 CREATE TABLE `terminals` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) DEFAULT NULL,
-  `description` longtext DEFAULT NULL,
-  `slug` varchar(255) DEFAULT NULL,
-  `status` tinyint(4) NOT NULL DEFAULT 1,
+  `id` bigint UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` longtext COLLATE utf8mb4_unicode_ci,
+  `slug` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` tinyint NOT NULL DEFAULT '1',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -520,8 +520,7 @@ CREATE TABLE `terminals` (
 --
 
 INSERT INTO `terminals` (`id`, `name`, `description`, `slug`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'Terminal-1', 'Terminal No 1', '1738364362CaKRr', 1, '2025-02-01 03:59:22', NULL),
-(2, 'Terminal-2', 'Terminal No 2', '1738364376r2zzE', 1, '2025-02-01 03:59:36', NULL);
+(1, 'Terminal-1', NULL, '1738661083NCBRK', 1, '2025-02-04 09:24:43', NULL);
 
 -- --------------------------------------------------------
 
@@ -530,23 +529,23 @@ INSERT INTO `terminals` (`id`, `name`, `description`, `slug`, `status`, `created
 --
 
 CREATE TABLE `toll_tickets` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `ticket_no` varchar(255) DEFAULT NULL,
-  `terminal_id` bigint(20) UNSIGNED DEFAULT NULL,
-  `terminal_name` varchar(255) DEFAULT NULL,
-  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
-  `user_name` varchar(255) DEFAULT NULL,
-  `vehicle_type_id` bigint(20) UNSIGNED DEFAULT NULL,
-  `vehicle_type_name` varchar(255) DEFAULT NULL,
-  `ticket_price` double NOT NULL DEFAULT 0,
-  `amount_given` varchar(255) DEFAULT NULL COMMENT 'During Transaction',
-  `return_change` varchar(255) DEFAULT NULL COMMENT 'During Transaction',
-  `payment_method` tinyint(4) NOT NULL DEFAULT 1 COMMENT '1=>Cash;2=>bKash;3=>nagad;4=>Card',
-  `driver_name` varchar(255) DEFAULT NULL,
-  `driver_contact` varchar(255) DEFAULT NULL,
-  `vehicle_reg_no` varchar(255) DEFAULT NULL,
-  `slug` varchar(255) DEFAULT NULL,
-  `status` tinyint(4) NOT NULL DEFAULT 1 COMMENT '1=>Active; 0=>Inactive',
+  `id` bigint UNSIGNED NOT NULL,
+  `ticket_no` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `terminal_id` bigint UNSIGNED DEFAULT NULL,
+  `terminal_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `user_id` bigint UNSIGNED DEFAULT NULL,
+  `user_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `vehicle_type_id` bigint UNSIGNED DEFAULT NULL,
+  `vehicle_type_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ticket_price` double NOT NULL DEFAULT '0',
+  `amount_given` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'During Transaction',
+  `return_change` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'During Transaction',
+  `payment_method` tinyint NOT NULL DEFAULT '1' COMMENT '1=>Cash;2=>bKash;3=>nagad;4=>Card',
+  `driver_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `driver_contact` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `vehicle_reg_no` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `slug` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` tinyint NOT NULL DEFAULT '1' COMMENT '1=>Active; 0=>Inactive',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -556,60 +555,12 @@ CREATE TABLE `toll_tickets` (
 --
 
 INSERT INTO `toll_tickets` (`id`, `ticket_no`, `terminal_id`, `terminal_name`, `user_id`, `user_name`, `vehicle_type_id`, `vehicle_type_name`, `ticket_price`, `amount_given`, `return_change`, `payment_method`, `driver_name`, `driver_contact`, `vehicle_reg_no`, `slug`, `status`, `created_at`, `updated_at`) VALUES
-(1, '1738364402QWm', 2, 'Terminal-2', 1, 'Admin', 9, 'হালকা ইঞ্জিন চালিত যান', 80, NULL, NULL, 1, 'Fahim', '4915736108363', 'DHAKA-KA-65498', '1738364402qljQy', 1, '2025-02-01 04:00:02', NULL),
-(2, '1738461110pbN', 1, 'Terminal-1', 1, 'Admin', 11, '৩/৪ চাকার মোটর যান', 30, NULL, NULL, 1, 'Fahim', '4915736108363', 'DHAKA-KA-65498', '17384611100rFPq', 1, '2025-02-02 06:51:50', NULL),
-(3, '1738461131e4k', 1, 'Terminal-1', 1, 'Admin', 11, '৩/৪ চাকার মোটর যান', 30, NULL, NULL, 1, 'Fahim', '4915736108363', 'DHAKA-KA-65498', '1738461131AVtTn', 1, '2025-02-02 06:52:11', NULL),
-(4, '17384612407az', 1, 'Terminal-1', 1, 'Admin', 11, '৩/৪ চাকার মোটর যান', 30, NULL, NULL, 1, 'Fahim', '4915736108363', 'DHAKA-KA-65498', '17384612404iTiu', 1, '2025-02-02 06:54:00', NULL),
-(5, '1738461314D56', 1, 'Terminal-1', 1, 'Admin', 11, '৩/৪ চাকার মোটর যান', 30, NULL, NULL, 1, 'Fahim', '4915736108363', 'DHAKA-KA-65498', '1738461314Sh4fH', 1, '2025-02-02 06:55:14', NULL),
-(6, '1738461327L3W', 1, 'Terminal-1', 1, 'Admin', 11, '৩/৪ চাকার মোটর যান', 30, NULL, NULL, 1, 'Fahim', '4915736108363', 'DHAKA-KA-65498', '1738461327l4sOg', 1, '2025-02-02 06:55:27', NULL),
-(7, '1738461447nWt', 1, 'Terminal-1', 1, 'Admin', 11, '৩/৪ চাকার মোটর যান', 30, NULL, NULL, 1, 'Fahim', '4915736108363', 'DHAKA-KA-65498', '1738461447mh0Vq', 1, '2025-02-02 06:57:27', NULL),
-(8, '1738461557HIV', 1, 'Terminal-1', 1, 'Admin', 11, '৩/৪ চাকার মোটর যান', 30, NULL, NULL, 1, 'Fahim', '4915736108363', 'DHAKA-KA-65498', '1738461557En67f', 1, '2025-02-02 06:59:17', NULL),
-(9, '1738461654Tgs', 1, 'Terminal-1', 1, 'Admin', 11, '৩/৪ চাকার মোটর যান', 30, NULL, NULL, 1, 'Fahim', '4915736108363', 'DHAKA-KA-65498', '1738461654ZuTi9', 1, '2025-02-02 07:00:54', NULL),
-(10, '1738461719glM', 1, 'Terminal-1', 1, 'Admin', 11, '৩/৪ চাকার মোটর যান', 30, NULL, NULL, 1, 'Fahim', '4915736108363', 'DHAKA-KA-65498', '17384617190nULV', 1, '2025-02-02 07:01:59', NULL),
-(11, '1738461801A1W', 1, 'Terminal-1', 1, 'Admin', 11, '৩/৪ চাকার মোটর যান', 30, NULL, NULL, 1, 'Fahim', '4915736108363', 'DHAKA-KA-65498', '1738461801QeRW0', 1, '2025-02-02 07:03:21', NULL),
-(12, '1738461830aBe', 1, 'Terminal-1', 1, 'Admin', 11, '৩/৪ চাকার মোটর যান', 30, NULL, NULL, 1, 'Fahim', '4915736108363', 'DHAKA-KA-65498', '1738461830Lz823', 1, '2025-02-02 07:03:50', NULL),
-(13, '1738461885MbD', 1, 'Terminal-1', 1, 'Admin', 11, '৩/৪ চাকার মোটর যান', 30, NULL, NULL, 1, 'Fahim', '4915736108363', 'DHAKA-KA-65498', '1738461885VbvFN', 1, '2025-02-02 07:04:45', NULL),
-(14, '17384619355zB', 1, 'Terminal-1', 1, 'Admin', 11, '৩/৪ চাকার মোটর যান', 30, NULL, NULL, 1, 'Fahim', '4915736108363', 'DHAKA-KA-65498', '1738461935SA8oX', 1, '2025-02-02 07:05:35', NULL),
-(15, '1738461983Dcf', 1, 'Terminal-1', 1, 'Admin', 11, '৩/৪ চাকার মোটর যান', 30, NULL, NULL, 1, 'Fahim', '4915736108363', 'DHAKA-KA-65498', '1738461983k7khP', 1, '2025-02-02 07:06:23', NULL),
-(16, '1738461994RQT', 1, 'Terminal-1', 1, 'Admin', 11, '৩/৪ চাকার মোটর যান', 30, NULL, NULL, 1, 'Fahim', NULL, 'DHAKA-KA-65498', '1738461994dS8kY', 1, '2025-02-02 07:06:34', NULL),
-(17, '173846203805R', 1, 'Terminal-1', 1, 'Admin', 11, '৩/৪ চাকার মোটর যান', 30, NULL, NULL, 1, 'Fahim', NULL, 'DHAKA-KA-65498', '1738462038vxq7B', 1, '2025-02-02 07:07:18', NULL),
-(18, '1738462059dGx', 1, 'Terminal-1', 1, 'Admin', 11, '৩/৪ চাকার মোটর যান', 30, NULL, NULL, 1, 'Fahim', NULL, 'DHAKA-KA-65498', '1738462059KGvDI', 1, '2025-02-02 07:07:39', NULL),
-(19, '1738462083eWa', 1, 'Terminal-1', 1, 'Admin', 11, '৩/৪ চাকার মোটর যান', 30, NULL, NULL, 1, 'Fahim', NULL, 'DHAKA-KA-65498', '1738462083EGZW6', 1, '2025-02-02 07:08:03', NULL),
-(20, '1738462100n86', 1, 'Terminal-1', 1, 'Admin', 11, '৩/৪ চাকার মোটর যান', 30, NULL, NULL, 1, 'Fahim', NULL, 'DHAKA-KA-65498', '1738462100fbvfz', 1, '2025-02-02 07:08:20', NULL),
-(21, '1738462141QuW', 1, 'Terminal-1', 1, 'Admin', 11, '৩/৪ চাকার মোটর যান', 30, NULL, NULL, 1, 'Fahim', NULL, 'DHAKA-KA-65498', '1738462141ANn1B', 1, '2025-02-02 07:09:01', NULL),
-(22, '1738462244oHI', 1, 'Terminal-1', 1, 'Admin', 11, '৩/৪ চাকার মোটর যান', 30, NULL, NULL, 1, 'Fahim', NULL, 'DHAKA-KA-65498', '1738462244gnsua', 1, '2025-02-02 07:10:44', NULL),
-(23, '1738462254nUP', 1, 'Terminal-1', 1, 'Admin', 11, '৩/৪ চাকার মোটর যান', 30, NULL, NULL, 1, 'Fahim', NULL, 'DHAKA-KA-65498', '1738462254tphPY', 1, '2025-02-02 07:10:54', NULL),
-(24, '17384622668Aw', 1, 'Terminal-1', 1, 'Admin', 11, '৩/৪ চাকার মোটর যান', 30, NULL, NULL, 1, 'Fahim', NULL, 'DHAKA-KA-65498', '1738462266e0YRi', 1, '2025-02-02 07:11:06', NULL),
-(25, '1738462352v7L', 1, 'Terminal-1', 1, 'Admin', 11, '৩/৪ চাকার মোটর যান', 30, NULL, NULL, 1, 'Fahim', NULL, 'DHAKA-KA-65498', '1738462352C8Jg1', 1, '2025-02-02 07:12:32', NULL),
-(26, '1738462409oZY', 1, 'Terminal-1', 1, 'Admin', 11, '৩/৪ চাকার মোটর যান', 30, NULL, NULL, 1, 'Fahim', NULL, 'DHAKA-KA-65498', '1738462409Lif37', 1, '2025-02-02 07:13:29', NULL),
-(27, '17384624451bb', 2, 'Terminal-2', 1, 'Admin', 10, 'মোটরসাইকেল', 10, NULL, NULL, 1, 'Meghan Osborn', 'Consectetur magna id', 'Quisquam culpa eaqu', '1738462445eLvD8', 1, '2025-02-02 07:14:05', NULL),
-(30, '17384699817Z3', 2, 'Terminal-2', 2, 'Test Operator', 9, 'হালকা ইঞ্জিন চালিত যান', 80, NULL, NULL, 1, 'Francesca Mann', 'Ut velit voluptatum', 'Sint dolore ratione', '1738469981Guk1V', 1, '2025-02-02 09:19:41', NULL),
-(31, '17386298819HF', 1, 'Terminal-1', 1, 'Admin', 3, 'মিনি ট্রাক (বোঝাই/খালি)', 30, NULL, NULL, 1, NULL, NULL, NULL, '1738629881LootN', 1, '2025-02-04 05:44:41', NULL),
-(32, '1738631314XWe', 1, 'Terminal-1', 1, 'Admin', 2, 'কোচ/বাস (বোঝাই/খালি)', 25, NULL, NULL, 1, NULL, NULL, NULL, '1738631314RF8dk', 1, '2025-02-04 06:08:34', NULL),
-(33, '1738631877or8', 2, 'Terminal-2', 1, 'Admin', 6, 'কৃষি কাজে ব্যবহৃত যান', 15, NULL, NULL, 2, NULL, NULL, NULL, '1738631877Fwh6C', 1, '2025-02-04 06:17:57', NULL),
-(34, '1738632100jGx', 1, 'Terminal-1', 1, 'Admin', 3, 'মিনি ট্রাক (বোঝাই/খালি)', 30, NULL, NULL, 4, NULL, '0196900535', NULL, '1738632100d9uGT', 1, '2025-02-04 06:21:40', NULL),
-(35, '173863216689v', 1, 'Terminal-1', 1, 'Admin', 3, 'মিনি ট্রাক (বোঝাই/খালি)', 30, NULL, NULL, 4, NULL, '0196900535', NULL, '17386321666EzX6', 1, '2025-02-04 06:22:46', NULL),
-(36, '1738632221Vjh', 1, 'Terminal-1', 1, 'Admin', 3, 'মিনি ট্রাক (বোঝাই/খালি)', 30, NULL, NULL, 4, NULL, '0196900535', NULL, '1738632221UnDVX', 1, '2025-02-04 06:23:41', NULL),
-(37, '1738632259j0Z', 1, 'Terminal-1', 1, 'Admin', 3, 'মিনি ট্রাক (বোঝাই/খালি)', 30, NULL, NULL, 4, NULL, '0196900535', NULL, '1738632259pA6k4', 1, '2025-02-04 06:24:19', NULL),
-(38, '1738632289MKF', 1, 'Terminal-1', 1, 'Admin', 3, 'মিনি ট্রাক (বোঝাই/খালি)', 30, NULL, NULL, 4, NULL, '0196900535', NULL, '17386322897BtsF', 1, '2025-02-04 06:24:49', NULL),
-(39, '1738632298FlI', 1, 'Terminal-1', 1, 'Admin', 3, 'মিনি ট্রাক (বোঝাই/খালি)', 30, NULL, NULL, 4, NULL, '0196900535', NULL, '1738632298AdhnT', 1, '2025-02-04 06:24:58', NULL),
-(40, '1738632330vjW', 1, 'Terminal-1', 1, 'Admin', 3, 'মিনি ট্রাক (বোঝাই/খালি)', 30, NULL, NULL, 4, NULL, '0196900535', NULL, '1738632330GUSjy', 1, '2025-02-04 06:25:30', NULL),
-(41, '1738632339Aqe', 1, 'Terminal-1', 1, 'Admin', 3, 'মিনি ট্রাক (বোঝাই/খালি)', 30, NULL, NULL, 4, NULL, '0196900535', NULL, '17386323392neuS', 1, '2025-02-04 06:25:39', NULL),
-(42, '1738632399B5m', 1, 'Terminal-1', 1, 'Admin', 3, 'মিনি ট্রাক (বোঝাই/খালি)', 30, NULL, NULL, 4, NULL, '0196900535', NULL, '1738632399ZpPJS', 1, '2025-02-04 06:26:39', NULL),
-(43, '1738632420y1p', 1, 'Terminal-1', 1, 'Admin', 3, 'মিনি ট্রাক (বোঝাই/খালি)', 30, NULL, NULL, 4, NULL, '0196900535', NULL, '1738632420tYH0b', 1, '2025-02-04 06:27:00', NULL),
-(44, '1738632442ak3', 1, 'Terminal-1', 1, 'Admin', 3, 'মিনি ট্রাক (বোঝাই/খালি)', 30, NULL, NULL, 4, NULL, '0196900535', NULL, '1738632442C5R4u', 1, '2025-02-04 06:27:22', NULL),
-(45, '1738632480WFY', 1, 'Terminal-1', 1, 'Admin', 3, 'মিনি ট্রাক (বোঝাই/খালি)', 30, NULL, NULL, 4, NULL, '0196900535', NULL, '1738632480WNbHe', 1, '2025-02-04 06:28:00', NULL),
-(46, '1738632536v7L', 1, 'Terminal-1', 1, 'Admin', 3, 'মিনি ট্রাক (বোঝাই/খালি)', 30, NULL, NULL, 4, NULL, '0196900535', NULL, '1738632536wVmy8', 1, '2025-02-04 06:28:56', NULL),
-(47, '17386325759YI', 1, 'Terminal-1', 1, 'Admin', 3, 'মিনি ট্রাক (বোঝাই/খালি)', 30, NULL, NULL, 4, NULL, '0196900535', NULL, '1738632575mYosH', 1, '2025-02-04 06:29:35', NULL),
-(48, '1738632597Ugq', 1, 'Terminal-1', 1, 'Admin', 3, 'মিনি ট্রাক (বোঝাই/খালি)', 30, NULL, NULL, 4, NULL, '0196900535', NULL, '17386325975Ra2w', 1, '2025-02-04 06:29:57', NULL),
-(49, '17386326178vJ', 1, 'Terminal-1', 1, 'Admin', 3, 'মিনি ট্রাক (বোঝাই/খালি)', 30, NULL, NULL, 4, NULL, '0196900535', NULL, '17386326173SGT6', 1, '2025-02-04 06:30:17', NULL),
-(50, '1738632701HdN', 1, 'Terminal-1', 1, 'Admin', 3, 'মিনি ট্রাক (বোঝাই/খালি)', 30, NULL, NULL, 4, NULL, '0196900535', NULL, '1738632701VmQr1', 1, '2025-02-04 06:31:41', NULL),
-(51, '1738632733qkt', 1, 'Terminal-1', 1, 'Admin', 3, 'মিনি ট্রাক (বোঝাই/খালি)', 30, NULL, NULL, 4, NULL, '0196900535', NULL, '1738632733vZltt', 1, '2025-02-04 06:32:13', NULL),
-(52, '1738632753AzP', 1, 'Terminal-1', 1, 'Admin', 3, 'মিনি ট্রাক (বোঝাই/খালি)', 30, NULL, NULL, 4, NULL, '0196900535', NULL, '1738632753M6Yrf', 1, '2025-02-04 06:32:33', NULL),
-(53, '1738632809QEM', 1, 'Terminal-1', 1, 'Admin', 3, 'মিনি ট্রাক (বোঝাই/খালি)', 30, NULL, NULL, 4, NULL, '0196900535', NULL, '1738632809oUV07', 1, '2025-02-04 06:33:29', NULL),
-(54, '1738632842yex', 1, 'Terminal-1', 1, 'Admin', 3, 'মিনি ট্রাক (বোঝাই/খালি)', 30, NULL, NULL, 4, NULL, '0196900535', NULL, '1738632842RGFdh', 1, '2025-02-04 06:34:02', NULL),
-(55, '1738633109zbv', 1, 'Terminal-1', 1, 'Admin', 2, 'কোচ/বাস (বোঝাই/খালি)', 25, NULL, NULL, 1, NULL, NULL, NULL, '1738633109BcHcd', 1, '2025-02-04 06:38:29', NULL),
-(56, '1738633827g1n', 2, 'Terminal-2', 1, 'Admin', 10, 'মোটরসাইকেল', 10, NULL, NULL, 1, NULL, NULL, NULL, '1738633827Sjv0p', 1, '2025-02-04 06:50:27', NULL);
+(1, '1738661110Vfl', 1, 'Terminal-1', 1, 'Admin', 1, 'Trailer (Loaded/Empty)', 565, NULL, NULL, 1, NULL, NULL, NULL, '1738661110pzLN6', 1, '2025-02-04 09:25:10', NULL),
+(2, '1738661268dRN', 1, 'Terminal-1', 1, 'Admin', 1, 'Trailer (Loaded/Empty)', 565, NULL, NULL, 1, NULL, NULL, NULL, '1738661268zOl3Z', 1, '2025-02-04 09:27:48', NULL),
+(3, '1738661275TVq', 1, 'Terminal-1', 1, 'Admin', 1, 'Trailer (Loaded/Empty)', 565, NULL, NULL, 1, NULL, NULL, NULL, '1738661275EamAT', 1, '2025-02-04 09:27:55', NULL),
+(4, '1738661335ptK', 1, 'Terminal-1', 1, 'Admin', 1, 'Trailer (Loaded/Empty)', 565, NULL, NULL, 1, NULL, NULL, NULL, '173866133523f1M', 1, '2025-02-04 09:28:55', NULL),
+(5, '1738661470USW', 1, 'Terminal-1', 1, 'Admin', 1, 'Trailer (Loaded/Empty)', 565, NULL, NULL, 1, NULL, NULL, NULL, '1738661470d3QfW', 1, '2025-02-04 09:31:10', NULL),
+(6, '1738671959hZT', 1, 'Terminal-1', 1, 'Admin', 7, 'Mini Bus/Coaster', 80, NULL, NULL, 1, NULL, NULL, NULL, '1738671959yvxA2', 1, '2025-02-04 12:25:59', NULL);
 
 -- --------------------------------------------------------
 
@@ -618,19 +569,19 @@ INSERT INTO `toll_tickets` (`id`, `ticket_no`, `terminal_id`, `terminal_name`, `
 --
 
 CREATE TABLE `users` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `terminal_id` int(11) DEFAULT NULL,
-  `image` varchar(255) DEFAULT NULL,
-  `name` varchar(255) NOT NULL,
-  `phone` varchar(255) DEFAULT NULL,
-  `email` varchar(255) DEFAULT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `terminal_id` int DEFAULT NULL,
+  `image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `phone` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
-  `verification_code` varchar(255) DEFAULT NULL COMMENT 'Used for Forget Password Verification',
-  `password` varchar(255) DEFAULT NULL,
-  `remember_token` varchar(100) DEFAULT NULL,
-  `user_type` tinyint(4) NOT NULL DEFAULT 3 COMMENT '1=>Admin; 2=>User/Shop; 3=>Customer',
-  `address` longtext DEFAULT NULL,
-  `status` tinyint(4) NOT NULL DEFAULT 1 COMMENT '1=>Active; 0=>Inactive',
+  `verification_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Used for Forget Password Verification',
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `user_type` tinyint NOT NULL DEFAULT '3' COMMENT '1=>Admin; 2=>User/Shop; 3=>Customer',
+  `address` longtext COLLATE utf8mb4_unicode_ci,
+  `status` tinyint NOT NULL DEFAULT '1' COMMENT '1=>Active; 0=>Inactive',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -640,8 +591,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `terminal_id`, `image`, `name`, `phone`, `email`, `email_verified_at`, `verification_code`, `password`, `remember_token`, `user_type`, `address`, `status`, `created_at`, `updated_at`) VALUES
-(1, NULL, NULL, 'Admin', '01900000000', 'admin@gmail.com', '2025-02-02 03:54:50', '12312', '$2y$12$oHWN0HLlomKGtI9bp503POf.uujhNJmq6bS3M8f3u0PAcrHZYLzEq', NULL, 1, 'Dhaka, Bangladesh', 1, '2025-02-02 03:54:50', NULL),
-(2, 2, NULL, 'Test Operator', '+1 (624) 912-5333', 'operator@gmail.com', NULL, NULL, '$2y$10$8nQTeutpiamNleKIwrpETeIBRKlq359Jahb5MJdHViP35ufNoBOxK', NULL, 2, 'Dhaka', 1, '2025-02-02 08:57:53', '2025-02-02 09:01:00');
+(1, NULL, NULL, 'Admin', '01900000000', 'admin@gmail.com', '2025-02-02 03:54:50', '12312', '$2y$12$oHWN0HLlomKGtI9bp503POf.uujhNJmq6bS3M8f3u0PAcrHZYLzEq', NULL, 1, 'Dhaka, Bangladesh', 1, '2025-02-02 03:54:50', NULL);
 
 -- --------------------------------------------------------
 
@@ -650,9 +600,9 @@ INSERT INTO `users` (`id`, `terminal_id`, `image`, `name`, `phone`, `email`, `em
 --
 
 CREATE TABLE `user_roles` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `description` longtext DEFAULT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` longtext COLLATE utf8mb4_unicode_ci,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -671,13 +621,13 @@ INSERT INTO `user_roles` (`id`, `name`, `description`, `created_at`, `updated_at
 --
 
 CREATE TABLE `user_role_permissions` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `user_id` bigint(20) UNSIGNED NOT NULL,
-  `role_id` bigint(20) UNSIGNED DEFAULT NULL,
-  `role_name` varchar(255) DEFAULT NULL,
-  `permission_id` bigint(20) UNSIGNED NOT NULL,
-  `route` varchar(255) NOT NULL,
-  `route_name` varchar(255) DEFAULT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `user_id` bigint UNSIGNED NOT NULL,
+  `role_id` bigint UNSIGNED DEFAULT NULL,
+  `role_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `permission_id` bigint UNSIGNED NOT NULL,
+  `route` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `route_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -755,15 +705,15 @@ INSERT INTO `user_role_permissions` (`id`, `user_id`, `role_id`, `role_name`, `p
 --
 
 CREATE TABLE `vehicle_types` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `icon` varchar(255) DEFAULT NULL,
-  `type_name` varchar(255) DEFAULT NULL,
-  `price` double NOT NULL DEFAULT 0,
-  `description` longtext DEFAULT NULL,
-  `color_code` varchar(255) DEFAULT NULL COMMENT 'For Toll Collection Receipt',
-  `slug` varchar(255) DEFAULT NULL,
-  `status` tinyint(4) NOT NULL DEFAULT 1,
-  `serial` int(11) NOT NULL DEFAULT 1,
+  `id` bigint UNSIGNED NOT NULL,
+  `icon` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `type_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `price` double NOT NULL DEFAULT '0',
+  `description` longtext COLLATE utf8mb4_unicode_ci,
+  `color_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'For Toll Collection Receipt',
+  `slug` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` tinyint NOT NULL DEFAULT '1',
+  `serial` int NOT NULL DEFAULT '1',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -773,18 +723,19 @@ CREATE TABLE `vehicle_types` (
 --
 
 INSERT INTO `vehicle_types` (`id`, `icon`, `type_name`, `price`, `description`, `color_code`, `slug`, `status`, `serial`, `created_at`, `updated_at`) VALUES
-(1, 'vehicle_type_icons/qL6kG1738359465.webp', 'ট্রাক (বোঝাই/খালি)', 65, 'ফোরটন বা তার অধিকধারী ভারী যানবাহন', '#e06666', '1738350778zFRpj', 1, 2, '2025-02-01 00:12:58', '2025-02-04 05:13:41'),
-(2, 'vehicle_type_icons/z8YGP1738359430.webp', 'কোচ/বাস (বোঝাই/খালি)', 25, 'তিন চাকার রিকশা বা মাইক্রোবাস ব্যতীত যাত্রী পরিবহনকারী বাস', '#f6b26b', '1738350803U10dn', 1, 3, '2025-02-01 00:13:23', '2025-02-04 05:13:41'),
-(3, 'vehicle_type_icons/j8scE1738359386.webp', 'মিনি ট্রাক (বোঝাই/খালি)', 30, 'তিন টনের নিচে পণ্য পরিবহনের ক্ষুদ্র ট্রাক', '#ffd966', '1738350824fs146', 1, 4, '2025-02-01 00:13:44', '2025-02-04 05:13:41'),
-(4, 'vehicle_type_icons/49WVW1738359331.webp', 'মিনিবাস (বোঝাই/খালি)', 20, 'ছোট যাত্রী পরিবহনকারী যানবাহন', '#93c47d', '1738350841jT6nT', 1, 5, '2025-02-01 00:14:01', '2025-02-04 05:13:41'),
-(5, 'vehicle_type_icons/H03121738359302.webp', 'সিএনজি অটোরিকশা', 10, 'চাকা চালিত তিন চাকার গাড়ি', '#76a5af', '1738350859NgN7J', 1, 6, '2025-02-01 00:14:19', '2025-02-04 05:13:41'),
-(6, 'vehicle_type_icons/0dc6P1738358728.webp', 'কৃষি কাজে ব্যবহৃত যান', 15, 'পণ্যবাহী ট্রাক্টর ও অন্যান্য', '#6fa8dc', '1738350876M3Yr5', 1, 7, '2025-02-01 00:14:36', '2025-02-04 05:13:41'),
-(7, 'vehicle_type_icons/SIsly1738358642.webp', 'সাইকেল (বোঝাই/খালি)', 0, 'দুই চাকার যন্ত্রচালিত বা ম্যানুয়াল সাইকেল', '#8e7cc3', '1738350894Rqa2H', 1, 8, '2025-02-01 00:14:54', '2025-02-04 05:13:41'),
-(8, 'vehicle_type_icons/sccNo1738358572.webp', 'রিকশা', 0, 'মানব চালিত তিন চাকার যান', '#c27ba0', '173835090990bBL', 1, 9, '2025-02-01 00:15:09', '2025-02-04 05:13:41'),
-(9, 'vehicle_type_icons/Dy6Q71738358531.webp', 'হালকা ইঞ্জিন চালিত যান', 80, 'প্রাইভেট কার, মাইক্রোবাস', '#f44336', '1738350938J7kAb', 1, 10, '2025-02-01 00:15:38', '2025-02-04 05:13:41'),
-(10, 'vehicle_type_icons/owahN1738358489.webp', 'মোটরসাইকেল', 10, 'দুই চাকার মোটরচালিত যান', '#ce7e00', '17383509581mOyp', 1, 1, '2025-02-01 00:15:58', '2025-02-04 05:13:41'),
-(11, 'vehicle_type_icons/6rv1n1738358450.webp', '৩/৪ চাকার মোটর যান', 30, 'ইজিবাইক, অটোরিকশা', '#8fce00', '1738350973Wi6Zc', 1, 11, '2025-02-01 00:16:13', '2025-02-04 05:13:41'),
-(12, 'vehicle_type_icons/nXPuK1738358346.webp', 'পণ্য পরিবহন যান', 0, 'পণ্য পরিবহনের বিশেষ যান', '#2986cc', '1738350995cTXOl', 1, 12, '2025-02-01 00:16:35', '2025-02-04 05:13:41');
+(1, 'vehicle_type_icons/txTEM1738664174.png', 'Trailer', 565, 'কন্টেনার / ভারী যন্ত্রপাতি / ভারী মালামাল / পরিবহন সমষ্ঠি যান', '#3d85c6', '1738660623Bc427', 1, 12, '2025-02-04 09:17:03', '2025-02-04 10:50:39'),
+(2, 'vehicle_type_icons/TDSrT1738664164.png', 'Heavy Truck', 260, 'তিন বা ততোধিক এক্সেল বিশিষ্ট ট্রাক, কাভার্ড ট্রাক, ভ্যান, কন্টেইনারবাহী ট্রাক, বেকার, ক্রেন এবং অন্যান্য আর্টিকুলেটেড যানবাহন।', '#3d85c6', '17386619455ecKp', 1, 11, '2025-02-04 09:39:05', '2025-02-04 10:50:39'),
+(3, 'vehicle_type_icons/pwv5d1738664336.png', 'Medium Truck', 200, NULL, '#3d85c6', '1738664336RyK20', 1, 10, '2025-02-04 10:18:56', '2025-02-04 10:50:39'),
+(4, 'vehicle_type_icons/1TxG91738664378.png', 'Large Bus', 150, NULL, '#3d85c6', '1738664378Miz73', 1, 9, '2025-02-04 10:19:38', '2025-02-04 10:50:39'),
+(5, 'vehicle_type_icons/ZyliL1738664414.png', 'Mini Truck', 170, NULL, '#3d85c6', '1738664414W3EAo', 1, 8, '2025-02-04 10:20:14', '2025-02-04 10:50:39'),
+(6, 'vehicle_type_icons/Jh6cx1738664436.png', 'Agricultural Vehicle', 75, NULL, '#3d85c6', '1738664436k09Zk', 1, 5, '2025-02-04 10:20:36', '2025-02-04 10:50:39'),
+(7, 'vehicle_type_icons/uDjAM1738664459.png', 'Mini Bus/Coaster', 80, NULL, '#3d85c6', '1738664459Df1hn', 1, 7, '2025-02-04 10:20:59', '2025-02-04 10:50:39'),
+(8, 'vehicle_type_icons/kHlIL1738664480.png', 'Microbus', 80, NULL, '#3d85c6', '17386644800TVhH', 1, 6, '2025-02-04 10:21:20', '2025-02-04 10:50:39'),
+(9, 'vehicle_type_icons/Ewgso1738664524.png', 'Four-Wheel Drive Vehicle', 60, NULL, '#3d85c6', '1738664524QPMi1', 1, 4, '2025-02-04 10:22:04', '2025-02-04 10:50:39'),
+(10, 'vehicle_type_icons/YTphR1738664553.png', 'Sedan Car', 40, NULL, '#3d85c6', '1738664553bEa4j', 1, 2, '2025-02-04 10:22:33', '2025-02-04 10:50:39'),
+(11, 'vehicle_type_icons/6hNop1738664581.png', 'Four-W Passenger Vehicle', 40, NULL, '#3d85c6', '1738664581EeVFS', 1, 3, '2025-02-04 10:23:01', '2025-02-04 10:51:14'),
+(12, 'vehicle_type_icons/OlhgK1738664613.png', 'Motorcycle', 10, NULL, '#3d85c6', '1738664613lANlW', 1, 1, '2025-02-04 10:23:33', '2025-02-04 10:53:52'),
+(13, 'vehicle_type_icons/5QXs81738664648.png', 'Rickshaw Van, Rickshaw, Bicycle, Pushcart', 20, NULL, '#3d85c6', '17386646484eRf8', 1, 13, '2025-02-04 10:24:08', '2025-02-04 10:50:39');
 
 --
 -- Indexes for dumped tables
@@ -880,73 +831,73 @@ ALTER TABLE `vehicle_types`
 -- AUTO_INCREMENT for table `failed_jobs`
 --
 ALTER TABLE `failed_jobs`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `general_infos`
 --
 ALTER TABLE `general_infos`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=113;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=113;
 
 --
 -- AUTO_INCREMENT for table `permission_routes`
 --
 ALTER TABLE `permission_routes`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
 --
 ALTER TABLE `personal_access_tokens`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=106;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=106;
 
 --
 -- AUTO_INCREMENT for table `role_permissions`
 --
 ALTER TABLE `role_permissions`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- AUTO_INCREMENT for table `terminals`
 --
 ALTER TABLE `terminals`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `toll_tickets`
 --
 ALTER TABLE `toll_tickets`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `user_roles`
 --
 ALTER TABLE `user_roles`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `user_role_permissions`
 --
 ALTER TABLE `user_role_permissions`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- AUTO_INCREMENT for table `vehicle_types`
 --
 ALTER TABLE `vehicle_types`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

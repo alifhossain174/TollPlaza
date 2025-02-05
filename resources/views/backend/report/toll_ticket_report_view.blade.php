@@ -55,7 +55,6 @@
                             N/A
                         @endif
                     </td>
-                    <td class="text-center">{{$item->driver_name}} @if($item->driver_contact)({{$item->driver_contact}})@endif</td>
                     <td class="text-center">{{$item->vehicle_reg_no}}</td>
                     <td class="text-center">{{date("d-m-Y h:i a",strtotime($item->created_at))}}</td>
                 </tr>
