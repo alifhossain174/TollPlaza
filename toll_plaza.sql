@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: Feb 05, 2025 at 03:49 AM
--- Server version: 8.0.38
--- PHP Version: 7.4.33
+-- Host: 127.0.0.1
+-- Generation Time: Feb 05, 2025 at 11:40 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,8 +18,33 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `getupdemo_tollplaza`
+-- Database: `toll_plaza`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `counters`
+--
+
+CREATE TABLE `counters` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `terminal_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `description` longtext DEFAULT NULL,
+  `slug` varchar(255) DEFAULT NULL,
+  `status` tinyint(4) NOT NULL DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `counters`
+--
+
+INSERT INTO `counters` (`id`, `terminal_id`, `name`, `description`, `slug`, `status`, `created_at`, `updated_at`) VALUES
+(1, 1, 'Counter-1', 'Counter No 1', '17387939354LBwC', 1, '2025-02-06 03:18:55', '2025-02-06 03:37:45'),
+(3, 1, 'Counter-2', 'Counter No 2', '1738795083CMK1M', 1, '2025-02-06 03:38:03', NULL);
 
 -- --------------------------------------------------------
 
@@ -28,13 +53,13 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `failed_jobs` (
-  `id` bigint UNSIGNED NOT NULL,
-  `uuid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `connection` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `queue` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `exception` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `uuid` varchar(255) NOT NULL,
+  `connection` text NOT NULL,
+  `queue` text NOT NULL,
+  `payload` longtext NOT NULL,
+  `exception` longtext NOT NULL,
+  `failed_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -44,15 +69,15 @@ CREATE TABLE `failed_jobs` (
 --
 
 CREATE TABLE `general_infos` (
-  `id` bigint UNSIGNED NOT NULL,
-  `company_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `short_description` longtext COLLATE utf8mb4_unicode_ci,
-  `contact` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address` longtext COLLATE utf8mb4_unicode_ci,
-  `ticket_header` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `ticket_title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `ticket_width` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `company_name` varchar(255) DEFAULT NULL,
+  `short_description` longtext DEFAULT NULL,
+  `contact` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `address` longtext DEFAULT NULL,
+  `ticket_header` varchar(255) DEFAULT NULL,
+  `ticket_title` varchar(255) DEFAULT NULL,
+  `ticket_width` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -71,9 +96,9 @@ INSERT INTO `general_infos` (`id`, `company_name`, `short_description`, `contact
 --
 
 CREATE TABLE `migrations` (
-  `id` int UNSIGNED NOT NULL,
-  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `batch` int NOT NULL
+  `id` int(10) UNSIGNED NOT NULL,
+  `migration` varchar(255) NOT NULL,
+  `batch` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -152,7 +177,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (107, '2024_10_17_163447_create_buy_sell_configs_table', 55),
 (108, '2025_02_01_005127_create_vehicle_types_table', 56),
 (111, '2025_02_01_020057_create_terminals_table', 57),
-(112, '2025_02_01_025155_create_toll_tickets_table', 57);
+(112, '2025_02_01_025155_create_toll_tickets_table', 57),
+(113, '2025_02_06_035722_create_counters_table', 58);
 
 -- --------------------------------------------------------
 
@@ -161,8 +187,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 --
 
 CREATE TABLE `password_resets` (
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `token` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -173,10 +199,10 @@ CREATE TABLE `password_resets` (
 --
 
 CREATE TABLE `permission_routes` (
-  `id` bigint UNSIGNED NOT NULL,
-  `route` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `method` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `route` varchar(255) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `method` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -294,12 +320,12 @@ INSERT INTO `permission_routes` (`id`, `route`, `name`, `method`, `created_at`, 
 --
 
 CREATE TABLE `personal_access_tokens` (
-  `id` bigint UNSIGNED NOT NULL,
-  `tokenable_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `tokenable_id` bigint UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `token` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `abilities` text COLLATE utf8mb4_unicode_ci,
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `tokenable_type` varchar(255) NOT NULL,
+  `tokenable_id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `token` varchar(64) NOT NULL,
+  `abilities` text DEFAULT NULL,
   `last_used_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -423,12 +449,12 @@ INSERT INTO `personal_access_tokens` (`id`, `tokenable_type`, `tokenable_id`, `n
 --
 
 CREATE TABLE `role_permissions` (
-  `id` bigint UNSIGNED NOT NULL,
-  `role_id` bigint UNSIGNED NOT NULL,
-  `role_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `permission_id` bigint UNSIGNED NOT NULL,
-  `route` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `route_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `role_id` bigint(20) UNSIGNED NOT NULL,
+  `role_name` varchar(255) DEFAULT NULL,
+  `permission_id` bigint(20) UNSIGNED NOT NULL,
+  `route` varchar(255) NOT NULL,
+  `route_name` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -438,66 +464,26 @@ CREATE TABLE `role_permissions` (
 --
 
 INSERT INTO `role_permissions` (`id`, `role_id`, `role_name`, `permission_id`, `route`, `route_name`, `created_at`, `updated_at`) VALUES
-(1, 1, 'System Operator', 73, 'print/toll/ticket/{slug}', 'PrintTollTicket', '2025-02-02 09:00:23', NULL),
-(2, 1, 'System Operator', 71, 'view/toll/tickets', 'ViewTollTickets', '2025-02-02 09:00:23', NULL),
-(3, 1, 'System Operator', 70, 'save/toll/ticket', 'SaveTollTicket', '2025-02-02 09:00:23', NULL),
-(4, 1, 'System Operator', 69, 'create/toll/ticket', 'CreateTollTicket', '2025-02-02 09:00:23', NULL),
-(5, 1, 'System Operator', 56, 'laravel-filemanager/demo', 'unisharp.lfm.', '2025-02-02 09:00:23', NULL),
-(6, 1, 'System Operator', 55, 'laravel-filemanager/delete', 'unisharp.lfm.getDelete', '2025-02-02 09:00:23', NULL),
-(7, 1, 'System Operator', 54, 'laravel-filemanager/download', 'unisharp.lfm.getDownload', '2025-02-02 09:00:23', NULL),
-(8, 1, 'System Operator', 53, 'laravel-filemanager/doresizenew', 'unisharp.lfm.performResizeNew', '2025-02-02 09:00:23', NULL),
-(9, 1, 'System Operator', 52, 'laravel-filemanager/doresize', 'unisharp.lfm.performResize', '2025-02-02 09:00:23', NULL),
-(10, 1, 'System Operator', 51, 'laravel-filemanager/resize', 'unisharp.lfm.getResize', '2025-02-02 09:00:23', NULL),
-(11, 1, 'System Operator', 50, 'laravel-filemanager/rename', 'unisharp.lfm.getRename', '2025-02-02 09:00:23', NULL),
-(12, 1, 'System Operator', 49, 'laravel-filemanager/cropnewimage', 'unisharp.lfm.getNewCropImage', '2025-02-02 09:00:23', NULL),
-(13, 1, 'System Operator', 48, 'laravel-filemanager/cropimage', 'unisharp.lfm.getCropImage', '2025-02-02 09:00:23', NULL),
-(14, 1, 'System Operator', 47, 'laravel-filemanager/crop', 'unisharp.lfm.getCrop', '2025-02-02 09:00:23', NULL),
-(15, 1, 'System Operator', 46, 'laravel-filemanager/folders', 'unisharp.lfm.getFolders', '2025-02-02 09:00:23', NULL),
-(16, 1, 'System Operator', 45, 'laravel-filemanager/newfolder', 'unisharp.lfm.getAddfolder', '2025-02-02 09:00:23', NULL),
-(17, 1, 'System Operator', 44, 'laravel-filemanager/domove', 'unisharp.lfm.doMove', '2025-02-02 09:00:23', NULL),
-(18, 1, 'System Operator', 43, 'laravel-filemanager/move', 'unisharp.lfm.move', '2025-02-02 09:00:23', NULL),
-(19, 1, 'System Operator', 42, 'laravel-filemanager/jsonitems', 'unisharp.lfm.getItems', '2025-02-02 09:00:23', NULL),
-(20, 1, 'System Operator', 41, 'laravel-filemanager/upload', 'unisharp.lfm.upload', '2025-02-02 09:00:23', NULL),
-(21, 1, 'System Operator', 40, 'laravel-filemanager/errors', 'unisharp.lfm.getErrors', '2025-02-02 09:00:23', NULL),
-(22, 1, 'System Operator', 39, 'laravel-filemanager', 'unisharp.lfm.show', '2025-02-02 09:00:23', NULL),
-(23, 1, 'System Operator', 38, 'file-manager', NULL, '2025-02-02 09:00:23', NULL),
-(24, 1, 'System Operator', 37, 'ckeditor/upload', 'ckeditor.upload', '2025-02-02 09:00:23', NULL),
-(25, 1, 'System Operator', 36, 'ckeditor', NULL, '2025-02-02 09:00:23', NULL),
-(26, 1, 'System Operator', 35, 'change/password', 'changePassword', '2025-02-02 09:00:23', NULL),
-(27, 1, 'System Operator', 34, 'change/password/page', 'changePasswordPage', '2025-02-02 09:00:23', NULL),
-(28, 1, 'System Operator', 33, 'clear/cache', 'ClearCache', '2025-02-02 09:00:23', NULL),
-(29, 1, 'System Operator', 32, 'home', 'home', '2025-02-02 09:00:23', NULL),
-(30, 1, 'System Operator', 31, 'password/confirm', NULL, '2025-02-02 09:00:23', NULL),
-(31, 1, 'System Operator', 30, 'logout', 'logout', '2025-02-02 09:00:23', NULL),
-(32, 1, 'System Operator', 29, 'login', NULL, '2025-02-02 09:00:23', NULL),
-(33, 1, 'System Operator', 28, 'storage-link', NULL, '2025-02-02 09:00:23', NULL),
-(34, 1, 'System Operator', 27, 'config-clear', NULL, '2025-02-02 09:00:23', NULL),
-(35, 1, 'System Operator', 26, '/', NULL, '2025-02-02 09:00:23', NULL),
-(36, 1, 'System Operator', 25, 'filemanager/demo', 'unisharp.lfm.', '2025-02-02 09:00:23', NULL),
-(37, 1, 'System Operator', 24, 'filemanager/delete', 'unisharp.lfm.getDelete', '2025-02-02 09:00:23', NULL),
-(38, 1, 'System Operator', 23, 'filemanager/download', 'unisharp.lfm.getDownload', '2025-02-02 09:00:23', NULL),
-(39, 1, 'System Operator', 22, 'filemanager/doresizenew', 'unisharp.lfm.performResizeNew', '2025-02-02 09:00:23', NULL),
-(40, 1, 'System Operator', 21, 'filemanager/doresize', 'unisharp.lfm.performResize', '2025-02-02 09:00:23', NULL),
-(41, 1, 'System Operator', 20, 'filemanager/resize', 'unisharp.lfm.getResize', '2025-02-02 09:00:23', NULL),
-(42, 1, 'System Operator', 19, 'filemanager/rename', 'unisharp.lfm.getRename', '2025-02-02 09:00:23', NULL),
-(43, 1, 'System Operator', 18, 'filemanager/cropnewimage', 'unisharp.lfm.getNewCropImage', '2025-02-02 09:00:23', NULL),
-(44, 1, 'System Operator', 17, 'filemanager/cropimage', 'unisharp.lfm.getCropImage', '2025-02-02 09:00:23', NULL),
-(45, 1, 'System Operator', 16, 'filemanager/crop', 'unisharp.lfm.getCrop', '2025-02-02 09:00:23', NULL),
-(46, 1, 'System Operator', 15, 'filemanager/folders', 'unisharp.lfm.getFolders', '2025-02-02 09:00:23', NULL),
-(47, 1, 'System Operator', 14, 'filemanager/newfolder', 'unisharp.lfm.getAddfolder', '2025-02-02 09:00:23', NULL),
-(48, 1, 'System Operator', 13, 'filemanager/domove', 'unisharp.lfm.doMove', '2025-02-02 09:00:23', NULL),
-(49, 1, 'System Operator', 12, 'filemanager/move', 'unisharp.lfm.move', '2025-02-02 09:00:23', NULL),
-(50, 1, 'System Operator', 11, 'filemanager/jsonitems', 'unisharp.lfm.getItems', '2025-02-02 09:00:23', NULL),
-(51, 1, 'System Operator', 10, 'filemanager/upload', 'unisharp.lfm.upload', '2025-02-02 09:00:23', NULL),
-(52, 1, 'System Operator', 9, 'filemanager/errors', 'unisharp.lfm.getErrors', '2025-02-02 09:00:23', NULL),
-(53, 1, 'System Operator', 8, 'filemanager', 'unisharp.lfm.show', '2025-02-02 09:00:23', NULL),
-(54, 1, 'System Operator', 7, 'makesulg', NULL, '2025-02-02 09:00:23', NULL),
-(55, 1, 'System Operator', 6, '_debugbar/queries/explain', 'debugbar.queries.explain', '2025-02-02 09:00:23', NULL),
-(56, 1, 'System Operator', 5, '_debugbar/cache/{key}/{tags?}', 'debugbar.cache.delete', '2025-02-02 09:00:23', NULL),
-(57, 1, 'System Operator', 4, '_debugbar/assets/javascript', 'debugbar.assets.js', '2025-02-02 09:00:23', NULL),
-(58, 1, 'System Operator', 3, '_debugbar/assets/stylesheets', 'debugbar.assets.css', '2025-02-02 09:00:23', NULL),
-(59, 1, 'System Operator', 2, '_debugbar/clockwork/{id}', 'debugbar.clockwork', '2025-02-02 09:00:23', NULL),
-(60, 1, 'System Operator', 1, '_debugbar/open', 'debugbar.openhandler', '2025-02-02 09:00:23', NULL);
+(61, 1, 'System Operator', 73, 'print/toll/ticket/{slug}', 'PrintTollTicket', '2025-02-06 02:08:28', NULL),
+(62, 1, 'System Operator', 71, 'view/toll/tickets', 'ViewTollTickets', '2025-02-06 02:08:28', NULL),
+(63, 1, 'System Operator', 70, 'save/toll/ticket', 'SaveTollTicket', '2025-02-06 02:08:28', NULL),
+(64, 1, 'System Operator', 69, 'create/toll/ticket', 'CreateTollTicket', '2025-02-06 02:08:28', NULL),
+(65, 1, 'System Operator', 35, 'change/password', 'changePassword', '2025-02-06 02:08:28', NULL),
+(66, 1, 'System Operator', 34, 'change/password/page', 'changePasswordPage', '2025-02-06 02:08:28', NULL),
+(67, 1, 'System Operator', 33, 'clear/cache', 'ClearCache', '2025-02-06 02:08:28', NULL),
+(68, 1, 'System Operator', 32, 'home', 'home', '2025-02-06 02:08:28', NULL),
+(69, 1, 'System Operator', 31, 'password/confirm', NULL, '2025-02-06 02:08:28', NULL),
+(70, 1, 'System Operator', 30, 'logout', 'logout', '2025-02-06 02:08:28', NULL),
+(71, 1, 'System Operator', 29, 'login', NULL, '2025-02-06 02:08:28', NULL),
+(72, 1, 'System Operator', 27, 'config-clear', NULL, '2025-02-06 02:08:28', NULL),
+(73, 1, 'System Operator', 26, '/', NULL, '2025-02-06 02:08:28', NULL),
+(74, 1, 'System Operator', 7, 'makesulg', NULL, '2025-02-06 02:08:28', NULL),
+(75, 1, 'System Operator', 6, '_debugbar/queries/explain', 'debugbar.queries.explain', '2025-02-06 02:08:28', NULL),
+(76, 1, 'System Operator', 5, '_debugbar/cache/{key}/{tags?}', 'debugbar.cache.delete', '2025-02-06 02:08:28', NULL),
+(77, 1, 'System Operator', 4, '_debugbar/assets/javascript', 'debugbar.assets.js', '2025-02-06 02:08:28', NULL),
+(78, 1, 'System Operator', 3, '_debugbar/assets/stylesheets', 'debugbar.assets.css', '2025-02-06 02:08:28', NULL),
+(79, 1, 'System Operator', 2, '_debugbar/clockwork/{id}', 'debugbar.clockwork', '2025-02-06 02:08:28', NULL),
+(80, 1, 'System Operator', 1, '_debugbar/open', 'debugbar.openhandler', '2025-02-06 02:08:28', NULL);
 
 -- --------------------------------------------------------
 
@@ -506,11 +492,11 @@ INSERT INTO `role_permissions` (`id`, `role_id`, `role_name`, `permission_id`, `
 --
 
 CREATE TABLE `terminals` (
-  `id` bigint UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` longtext COLLATE utf8mb4_unicode_ci,
-  `slug` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `status` tinyint NOT NULL DEFAULT '1',
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `description` longtext DEFAULT NULL,
+  `slug` varchar(255) DEFAULT NULL,
+  `status` tinyint(4) NOT NULL DEFAULT 1,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -529,23 +515,23 @@ INSERT INTO `terminals` (`id`, `name`, `description`, `slug`, `status`, `created
 --
 
 CREATE TABLE `toll_tickets` (
-  `id` bigint UNSIGNED NOT NULL,
-  `ticket_no` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `terminal_id` bigint UNSIGNED DEFAULT NULL,
-  `terminal_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `user_id` bigint UNSIGNED DEFAULT NULL,
-  `user_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `vehicle_type_id` bigint UNSIGNED DEFAULT NULL,
-  `vehicle_type_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `ticket_price` double NOT NULL DEFAULT '0',
-  `amount_given` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'During Transaction',
-  `return_change` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'During Transaction',
-  `payment_method` tinyint NOT NULL DEFAULT '1' COMMENT '1=>Cash;2=>bKash;3=>nagad;4=>Card',
-  `driver_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `driver_contact` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `vehicle_reg_no` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `slug` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `status` tinyint NOT NULL DEFAULT '1' COMMENT '1=>Active; 0=>Inactive',
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `ticket_no` varchar(255) DEFAULT NULL,
+  `terminal_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `terminal_name` varchar(255) DEFAULT NULL,
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `user_name` varchar(255) DEFAULT NULL,
+  `vehicle_type_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `vehicle_type_name` varchar(255) DEFAULT NULL,
+  `ticket_price` double NOT NULL DEFAULT 0,
+  `amount_given` varchar(255) DEFAULT NULL COMMENT 'During Transaction',
+  `return_change` varchar(255) DEFAULT NULL COMMENT 'During Transaction',
+  `payment_method` tinyint(4) NOT NULL DEFAULT 1 COMMENT '1=>Cash;2=>bKash;3=>nagad;4=>Card',
+  `driver_name` varchar(255) DEFAULT NULL,
+  `driver_contact` varchar(255) DEFAULT NULL,
+  `vehicle_reg_no` varchar(255) DEFAULT NULL,
+  `slug` varchar(255) DEFAULT NULL,
+  `status` tinyint(4) NOT NULL DEFAULT 1 COMMENT '1=>Active; 0=>Inactive',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -560,7 +546,21 @@ INSERT INTO `toll_tickets` (`id`, `ticket_no`, `terminal_id`, `terminal_name`, `
 (3, '1738661275TVq', 1, 'Terminal-1', 1, 'Admin', 1, 'Trailer (Loaded/Empty)', 565, NULL, NULL, 1, NULL, NULL, NULL, '1738661275EamAT', 1, '2025-02-04 09:27:55', NULL),
 (4, '1738661335ptK', 1, 'Terminal-1', 1, 'Admin', 1, 'Trailer (Loaded/Empty)', 565, NULL, NULL, 1, NULL, NULL, NULL, '173866133523f1M', 1, '2025-02-04 09:28:55', NULL),
 (5, '1738661470USW', 1, 'Terminal-1', 1, 'Admin', 1, 'Trailer (Loaded/Empty)', 565, NULL, NULL, 1, NULL, NULL, NULL, '1738661470d3QfW', 1, '2025-02-04 09:31:10', NULL),
-(6, '1738671959hZT', 1, 'Terminal-1', 1, 'Admin', 7, 'Mini Bus/Coaster', 80, NULL, NULL, 1, NULL, NULL, NULL, '1738671959yvxA2', 1, '2025-02-04 12:25:59', NULL);
+(6, '1738671959hZT', 1, 'Terminal-1', 1, 'Admin', 7, 'Mini Bus/Coaster', 80, NULL, NULL, 1, NULL, NULL, NULL, '1738671959yvxA2', 1, '2025-02-04 12:25:59', NULL),
+(7, '1738750185Z4u', 1, 'Terminal-1', 1, 'Admin', 9, 'Four-Wheel Drive Vehicle', 60, NULL, NULL, 1, NULL, NULL, NULL, '1738750185LAWau', 1, '2025-02-05 15:09:45', NULL),
+(8, '1738790113BJW', 1, 'Terminal-1', 1, 'Admin', 10, 'Sedan Car', 40, NULL, NULL, 1, NULL, NULL, NULL, '1738790113nKvlS', 1, '2025-02-06 02:15:13', NULL),
+(9, '250206-1', 1, 'Terminal-1', 1, 'Admin', 11, 'Four-W Passenger Vehicle', 40, NULL, NULL, 1, NULL, NULL, NULL, '17387912309E4jN', 1, '2025-02-06 02:33:50', '2025-02-06 02:33:50'),
+(10, '250206-2', 1, 'Terminal-1', 1, 'Admin', 11, 'Four-W Passenger Vehicle', 40, NULL, NULL, 1, NULL, NULL, NULL, '1738791413XF8QP', 1, '2025-02-06 02:36:53', '2025-02-06 02:36:53'),
+(11, '250206-3', 1, 'Terminal-1', 1, 'Admin', 11, 'Four-W Passenger Vehicle', 40, NULL, NULL, 1, NULL, NULL, NULL, '1738791432lEptO', 1, '2025-02-06 02:37:12', '2025-02-06 02:37:12'),
+(12, '250206-4', 1, 'Terminal-1', 1, 'Admin', 11, 'Four-W Passenger Vehicle', 40, NULL, NULL, 1, NULL, NULL, NULL, '1738791479roGYT', 1, '2025-02-06 02:37:59', '2025-02-06 02:37:59'),
+(13, '250206-5', 1, 'Terminal-1', 1, 'Admin', 11, 'Four-W Passenger Vehicle', 40, NULL, NULL, 1, NULL, NULL, NULL, '1738791517vmVZB', 1, '2025-02-06 02:38:37', '2025-02-06 02:38:37'),
+(14, '250206-6', 1, 'Terminal-1', 1, 'Admin', 11, 'Four-W Passenger Vehicle', 40, NULL, NULL, 1, NULL, NULL, NULL, '1738791546u6jXM', 1, '2025-02-06 02:39:06', '2025-02-06 02:39:06'),
+(15, '250206-7', 1, 'Terminal-1', 1, 'Admin', 11, 'Four-W Passenger Vehicle', 40, NULL, NULL, 1, NULL, NULL, NULL, '1738791575CDZm6', 1, '2025-02-06 02:39:35', '2025-02-06 02:39:35'),
+(16, '250206-8', 1, 'Terminal-1', 1, 'Admin', 11, 'Four-W Passenger Vehicle', 40, NULL, NULL, 1, NULL, NULL, NULL, '1738791588HTV3y', 1, '2025-02-06 02:39:48', '2025-02-06 02:39:48'),
+(17, '250206-9', 1, 'Terminal-1', 1, 'Admin', 11, 'Four-W Passenger Vehicle', 40, NULL, NULL, 1, NULL, NULL, NULL, '1738791742BPN7b', 1, '2025-02-06 02:42:22', '2025-02-06 02:42:22'),
+(18, '250206-10', 1, 'Terminal-1', 1, 'Admin', 9, 'Four-Wheel Drive Vehicle', 60, NULL, NULL, 1, NULL, NULL, NULL, '1738791846unZRE', 1, '2025-02-06 02:44:06', '2025-02-06 02:44:06'),
+(19, '250206-11', 1, 'Terminal-1', 1, 'Admin', 9, 'Four-Wheel Drive Vehicle', 60, NULL, NULL, 1, NULL, NULL, NULL, '1738791858ZSieR', 1, '2025-02-06 02:44:18', '2025-02-06 02:44:18'),
+(20, '250206-12', 1, 'Terminal-1', 1, 'Admin', 5, 'Mini Truck', 170, NULL, NULL, 1, NULL, NULL, NULL, '1738791890AUhbT', 1, '2025-02-06 02:44:50', '2025-02-06 02:44:50');
 
 -- --------------------------------------------------------
 
@@ -569,19 +569,19 @@ INSERT INTO `toll_tickets` (`id`, `ticket_no`, `terminal_id`, `terminal_name`, `
 --
 
 CREATE TABLE `users` (
-  `id` bigint UNSIGNED NOT NULL,
-  `terminal_id` int DEFAULT NULL,
-  `image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `phone` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `terminal_id` int(11) DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
+  `name` varchar(255) NOT NULL,
+  `phone` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
-  `verification_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Used for Forget Password Verification',
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `user_type` tinyint NOT NULL DEFAULT '3' COMMENT '1=>Admin; 2=>User/Shop; 3=>Customer',
-  `address` longtext COLLATE utf8mb4_unicode_ci,
-  `status` tinyint NOT NULL DEFAULT '1' COMMENT '1=>Active; 0=>Inactive',
+  `verification_code` varchar(255) DEFAULT NULL COMMENT 'Used for Forget Password Verification',
+  `password` varchar(255) DEFAULT NULL,
+  `remember_token` varchar(100) DEFAULT NULL,
+  `user_type` tinyint(4) NOT NULL DEFAULT 3 COMMENT '1=>Admin; 2=>User/Shop; 3=>Customer',
+  `address` longtext DEFAULT NULL,
+  `status` tinyint(4) NOT NULL DEFAULT 1 COMMENT '1=>Active; 0=>Inactive',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -591,7 +591,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `terminal_id`, `image`, `name`, `phone`, `email`, `email_verified_at`, `verification_code`, `password`, `remember_token`, `user_type`, `address`, `status`, `created_at`, `updated_at`) VALUES
-(1, NULL, NULL, 'Admin', '01900000000', 'admin@gmail.com', '2025-02-02 03:54:50', '12312', '$2y$12$oHWN0HLlomKGtI9bp503POf.uujhNJmq6bS3M8f3u0PAcrHZYLzEq', NULL, 1, 'Dhaka, Bangladesh', 1, '2025-02-02 03:54:50', NULL);
+(1, NULL, NULL, 'Admin', '01900000000', 'admin@gmail.com', '2025-02-02 03:54:50', '12312', '$2y$12$oHWN0HLlomKGtI9bp503POf.uujhNJmq6bS3M8f3u0PAcrHZYLzEq', NULL, 1, 'Dhaka, Bangladesh', 1, '2025-02-02 03:54:50', NULL),
+(3, 1, NULL, 'Forrest Burks', '+1 (726) 844-4643', 'hevyxa@mailinator.com', NULL, NULL, '$2y$10$XIqdyr/GOVeEJTFCmBY7iOoc08XJUcm5Bz/npKv.F3w2P8FuMwaKa', NULL, 2, 'Dolor quos laboris s', 1, '2025-02-06 02:12:25', NULL);
 
 -- --------------------------------------------------------
 
@@ -600,9 +601,9 @@ INSERT INTO `users` (`id`, `terminal_id`, `image`, `name`, `phone`, `email`, `em
 --
 
 CREATE TABLE `user_roles` (
-  `id` bigint UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` longtext COLLATE utf8mb4_unicode_ci,
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `description` longtext DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -612,7 +613,7 @@ CREATE TABLE `user_roles` (
 --
 
 INSERT INTO `user_roles` (`id`, `name`, `description`, `created_at`, `updated_at`) VALUES
-(1, 'System Operator', NULL, '2025-02-02 09:00:23', NULL);
+(1, 'System Operator', NULL, '2025-02-02 09:00:23', '2025-02-06 02:08:28');
 
 -- --------------------------------------------------------
 
@@ -621,13 +622,13 @@ INSERT INTO `user_roles` (`id`, `name`, `description`, `created_at`, `updated_at
 --
 
 CREATE TABLE `user_role_permissions` (
-  `id` bigint UNSIGNED NOT NULL,
-  `user_id` bigint UNSIGNED NOT NULL,
-  `role_id` bigint UNSIGNED DEFAULT NULL,
-  `role_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `permission_id` bigint UNSIGNED NOT NULL,
-  `route` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `route_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `role_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `role_name` varchar(255) DEFAULT NULL,
+  `permission_id` bigint(20) UNSIGNED NOT NULL,
+  `route` varchar(255) NOT NULL,
+  `route_name` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -696,7 +697,27 @@ INSERT INTO `user_role_permissions` (`id`, `user_id`, `role_id`, `role_name`, `p
 (57, 2, 1, 'System Operator', 4, '_debugbar/assets/javascript', 'debugbar.assets.js', '2025-02-02 09:01:13', NULL),
 (58, 2, 1, 'System Operator', 3, '_debugbar/assets/stylesheets', 'debugbar.assets.css', '2025-02-02 09:01:13', NULL),
 (59, 2, 1, 'System Operator', 2, '_debugbar/clockwork/{id}', 'debugbar.clockwork', '2025-02-02 09:01:13', NULL),
-(60, 2, 1, 'System Operator', 1, '_debugbar/open', 'debugbar.openhandler', '2025-02-02 09:01:13', NULL);
+(60, 2, 1, 'System Operator', 1, '_debugbar/open', 'debugbar.openhandler', '2025-02-02 09:01:13', NULL),
+(61, 3, 1, 'System Operator', 73, 'print/toll/ticket/{slug}', 'PrintTollTicket', '2025-02-06 02:13:16', NULL),
+(62, 3, 1, 'System Operator', 71, 'view/toll/tickets', 'ViewTollTickets', '2025-02-06 02:13:16', NULL),
+(63, 3, 1, 'System Operator', 70, 'save/toll/ticket', 'SaveTollTicket', '2025-02-06 02:13:16', NULL),
+(64, 3, 1, 'System Operator', 69, 'create/toll/ticket', 'CreateTollTicket', '2025-02-06 02:13:16', NULL),
+(65, 3, 1, 'System Operator', 35, 'change/password', 'changePassword', '2025-02-06 02:13:16', NULL),
+(66, 3, 1, 'System Operator', 34, 'change/password/page', 'changePasswordPage', '2025-02-06 02:13:16', NULL),
+(67, 3, 1, 'System Operator', 33, 'clear/cache', 'ClearCache', '2025-02-06 02:13:16', NULL),
+(68, 3, 1, 'System Operator', 32, 'home', 'home', '2025-02-06 02:13:16', NULL),
+(69, 3, 1, 'System Operator', 31, 'password/confirm', NULL, '2025-02-06 02:13:16', NULL),
+(70, 3, 1, 'System Operator', 30, 'logout', 'logout', '2025-02-06 02:13:16', NULL),
+(71, 3, 1, 'System Operator', 29, 'login', NULL, '2025-02-06 02:13:16', NULL),
+(72, 3, 1, 'System Operator', 27, 'config-clear', NULL, '2025-02-06 02:13:16', NULL),
+(73, 3, 1, 'System Operator', 26, '/', NULL, '2025-02-06 02:13:16', NULL),
+(74, 3, 1, 'System Operator', 7, 'makesulg', NULL, '2025-02-06 02:13:16', NULL),
+(75, 3, 1, 'System Operator', 6, '_debugbar/queries/explain', 'debugbar.queries.explain', '2025-02-06 02:13:16', NULL),
+(76, 3, 1, 'System Operator', 5, '_debugbar/cache/{key}/{tags?}', 'debugbar.cache.delete', '2025-02-06 02:13:16', NULL),
+(77, 3, 1, 'System Operator', 4, '_debugbar/assets/javascript', 'debugbar.assets.js', '2025-02-06 02:13:16', NULL),
+(78, 3, 1, 'System Operator', 3, '_debugbar/assets/stylesheets', 'debugbar.assets.css', '2025-02-06 02:13:16', NULL),
+(79, 3, 1, 'System Operator', 2, '_debugbar/clockwork/{id}', 'debugbar.clockwork', '2025-02-06 02:13:16', NULL),
+(80, 3, 1, 'System Operator', 1, '_debugbar/open', 'debugbar.openhandler', '2025-02-06 02:13:16', NULL);
 
 -- --------------------------------------------------------
 
@@ -705,15 +726,15 @@ INSERT INTO `user_role_permissions` (`id`, `user_id`, `role_id`, `role_name`, `p
 --
 
 CREATE TABLE `vehicle_types` (
-  `id` bigint UNSIGNED NOT NULL,
-  `icon` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `type_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `price` double NOT NULL DEFAULT '0',
-  `description` longtext COLLATE utf8mb4_unicode_ci,
-  `color_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'For Toll Collection Receipt',
-  `slug` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `status` tinyint NOT NULL DEFAULT '1',
-  `serial` int NOT NULL DEFAULT '1',
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `icon` varchar(255) DEFAULT NULL,
+  `type_name` varchar(255) DEFAULT NULL,
+  `price` double NOT NULL DEFAULT 0,
+  `description` longtext DEFAULT NULL,
+  `color_code` varchar(255) DEFAULT NULL COMMENT 'For Toll Collection Receipt',
+  `slug` varchar(255) DEFAULT NULL,
+  `status` tinyint(4) NOT NULL DEFAULT 1,
+  `serial` int(11) NOT NULL DEFAULT 1,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -723,23 +744,29 @@ CREATE TABLE `vehicle_types` (
 --
 
 INSERT INTO `vehicle_types` (`id`, `icon`, `type_name`, `price`, `description`, `color_code`, `slug`, `status`, `serial`, `created_at`, `updated_at`) VALUES
-(1, 'vehicle_type_icons/txTEM1738664174.png', 'Trailer', 565, 'কন্টেনার / ভারী যন্ত্রপাতি / ভারী মালামাল / পরিবহন সমষ্ঠি যান', '#3d85c6', '1738660623Bc427', 1, 12, '2025-02-04 09:17:03', '2025-02-04 10:50:39'),
-(2, 'vehicle_type_icons/TDSrT1738664164.png', 'Heavy Truck', 260, 'তিন বা ততোধিক এক্সেল বিশিষ্ট ট্রাক, কাভার্ড ট্রাক, ভ্যান, কন্টেইনারবাহী ট্রাক, বেকার, ক্রেন এবং অন্যান্য আর্টিকুলেটেড যানবাহন।', '#3d85c6', '17386619455ecKp', 1, 11, '2025-02-04 09:39:05', '2025-02-04 10:50:39'),
-(3, 'vehicle_type_icons/pwv5d1738664336.png', 'Medium Truck', 200, NULL, '#3d85c6', '1738664336RyK20', 1, 10, '2025-02-04 10:18:56', '2025-02-04 10:50:39'),
-(4, 'vehicle_type_icons/1TxG91738664378.png', 'Large Bus', 150, NULL, '#3d85c6', '1738664378Miz73', 1, 9, '2025-02-04 10:19:38', '2025-02-04 10:50:39'),
-(5, 'vehicle_type_icons/ZyliL1738664414.png', 'Mini Truck', 170, NULL, '#3d85c6', '1738664414W3EAo', 1, 8, '2025-02-04 10:20:14', '2025-02-04 10:50:39'),
-(6, 'vehicle_type_icons/Jh6cx1738664436.png', 'Agricultural Vehicle', 75, NULL, '#3d85c6', '1738664436k09Zk', 1, 5, '2025-02-04 10:20:36', '2025-02-04 10:50:39'),
-(7, 'vehicle_type_icons/uDjAM1738664459.png', 'Mini Bus/Coaster', 80, NULL, '#3d85c6', '1738664459Df1hn', 1, 7, '2025-02-04 10:20:59', '2025-02-04 10:50:39'),
-(8, 'vehicle_type_icons/kHlIL1738664480.png', 'Microbus', 80, NULL, '#3d85c6', '17386644800TVhH', 1, 6, '2025-02-04 10:21:20', '2025-02-04 10:50:39'),
-(9, 'vehicle_type_icons/Ewgso1738664524.png', 'Four-Wheel Drive Vehicle', 60, NULL, '#3d85c6', '1738664524QPMi1', 1, 4, '2025-02-04 10:22:04', '2025-02-04 10:50:39'),
-(10, 'vehicle_type_icons/YTphR1738664553.png', 'Sedan Car', 40, NULL, '#3d85c6', '1738664553bEa4j', 1, 2, '2025-02-04 10:22:33', '2025-02-04 10:50:39'),
-(11, 'vehicle_type_icons/6hNop1738664581.png', 'Four-W Passenger Vehicle', 40, NULL, '#3d85c6', '1738664581EeVFS', 1, 3, '2025-02-04 10:23:01', '2025-02-04 10:51:14'),
-(12, 'vehicle_type_icons/OlhgK1738664613.png', 'Motorcycle', 10, NULL, '#3d85c6', '1738664613lANlW', 1, 1, '2025-02-04 10:23:33', '2025-02-04 10:53:52'),
-(13, 'vehicle_type_icons/5QXs81738664648.png', 'Rickshaw Van, Rickshaw, Bicycle, Pushcart', 20, NULL, '#3d85c6', '17386646484eRf8', 1, 13, '2025-02-04 10:24:08', '2025-02-04 10:50:39');
+(1, 'vehicle_type_icons/txTEM1738664174.png', 'Trailer', 565, 'কন্টেনার / ভারী যন্ত্রপাতি / ভারী মালামাল / পরিবহন সমষ্ঠি যান', NULL, '1738660623Bc427', 1, 12, '2025-02-04 09:17:03', '2025-02-04 10:50:39'),
+(2, 'vehicle_type_icons/TDSrT1738664164.png', 'Heavy Truck', 260, 'তিন বা ততোধিক এক্সেল বিশিষ্ট ট্রাক, কাভার্ড ট্রাক, ভ্যান, কন্টেইনারবাহী ট্রাক, বেকার, ক্রেন এবং অন্যান্য আর্টিকুলেটেড যানবাহন।', NULL, '17386619455ecKp', 1, 11, '2025-02-04 09:39:05', '2025-02-04 10:50:39'),
+(3, 'vehicle_type_icons/pwv5d1738664336.png', 'Medium Truck', 200, NULL, NULL, '1738664336RyK20', 1, 10, '2025-02-04 10:18:56', '2025-02-04 10:50:39'),
+(4, 'vehicle_type_icons/1TxG91738664378.png', 'Large Bus', 150, NULL, NULL, '1738664378Miz73', 1, 9, '2025-02-04 10:19:38', '2025-02-04 10:50:39'),
+(5, 'vehicle_type_icons/ZyliL1738664414.png', 'Mini Truck', 170, NULL, NULL, '1738664414W3EAo', 1, 8, '2025-02-04 10:20:14', '2025-02-04 10:50:39'),
+(6, 'vehicle_type_icons/Jh6cx1738664436.png', 'Agricultural Vehicle', 75, NULL, NULL, '1738664436k09Zk', 1, 5, '2025-02-04 10:20:36', '2025-02-04 10:50:39'),
+(7, 'vehicle_type_icons/uDjAM1738664459.png', 'Mini Bus/Coaster', 80, NULL, NULL, '1738664459Df1hn', 1, 7, '2025-02-04 10:20:59', '2025-02-04 10:50:39'),
+(8, 'vehicle_type_icons/kHlIL1738664480.png', 'Microbus', 80, NULL, NULL, '17386644800TVhH', 1, 6, '2025-02-04 10:21:20', '2025-02-04 10:50:39'),
+(9, 'vehicle_type_icons/Ewgso1738664524.png', 'Four-Wheel Drive Vehicle', 60, NULL, NULL, '1738664524QPMi1', 1, 4, '2025-02-04 10:22:04', '2025-02-04 10:50:39'),
+(10, 'vehicle_type_icons/YTphR1738664553.png', 'Sedan Car', 40, NULL, NULL, '1738664553bEa4j', 1, 2, '2025-02-04 10:22:33', '2025-02-04 10:50:39'),
+(11, 'vehicle_type_icons/6hNop1738664581.png', 'Four-W Passenger Vehicle', 40, NULL, NULL, '1738664581EeVFS', 1, 3, '2025-02-04 10:23:01', '2025-02-04 10:51:14'),
+(12, 'vehicle_type_icons/OlhgK1738664613.png', 'Motorcycle', 10, NULL, NULL, '1738664613lANlW', 1, 1, '2025-02-04 10:23:33', '2025-02-04 10:53:52'),
+(13, 'vehicle_type_icons/5QXs81738664648.png', 'Rickshaw Van, Rickshaw, Bicycle, Pushcart', 20, NULL, NULL, '17386646484eRf8', 1, 13, '2025-02-04 10:24:08', '2025-02-04 10:50:39');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `counters`
+--
+ALTER TABLE `counters`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `failed_jobs`
@@ -828,76 +855,82 @@ ALTER TABLE `vehicle_types`
 --
 
 --
+-- AUTO_INCREMENT for table `counters`
+--
+ALTER TABLE `counters`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `failed_jobs`
 --
 ALTER TABLE `failed_jobs`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `general_infos`
 --
 ALTER TABLE `general_infos`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=113;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=114;
 
 --
 -- AUTO_INCREMENT for table `permission_routes`
 --
 ALTER TABLE `permission_routes`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
 --
 ALTER TABLE `personal_access_tokens`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=106;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=106;
 
 --
 -- AUTO_INCREMENT for table `role_permissions`
 --
 ALTER TABLE `role_permissions`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
 
 --
 -- AUTO_INCREMENT for table `terminals`
 --
 ALTER TABLE `terminals`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `toll_tickets`
 --
 ALTER TABLE `toll_tickets`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `user_roles`
 --
 ALTER TABLE `user_roles`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `user_role_permissions`
 --
 ALTER TABLE `user_role_permissions`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
 
 --
 -- AUTO_INCREMENT for table `vehicle_types`
 --
 ALTER TABLE `vehicle_types`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
