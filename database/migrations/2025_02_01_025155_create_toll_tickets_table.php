@@ -18,6 +18,10 @@ return new class extends Migration
             $table->string('ticket_no')->nullable();
             $table->unsignedBigInteger('terminal_id')->nullable();
             $table->string('terminal_name')->nullable();
+
+            $table->unsignedBigInteger('counter_id')->nullable();
+            $table->string('counter_name')->nullable();
+
             $table->unsignedBigInteger('user_id')->nullable();
             $table->string('user_name')->nullable();
             $table->unsignedBigInteger('vehicle_type_id')->nullable();

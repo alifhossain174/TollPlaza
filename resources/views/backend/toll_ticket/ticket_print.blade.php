@@ -141,6 +141,10 @@
                     <td style="text-align: left; padding: 2px; font-size: 13px;">: {{$ticketInfo->terminal_name}}</td>
                 </tr>
                 <tr>
+                    <th style="text-align: left; padding: 2px; font-size: 13px;">Counter </th>
+                    <td style="text-align: left; padding: 2px; font-size: 13px;">: {{$ticketInfo->counter_name}}</td>
+                </tr>
+                <tr>
                     <th style="text-align: left; padding: 2px; font-size: 13px;">Vehicle Type </th>
                     <td style="text-align: left; padding: 2px; font-size: 11px;">: {{$ticketInfo->vehicle_type_name}}</td>
                 </tr>

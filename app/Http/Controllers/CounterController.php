@@ -6,10 +6,13 @@ use Carbon\Carbon;
 use App\Models\Counter;
 use App\Models\CounterSession;
 use App\Models\Terminal;
+use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Brian2694\Toastr\Facades\Toastr;
+use DateTime;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class CounterController extends Controller
@@ -99,7 +102,32 @@ class CounterController extends Controller
     public function viewCounterSessions(Request $request){
         if ($request->ajax()) {
 
-            $data = CounterSession::orderBy('id', 'desc')->get();
+            if(Auth::user()->user_type == 1)
+                $query = CounterSession::orderBy('id', 'desc');
+            else
+                $query = CounterSession::where('user_id', Auth::user()->id)->orderBy('id', 'desc');
+
+            // Continue with filtering
+            if ($request->terminal_id != '') {
+                $query->where('terminal_id', $request->terminal_id);
+            }
+            if ($request->counter_id != '') {
+                $query->where('counter_id', $request->counter_id);
+            }
+            if ($request->user_id != '') {
+                $query->where('user_id', $request->user_id);
+            }
+            if ($request->checkin_date_range != '') {
+                $dateRange = $request->checkin_date_range;
+                list($startDateStr, $endDateStr) = explode(" - ", $dateRange);
+                $startDate = DateTime::createFromFormat("M j, Y", trim($startDateStr));
+                $endDate = DateTime::createFromFormat("M j, Y", trim($endDateStr));
+                $formattedStartDate = $startDate ? $startDate->format("Y-m-d")." 00:00:00" : null;
+                $formattedEndDate = $endDate ? $endDate->format("Y-m-d"). " 23:59:59" : null;
+                $query->whereBetween('checkin_time', [$formattedStartDate, $formattedEndDate]);
+            }
+
+            $data = $query->get();
 
             return Datatables::of($data)
                     ->editColumn('status', function($data) {
@@ -118,7 +146,7 @@ class CounterController extends Controller
                         return date("d/m/y h:i a", strtotime($data->checkout_time));
                     })
                     ->editColumn('opening_balance', function($data) {
-                        if($data->opening_balance)
+                        if($data->opening_balance >= 0)
                         return number_format($data->opening_balance)."/=";
                     })
                     ->editColumn('closing_balance', function($data) {
@@ -128,14 +156,18 @@ class CounterController extends Controller
                     ->addIndexColumn()
                     ->addColumn('action', function($data){
                         $btn = "";
-                        if($data->status == 0)
+                        if($data->status == 0 && Auth::user()->user_type == 1)
                             $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip" data-id="'.$data->slug.'" data-original-title="Complete" class="btn-sm btn-success rounded completeBtn"><i class="fas fa-check"></i></a>';
                         return $btn;
                     })
                     ->rawColumns(['action', 'status'])
                     ->make(true);
         }
-        return view('backend.counter.sessions');
+
+        $terminals = Terminal::orderBy('name', 'asc')->get();
+        $users = User::get();
+        $counters = Counter::orderBy('name', 'asc')->get();
+        return view('backend.counter.sessions', compact('terminals', 'users', 'counters'));
     }
 
     public function completeCounterSession($slug){
@@ -144,5 +176,42 @@ class CounterController extends Controller
             'updated_at' => Carbon::now()
         ]);
         return response()->json(['success' => 'Session Completed successfully.']);
+    }
+
+    public function submitCounterCheckin(Request $request){
+
+        $counterInfo = Counter::where('id', $request->checkin_counter_id)->first();
+        $terminalInfo = Terminal::where('id', $counterInfo->terminal_id)->first();
+        $counterSession = CounterSession::where('counter_id', $counterInfo->id)->orderBy('id', 'desc')->first();
+
+        CounterSession::insert([
+            'terminal_id' => $terminalInfo ? $terminalInfo->id : null,
+            'terminal_name' => $terminalInfo ? $terminalInfo->name : null,
+            'counter_id' => $counterInfo ? $counterInfo->id : null,
+            'counter_name' => $counterInfo ? $counterInfo->name : null,
+            'user_id' => Auth::user()->id,
+            'user_name' => Auth::user()->name,
+            'checkin_time' => Carbon::now(),
+            'checkout_time' => null,
+            'opening_balance' => $counterSession ? $counterSession->closing_balance : 0,
+            'balance_missmatch' => $request->balance_missmatch,
+            'counter_status' => 0, //occupied
+            'status' => 0,
+            'slug' => time().str::random(5),
+            'created_at' => Carbon::now()
+        ]);
+
+        return response()->json(['success' => 'Counter Checked In successfully.']);
+    }
+
+    public function submitCounterCheckout(Request $request){
+        $lastCounterSession = CounterSession::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->first();
+        $lastCounterSession->checkout_time = Carbon::now();
+        $lastCounterSession->counter_status = 1;
+        $lastCounterSession->closing_balance = $request->closing_balance;
+        $lastCounterSession->updated_at = Carbon::now();
+        $lastCounterSession->save();
+
+        return response()->json(['success' => 'Counter Checked Out successfully.']);
     }
 }

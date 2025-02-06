@@ -93,6 +93,7 @@
                                     <th class="text-center">Ticket No</th>
                                     <th class="text-center">Entry Time</th>
                                     <th class="text-center">Terminal</th>
+                                    <th class="text-center">Counter</th>
                                     <th class="text-center">Operator</th>
                                     <th class="text-center">Vehicle Type</th>
                                     <th class="text-center">Price</th>
@@ -105,7 +106,7 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <th colspan="6"></th>
+                                    <th colspan="7"></th>
                                     <th></th>
                                     <th colspan="2"></th>
                                 </tr>
@@ -209,6 +210,7 @@
                     d.ticket_no = $("#ticket_no").val() || "";
                     d.vehicle_type_id = $("#vehicle_type_id").val();
                     d.terminal_id = $("#terminal_id").val();
+                    d.counter_id = $("#counter_id").val();
                     d.user_id = $("#user_id").val();
                     d.vehicle_reg_no = $("#vehicle_reg_no").val();
                     d.payment_method = $("#payment_method").val();
@@ -233,6 +235,10 @@
                     name: 'terminal_name'
                 },
                 {
+                    data: 'counter_name',
+                    name: 'counter_name'
+                },
+                {
                     data: 'user_name',
                     name: 'user_name'
                 },
@@ -252,10 +258,10 @@
             ],
             footerCallback: function(row, data, start, end, display) {
                 var api = this.api();
-                var totalFee = api.column(6, { page: 'current' }).data().reduce(function(a, b) {
+                var totalFee = api.column(7, { page: 'current' }).data().reduce(function(a, b) {
                     return parseFloat(a) + parseFloat(b);
                 }, 0);
-                $(api.column(6).footer()).html("৳ "+totalFee);
+                $(api.column(7).footer()).html("৳ "+totalFee);
             },
             dom: 'lBfrtip', // Include 'l' for length changing input (Show Entries)
             buttons: [
@@ -304,6 +310,7 @@
         function clearFilters(){
             $("#ticket_no").val("");
             $("#terminal_id").val("");
+            $("#counter_id").val("");
             $("#vehicle_type_id").val("");
             $("#user_id").val("");
             $("#vehicle_reg_no").val("");

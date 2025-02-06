@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 05, 2025 at 11:40 PM
+-- Generation Time: Feb 06, 2025 at 04:01 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -45,6 +45,42 @@ CREATE TABLE `counters` (
 INSERT INTO `counters` (`id`, `terminal_id`, `name`, `description`, `slug`, `status`, `created_at`, `updated_at`) VALUES
 (1, 1, 'Counter-1', 'Counter No 1', '17387939354LBwC', 1, '2025-02-06 03:18:55', '2025-02-06 03:37:45'),
 (3, 1, 'Counter-2', 'Counter No 2', '1738795083CMK1M', 1, '2025-02-06 03:38:03', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `counter_sessions`
+--
+
+CREATE TABLE `counter_sessions` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `terminal_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `terminal_name` varchar(255) DEFAULT NULL,
+  `counter_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `counter_name` varchar(255) DEFAULT NULL,
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `user_name` varchar(255) DEFAULT NULL,
+  `checkin_time` varchar(255) DEFAULT NULL,
+  `checkout_time` varchar(255) DEFAULT NULL,
+  `opening_balance` double DEFAULT NULL,
+  `closing_balance` double DEFAULT NULL,
+  `balance_missmatch` varchar(255) DEFAULT NULL COMMENT 'can be positive/negative',
+  `slug` varchar(255) DEFAULT NULL,
+  `counter_status` tinyint(4) NOT NULL DEFAULT 1 COMMENT '1=>Available; 0=>Occupied',
+  `status` tinyint(4) NOT NULL DEFAULT 0 COMMENT '0=>Pending; 1=>Completed',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `counter_sessions`
+--
+
+INSERT INTO `counter_sessions` (`id`, `terminal_id`, `terminal_name`, `counter_id`, `counter_name`, `user_id`, `user_name`, `checkin_time`, `checkout_time`, `opening_balance`, `closing_balance`, `balance_missmatch`, `slug`, `counter_status`, `status`, `created_at`, `updated_at`) VALUES
+(1, 1, 'Terminal-1', 3, 'Counter-2', 1, 'Admin', '2025-02-06 08:31:17', '2025-02-06 08:52:30', 0, 750, NULL, '17388090777qv74', 1, 1, '2025-02-06 07:31:17', '2025-02-06 07:57:00'),
+(2, 1, 'Terminal-1', 3, 'Counter-2', 1, 'Admin', '2025-02-06 08:53:00', '2025-02-06 08:53:12', 750, 1050, NULL, '17388103808XyPG', 1, 1, '2025-02-06 07:53:00', '2025-02-06 07:57:02'),
+(3, 1, 'Terminal-1', 3, 'Counter-2', 3, 'Forrest Burks', '2025-02-06 09:00:21', '2025-02-06 09:00:35', 1050, 1500, NULL, '1738810821PnQnn', 1, 0, '2025-02-06 08:00:21', '2025-02-06 08:00:35'),
+(4, 1, 'Terminal-1', 3, 'Counter-2', 3, 'Forrest Burks', '2025-02-06 09:00:44', NULL, 1500, NULL, NULL, '1738810844sFt3u', 0, 0, '2025-02-06 08:00:44', NULL);
 
 -- --------------------------------------------------------
 
@@ -178,7 +214,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (108, '2025_02_01_005127_create_vehicle_types_table', 56),
 (111, '2025_02_01_020057_create_terminals_table', 57),
 (112, '2025_02_01_025155_create_toll_tickets_table', 57),
-(113, '2025_02_06_035722_create_counters_table', 58);
+(113, '2025_02_06_035722_create_counters_table', 58),
+(115, '2025_02_06_055016_create_counter_sessions_table', 59);
 
 -- --------------------------------------------------------
 
@@ -212,106 +249,119 @@ CREATE TABLE `permission_routes` (
 --
 
 INSERT INTO `permission_routes` (`id`, `route`, `name`, `method`, `created_at`, `updated_at`) VALUES
-(1, '_debugbar/open', 'debugbar.openhandler', 'GET', '2025-02-02 08:58:02', NULL),
-(2, '_debugbar/clockwork/{id}', 'debugbar.clockwork', 'GET', '2025-02-02 08:58:02', NULL),
-(3, '_debugbar/assets/stylesheets', 'debugbar.assets.css', 'GET', '2025-02-02 08:58:02', NULL),
-(4, '_debugbar/assets/javascript', 'debugbar.assets.js', 'GET', '2025-02-02 08:58:02', NULL),
-(5, '_debugbar/cache/{key}/{tags?}', 'debugbar.cache.delete', 'DELETE', '2025-02-02 08:58:02', NULL),
-(6, '_debugbar/queries/explain', 'debugbar.queries.explain', 'POST', '2025-02-02 08:58:02', NULL),
-(7, 'makesulg', NULL, 'POST', '2025-02-02 08:58:02', '2025-02-02 08:58:02'),
-(8, 'filemanager', 'unisharp.lfm.show', 'GET', '2025-02-02 08:58:02', NULL),
-(9, 'filemanager/errors', 'unisharp.lfm.getErrors', 'GET', '2025-02-02 08:58:02', NULL),
-(10, 'filemanager/upload', 'unisharp.lfm.upload', 'GET', '2025-02-02 08:58:02', NULL),
-(11, 'filemanager/jsonitems', 'unisharp.lfm.getItems', 'GET', '2025-02-02 08:58:02', NULL),
-(12, 'filemanager/move', 'unisharp.lfm.move', 'GET', '2025-02-02 08:58:02', NULL),
-(13, 'filemanager/domove', 'unisharp.lfm.doMove', 'GET', '2025-02-02 08:58:02', NULL),
-(14, 'filemanager/newfolder', 'unisharp.lfm.getAddfolder', 'GET', '2025-02-02 08:58:02', NULL),
-(15, 'filemanager/folders', 'unisharp.lfm.getFolders', 'GET', '2025-02-02 08:58:02', NULL),
-(16, 'filemanager/crop', 'unisharp.lfm.getCrop', 'GET', '2025-02-02 08:58:02', NULL),
-(17, 'filemanager/cropimage', 'unisharp.lfm.getCropImage', 'GET', '2025-02-02 08:58:02', NULL),
-(18, 'filemanager/cropnewimage', 'unisharp.lfm.getNewCropImage', 'GET', '2025-02-02 08:58:02', NULL),
-(19, 'filemanager/rename', 'unisharp.lfm.getRename', 'GET', '2025-02-02 08:58:02', NULL),
-(20, 'filemanager/resize', 'unisharp.lfm.getResize', 'GET', '2025-02-02 08:58:02', NULL),
-(21, 'filemanager/doresize', 'unisharp.lfm.performResize', 'GET', '2025-02-02 08:58:02', NULL),
-(22, 'filemanager/doresizenew', 'unisharp.lfm.performResizeNew', 'GET', '2025-02-02 08:58:02', NULL),
-(23, 'filemanager/download', 'unisharp.lfm.getDownload', 'GET', '2025-02-02 08:58:02', NULL),
-(24, 'filemanager/delete', 'unisharp.lfm.getDelete', 'GET', '2025-02-02 08:58:02', NULL),
-(25, 'filemanager/demo', 'unisharp.lfm.', 'GET', '2025-02-02 08:58:02', NULL),
-(26, '/', NULL, 'GET', '2025-02-02 08:58:02', NULL),
-(27, 'config-clear', NULL, 'GET', '2025-02-02 08:58:02', NULL),
-(28, 'storage-link', NULL, 'GET', '2025-02-02 08:58:02', NULL),
-(29, 'login', NULL, 'POST', '2025-02-02 08:58:02', '2025-02-02 08:58:02'),
-(30, 'logout', 'logout', 'POST', '2025-02-02 08:58:02', NULL),
-(31, 'password/confirm', NULL, 'POST', '2025-02-02 08:58:02', '2025-02-02 08:58:02'),
-(32, 'home', 'home', 'GET', '2025-02-02 08:58:02', NULL),
-(33, 'clear/cache', 'ClearCache', 'GET', '2025-02-02 08:58:02', NULL),
-(34, 'change/password/page', 'changePasswordPage', 'GET', '2025-02-02 08:58:02', NULL),
-(35, 'change/password', 'changePassword', 'POST', '2025-02-02 08:58:02', NULL),
-(36, 'ckeditor', NULL, 'GET', '2025-02-02 08:58:02', NULL),
-(37, 'ckeditor/upload', 'ckeditor.upload', 'POST', '2025-02-02 08:58:02', NULL),
-(38, 'file-manager', NULL, 'GET', '2025-02-02 08:58:02', NULL),
-(39, 'laravel-filemanager', 'unisharp.lfm.show', 'GET', '2025-02-02 08:58:02', NULL),
-(40, 'laravel-filemanager/errors', 'unisharp.lfm.getErrors', 'GET', '2025-02-02 08:58:02', NULL),
-(41, 'laravel-filemanager/upload', 'unisharp.lfm.upload', 'GET', '2025-02-02 08:58:02', NULL),
-(42, 'laravel-filemanager/jsonitems', 'unisharp.lfm.getItems', 'GET', '2025-02-02 08:58:02', NULL),
-(43, 'laravel-filemanager/move', 'unisharp.lfm.move', 'GET', '2025-02-02 08:58:02', NULL),
-(44, 'laravel-filemanager/domove', 'unisharp.lfm.doMove', 'GET', '2025-02-02 08:58:02', NULL),
-(45, 'laravel-filemanager/newfolder', 'unisharp.lfm.getAddfolder', 'GET', '2025-02-02 08:58:02', NULL),
-(46, 'laravel-filemanager/folders', 'unisharp.lfm.getFolders', 'GET', '2025-02-02 08:58:02', NULL),
-(47, 'laravel-filemanager/crop', 'unisharp.lfm.getCrop', 'GET', '2025-02-02 08:58:02', NULL),
-(48, 'laravel-filemanager/cropimage', 'unisharp.lfm.getCropImage', 'GET', '2025-02-02 08:58:02', NULL),
-(49, 'laravel-filemanager/cropnewimage', 'unisharp.lfm.getNewCropImage', 'GET', '2025-02-02 08:58:02', NULL),
-(50, 'laravel-filemanager/rename', 'unisharp.lfm.getRename', 'GET', '2025-02-02 08:58:02', NULL),
-(51, 'laravel-filemanager/resize', 'unisharp.lfm.getResize', 'GET', '2025-02-02 08:58:02', NULL),
-(52, 'laravel-filemanager/doresize', 'unisharp.lfm.performResize', 'GET', '2025-02-02 08:58:02', NULL),
-(53, 'laravel-filemanager/doresizenew', 'unisharp.lfm.performResizeNew', 'GET', '2025-02-02 08:58:02', NULL),
-(54, 'laravel-filemanager/download', 'unisharp.lfm.getDownload', 'GET', '2025-02-02 08:58:02', NULL),
-(55, 'laravel-filemanager/delete', 'unisharp.lfm.getDelete', 'GET', '2025-02-02 08:58:02', NULL),
-(56, 'laravel-filemanager/demo', 'unisharp.lfm.', 'GET', '2025-02-02 08:58:02', NULL),
-(57, 'create/vehicle/type', 'CreateVehicleType', 'GET', '2025-02-02 08:58:02', NULL),
-(58, 'save/vehicle/type', 'SaveVehicleType', 'POST', '2025-02-02 08:58:02', NULL),
-(59, 'view/vehicle/types', 'ViewVehicleTypes', 'GET', '2025-02-02 08:58:02', NULL),
-(60, 'delete/vehicle/type/{id}', 'DeleteVehicleType', 'GET', '2025-02-02 08:58:02', NULL),
-(61, 'edit/vehicle/type/{id}', 'EditVehicleType', 'GET', '2025-02-02 08:58:02', NULL),
-(62, 'update/vehicle/type', 'UpdateVehicleType', 'POST', '2025-02-02 08:58:02', NULL),
-(63, 'create/terminal', 'CreateTerminal', 'GET', '2025-02-02 08:58:02', NULL),
-(64, 'save/terminal', 'SaveTerminal', 'POST', '2025-02-02 08:58:02', NULL),
-(65, 'view/terminals', 'ViewTerminals', 'GET', '2025-02-02 08:58:02', NULL),
-(66, 'delete/terminal/{id}', 'DeleteTerminal', 'GET', '2025-02-02 08:58:02', NULL),
-(67, 'edit/terminal/{id}', 'EditTerminal', 'GET', '2025-02-02 08:58:02', NULL),
-(68, 'update/terminal', 'UpdateTerminal', 'POST', '2025-02-02 08:58:02', NULL),
-(69, 'create/toll/ticket', 'CreateTollTicket', 'GET', '2025-02-02 08:58:02', NULL),
-(70, 'save/toll/ticket', 'SaveTollTicket', 'POST', '2025-02-02 08:58:02', NULL),
-(71, 'view/toll/tickets', 'ViewTollTickets', 'GET', '2025-02-02 08:58:02', NULL),
-(72, 'delete/toll/ticket/{id}', 'DeleteTollTicket', 'GET', '2025-02-02 08:58:02', NULL),
-(73, 'print/toll/ticket/{slug}', 'PrintTollTicket', 'GET', '2025-02-02 08:58:02', NULL),
-(74, 'view/system/users', 'ViewAllSystemUsers', 'GET', '2025-02-02 08:58:02', NULL),
-(75, 'add/new/system/user', 'AddNewSystemUsers', 'GET', '2025-02-02 08:58:02', NULL),
-(76, 'create/system/user', 'CreateSystemUsers', 'POST', '2025-02-02 08:58:02', NULL),
-(77, 'edit/system/user/{id}', 'EditSystemUser', 'GET', '2025-02-02 08:58:02', NULL),
-(78, 'delete/system/user/{id}', 'DeleteSystemUser', 'GET', '2025-02-02 08:58:02', NULL),
-(79, 'update/system/user', 'UpdateSystemUser', 'POST', '2025-02-02 08:58:02', NULL),
-(80, 'make/user/superadmin/{id}', 'MakeSuperAdmin', 'GET', '2025-02-02 08:58:02', NULL),
-(81, 'revoke/user/superadmin/{id}', 'RevokeSuperAdmin', 'GET', '2025-02-02 08:58:02', NULL),
-(82, 'change/user/status/{id}', 'ChangeUserStatus', 'GET', '2025-02-02 08:58:02', NULL),
-(83, 'delete/customer/{id}', 'DeleteCustomer', 'GET', '2025-02-02 08:58:02', NULL),
-(84, 'general/info', 'GeneralInfo', 'GET', '2025-02-02 08:58:02', NULL),
-(85, 'update/general/info', 'UpdateGeneralInfo', 'POST', '2025-02-02 08:58:02', NULL),
-(86, 'download/database/backup', 'DownloadDBBackup', 'GET', '2025-02-02 08:58:02', NULL),
-(87, 'download/vehicle/icon/backup', 'DownloadVehicleIconBackup', 'GET', '2025-02-02 08:58:02', NULL),
-(88, 'toll/ticket/report', 'TollTicketReport', 'GET', '2025-02-02 08:58:03', NULL),
-(89, 'generate/toll/ticket/report', 'GenerateTollTicketReport', 'POST', '2025-02-02 08:58:03', NULL),
-(90, 'view/permission/routes', 'ViewAllPermissionRoutes', 'GET', '2025-02-02 08:58:03', NULL),
-(91, 'regenerate/permission/routes', 'RegeneratePermissionRoutes', 'GET', '2025-02-02 08:58:03', NULL),
-(92, 'view/user/roles', 'ViewAllUserRoles', 'GET', '2025-02-02 08:58:03', NULL),
-(93, 'new/user/role', 'NewUserRole', 'GET', '2025-02-02 08:58:03', NULL),
-(94, 'save/user/role', 'SaveUserRole', 'POST', '2025-02-02 08:58:03', NULL),
-(95, 'delete/user/role/{id}', 'DeleteUserRole', 'GET', '2025-02-02 08:58:03', NULL),
-(96, 'edit/user/role/{id}', 'EditUserRole', 'GET', '2025-02-02 08:58:03', NULL),
-(97, 'update/user/role', 'UpdateUserRole', 'POST', '2025-02-02 08:58:03', NULL),
-(98, 'view/user/role/permission', 'ViewUserRolePermission', 'GET', '2025-02-02 08:58:03', NULL),
-(99, 'assign/role/permission/{id}', 'AssignRolePermission', 'GET', '2025-02-02 08:58:03', NULL),
-(100, 'save/assigned/role/permission', 'SaveAssignedRolePermission', 'POST', '2025-02-02 08:58:03', NULL);
+(1, '_debugbar/open', 'debugbar.openhandler', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(2, '_debugbar/clockwork/{id}', 'debugbar.clockwork', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(3, '_debugbar/assets/stylesheets', 'debugbar.assets.css', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(4, '_debugbar/assets/javascript', 'debugbar.assets.js', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(5, '_debugbar/cache/{key}/{tags?}', 'debugbar.cache.delete', 'DELETE', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(6, '_debugbar/queries/explain', 'debugbar.queries.explain', 'POST', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(7, 'makesulg', NULL, 'POST', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(8, 'filemanager', 'unisharp.lfm.show', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(9, 'filemanager/errors', 'unisharp.lfm.getErrors', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(10, 'filemanager/upload', 'unisharp.lfm.upload', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(11, 'filemanager/jsonitems', 'unisharp.lfm.getItems', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(12, 'filemanager/move', 'unisharp.lfm.move', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(13, 'filemanager/domove', 'unisharp.lfm.doMove', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(14, 'filemanager/newfolder', 'unisharp.lfm.getAddfolder', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(15, 'filemanager/folders', 'unisharp.lfm.getFolders', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(16, 'filemanager/crop', 'unisharp.lfm.getCrop', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(17, 'filemanager/cropimage', 'unisharp.lfm.getCropImage', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(18, 'filemanager/cropnewimage', 'unisharp.lfm.getNewCropImage', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(19, 'filemanager/rename', 'unisharp.lfm.getRename', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(20, 'filemanager/resize', 'unisharp.lfm.getResize', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(21, 'filemanager/doresize', 'unisharp.lfm.performResize', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(22, 'filemanager/doresizenew', 'unisharp.lfm.performResizeNew', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(23, 'filemanager/download', 'unisharp.lfm.getDownload', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(24, 'filemanager/delete', 'unisharp.lfm.getDelete', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(25, 'filemanager/demo', 'unisharp.lfm.', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(26, '/', NULL, 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(27, 'config-clear', NULL, 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(28, 'storage-link', NULL, 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(29, 'login', NULL, 'POST', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(30, 'logout', 'logout', 'POST', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(31, 'password/confirm', NULL, 'POST', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(32, 'home', 'home', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(33, 'clear/cache', 'ClearCache', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(34, 'change/password/page', 'changePasswordPage', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(35, 'change/password', 'changePassword', 'POST', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(36, 'ckeditor', NULL, 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(37, 'ckeditor/upload', 'ckeditor.upload', 'POST', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(38, 'file-manager', NULL, 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(39, 'laravel-filemanager', 'unisharp.lfm.show', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(40, 'laravel-filemanager/errors', 'unisharp.lfm.getErrors', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(41, 'laravel-filemanager/upload', 'unisharp.lfm.upload', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(42, 'laravel-filemanager/jsonitems', 'unisharp.lfm.getItems', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(43, 'laravel-filemanager/move', 'unisharp.lfm.move', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(44, 'laravel-filemanager/domove', 'unisharp.lfm.doMove', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(45, 'laravel-filemanager/newfolder', 'unisharp.lfm.getAddfolder', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(46, 'laravel-filemanager/folders', 'unisharp.lfm.getFolders', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(47, 'laravel-filemanager/crop', 'unisharp.lfm.getCrop', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(48, 'laravel-filemanager/cropimage', 'unisharp.lfm.getCropImage', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(49, 'laravel-filemanager/cropnewimage', 'unisharp.lfm.getNewCropImage', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(50, 'laravel-filemanager/rename', 'unisharp.lfm.getRename', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(51, 'laravel-filemanager/resize', 'unisharp.lfm.getResize', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(52, 'laravel-filemanager/doresize', 'unisharp.lfm.performResize', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(53, 'laravel-filemanager/doresizenew', 'unisharp.lfm.performResizeNew', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(54, 'laravel-filemanager/download', 'unisharp.lfm.getDownload', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(55, 'laravel-filemanager/delete', 'unisharp.lfm.getDelete', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(56, 'laravel-filemanager/demo', 'unisharp.lfm.', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(57, 'create/vehicle/type', 'CreateVehicleType', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(58, 'save/vehicle/type', 'SaveVehicleType', 'POST', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(59, 'view/vehicle/types', 'ViewVehicleTypes', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(60, 'delete/vehicle/type/{id}', 'DeleteVehicleType', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(61, 'edit/vehicle/type/{id}', 'EditVehicleType', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(62, 'update/vehicle/type', 'UpdateVehicleType', 'POST', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(63, 'create/terminal', 'CreateTerminal', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(64, 'save/terminal', 'SaveTerminal', 'POST', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(65, 'view/terminals', 'ViewTerminals', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(66, 'delete/terminal/{id}', 'DeleteTerminal', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(67, 'edit/terminal/{id}', 'EditTerminal', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(68, 'update/terminal', 'UpdateTerminal', 'POST', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(69, 'create/toll/ticket', 'CreateTollTicket', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(70, 'save/toll/ticket', 'SaveTollTicket', 'POST', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(71, 'view/toll/tickets', 'ViewTollTickets', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(72, 'delete/toll/ticket/{id}', 'DeleteTollTicket', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(73, 'print/toll/ticket/{slug}', 'PrintTollTicket', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(74, 'view/system/users', 'ViewAllSystemUsers', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(75, 'add/new/system/user', 'AddNewSystemUsers', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(76, 'create/system/user', 'CreateSystemUsers', 'POST', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(77, 'edit/system/user/{id}', 'EditSystemUser', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(78, 'delete/system/user/{id}', 'DeleteSystemUser', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(79, 'update/system/user', 'UpdateSystemUser', 'POST', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(80, 'make/user/superadmin/{id}', 'MakeSuperAdmin', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(81, 'revoke/user/superadmin/{id}', 'RevokeSuperAdmin', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(82, 'change/user/status/{id}', 'ChangeUserStatus', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(83, 'delete/customer/{id}', 'DeleteCustomer', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(84, 'general/info', 'GeneralInfo', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(85, 'update/general/info', 'UpdateGeneralInfo', 'POST', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(86, 'download/database/backup', 'DownloadDBBackup', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(87, 'download/vehicle/icon/backup', 'DownloadVehicleIconBackup', 'GET', '2025-02-02 08:58:02', '2025-02-06 07:57:21'),
+(88, 'toll/ticket/report', 'TollTicketReport', 'GET', '2025-02-02 08:58:03', '2025-02-06 07:57:21'),
+(89, 'generate/toll/ticket/report', 'GenerateTollTicketReport', 'POST', '2025-02-02 08:58:03', '2025-02-06 07:57:21'),
+(90, 'view/permission/routes', 'ViewAllPermissionRoutes', 'GET', '2025-02-02 08:58:03', '2025-02-06 07:57:21'),
+(91, 'regenerate/permission/routes', 'RegeneratePermissionRoutes', 'GET', '2025-02-02 08:58:03', '2025-02-06 07:57:21'),
+(92, 'view/user/roles', 'ViewAllUserRoles', 'GET', '2025-02-02 08:58:03', '2025-02-06 07:57:21'),
+(93, 'new/user/role', 'NewUserRole', 'GET', '2025-02-02 08:58:03', '2025-02-06 07:57:21'),
+(94, 'save/user/role', 'SaveUserRole', 'POST', '2025-02-02 08:58:03', '2025-02-06 07:57:21'),
+(95, 'delete/user/role/{id}', 'DeleteUserRole', 'GET', '2025-02-02 08:58:03', '2025-02-06 07:57:21'),
+(96, 'edit/user/role/{id}', 'EditUserRole', 'GET', '2025-02-02 08:58:03', '2025-02-06 07:57:21'),
+(97, 'update/user/role', 'UpdateUserRole', 'POST', '2025-02-02 08:58:03', '2025-02-06 07:57:22'),
+(98, 'view/user/role/permission', 'ViewUserRolePermission', 'GET', '2025-02-02 08:58:03', '2025-02-06 07:57:22'),
+(99, 'assign/role/permission/{id}', 'AssignRolePermission', 'GET', '2025-02-02 08:58:03', '2025-02-06 07:57:22'),
+(100, 'save/assigned/role/permission', 'SaveAssignedRolePermission', 'POST', '2025-02-02 08:58:03', '2025-02-06 07:57:22'),
+(101, 'rearrange/vehicle/types', 'RearrangeVehicleType', 'GET', '2025-02-06 07:57:21', NULL),
+(102, 'save/rearranged/order', 'SaveRearrangedVehicleType', 'POST', '2025-02-06 07:57:21', NULL),
+(103, 'create/counter', 'CreateCounter', 'GET', '2025-02-06 07:57:21', NULL),
+(104, 'save/counter', 'SaveCounter', 'POST', '2025-02-06 07:57:21', NULL),
+(105, 'view/counters', 'ViewCounters', 'GET', '2025-02-06 07:57:21', NULL),
+(106, 'delete/counter/{id}', 'DeleteCounter', 'GET', '2025-02-06 07:57:21', NULL),
+(107, 'edit/counter/{slug}', 'EditCounter', 'GET', '2025-02-06 07:57:21', NULL),
+(108, 'update/counter', 'UpdateCounter', 'POST', '2025-02-06 07:57:21', NULL),
+(109, 'terminal/wise/counter', 'TerminalWiseCounter', 'POST', '2025-02-06 07:57:21', NULL),
+(110, 'view/counter/sessions', 'ViewCounterSessions', 'GET', '2025-02-06 07:57:21', NULL),
+(111, 'complete/counter/session/{slug}', 'CompleteCounterSession', 'GET', '2025-02-06 07:57:21', NULL),
+(112, 'submit/counter/checkin', 'SubmitCounterCheckin', 'POST', '2025-02-06 07:57:21', NULL),
+(113, 'submit/counter/checkout', 'SubmitCounterCheckout', 'POST', '2025-02-06 07:57:21', NULL);
 
 -- --------------------------------------------------------
 
@@ -464,26 +514,29 @@ CREATE TABLE `role_permissions` (
 --
 
 INSERT INTO `role_permissions` (`id`, `role_id`, `role_name`, `permission_id`, `route`, `route_name`, `created_at`, `updated_at`) VALUES
-(61, 1, 'System Operator', 73, 'print/toll/ticket/{slug}', 'PrintTollTicket', '2025-02-06 02:08:28', NULL),
-(62, 1, 'System Operator', 71, 'view/toll/tickets', 'ViewTollTickets', '2025-02-06 02:08:28', NULL),
-(63, 1, 'System Operator', 70, 'save/toll/ticket', 'SaveTollTicket', '2025-02-06 02:08:28', NULL),
-(64, 1, 'System Operator', 69, 'create/toll/ticket', 'CreateTollTicket', '2025-02-06 02:08:28', NULL),
-(65, 1, 'System Operator', 35, 'change/password', 'changePassword', '2025-02-06 02:08:28', NULL),
-(66, 1, 'System Operator', 34, 'change/password/page', 'changePasswordPage', '2025-02-06 02:08:28', NULL),
-(67, 1, 'System Operator', 33, 'clear/cache', 'ClearCache', '2025-02-06 02:08:28', NULL),
-(68, 1, 'System Operator', 32, 'home', 'home', '2025-02-06 02:08:28', NULL),
-(69, 1, 'System Operator', 31, 'password/confirm', NULL, '2025-02-06 02:08:28', NULL),
-(70, 1, 'System Operator', 30, 'logout', 'logout', '2025-02-06 02:08:28', NULL),
-(71, 1, 'System Operator', 29, 'login', NULL, '2025-02-06 02:08:28', NULL),
-(72, 1, 'System Operator', 27, 'config-clear', NULL, '2025-02-06 02:08:28', NULL),
-(73, 1, 'System Operator', 26, '/', NULL, '2025-02-06 02:08:28', NULL),
-(74, 1, 'System Operator', 7, 'makesulg', NULL, '2025-02-06 02:08:28', NULL),
-(75, 1, 'System Operator', 6, '_debugbar/queries/explain', 'debugbar.queries.explain', '2025-02-06 02:08:28', NULL),
-(76, 1, 'System Operator', 5, '_debugbar/cache/{key}/{tags?}', 'debugbar.cache.delete', '2025-02-06 02:08:28', NULL),
-(77, 1, 'System Operator', 4, '_debugbar/assets/javascript', 'debugbar.assets.js', '2025-02-06 02:08:28', NULL),
-(78, 1, 'System Operator', 3, '_debugbar/assets/stylesheets', 'debugbar.assets.css', '2025-02-06 02:08:28', NULL),
-(79, 1, 'System Operator', 2, '_debugbar/clockwork/{id}', 'debugbar.clockwork', '2025-02-06 02:08:28', NULL),
-(80, 1, 'System Operator', 1, '_debugbar/open', 'debugbar.openhandler', '2025-02-06 02:08:28', NULL);
+(102, 1, 'System Operator', 113, 'submit/counter/checkout', 'SubmitCounterCheckout', '2025-02-06 07:59:34', NULL),
+(103, 1, 'System Operator', 112, 'submit/counter/checkin', 'SubmitCounterCheckin', '2025-02-06 07:59:34', NULL),
+(104, 1, 'System Operator', 110, 'view/counter/sessions', 'ViewCounterSessions', '2025-02-06 07:59:34', NULL),
+(105, 1, 'System Operator', 73, 'print/toll/ticket/{slug}', 'PrintTollTicket', '2025-02-06 07:59:34', NULL),
+(106, 1, 'System Operator', 71, 'view/toll/tickets', 'ViewTollTickets', '2025-02-06 07:59:34', NULL),
+(107, 1, 'System Operator', 70, 'save/toll/ticket', 'SaveTollTicket', '2025-02-06 07:59:34', NULL),
+(108, 1, 'System Operator', 69, 'create/toll/ticket', 'CreateTollTicket', '2025-02-06 07:59:34', NULL),
+(109, 1, 'System Operator', 35, 'change/password', 'changePassword', '2025-02-06 07:59:34', NULL),
+(110, 1, 'System Operator', 34, 'change/password/page', 'changePasswordPage', '2025-02-06 07:59:34', NULL),
+(111, 1, 'System Operator', 33, 'clear/cache', 'ClearCache', '2025-02-06 07:59:34', NULL),
+(112, 1, 'System Operator', 32, 'home', 'home', '2025-02-06 07:59:34', NULL),
+(113, 1, 'System Operator', 31, 'password/confirm', NULL, '2025-02-06 07:59:34', NULL),
+(114, 1, 'System Operator', 30, 'logout', 'logout', '2025-02-06 07:59:34', NULL),
+(115, 1, 'System Operator', 29, 'login', NULL, '2025-02-06 07:59:34', NULL),
+(116, 1, 'System Operator', 27, 'config-clear', NULL, '2025-02-06 07:59:34', NULL),
+(117, 1, 'System Operator', 26, '/', NULL, '2025-02-06 07:59:34', NULL),
+(118, 1, 'System Operator', 7, 'makesulg', NULL, '2025-02-06 07:59:34', NULL),
+(119, 1, 'System Operator', 6, '_debugbar/queries/explain', 'debugbar.queries.explain', '2025-02-06 07:59:34', NULL),
+(120, 1, 'System Operator', 5, '_debugbar/cache/{key}/{tags?}', 'debugbar.cache.delete', '2025-02-06 07:59:34', NULL),
+(121, 1, 'System Operator', 4, '_debugbar/assets/javascript', 'debugbar.assets.js', '2025-02-06 07:59:34', NULL),
+(122, 1, 'System Operator', 3, '_debugbar/assets/stylesheets', 'debugbar.assets.css', '2025-02-06 07:59:34', NULL),
+(123, 1, 'System Operator', 2, '_debugbar/clockwork/{id}', 'debugbar.clockwork', '2025-02-06 07:59:34', NULL),
+(124, 1, 'System Operator', 1, '_debugbar/open', 'debugbar.openhandler', '2025-02-06 07:59:34', NULL);
 
 -- --------------------------------------------------------
 
@@ -519,6 +572,8 @@ CREATE TABLE `toll_tickets` (
   `ticket_no` varchar(255) DEFAULT NULL,
   `terminal_id` bigint(20) UNSIGNED DEFAULT NULL,
   `terminal_name` varchar(255) DEFAULT NULL,
+  `counter_id` int(11) DEFAULT NULL,
+  `counter_name` varchar(255) DEFAULT NULL,
   `user_id` bigint(20) UNSIGNED DEFAULT NULL,
   `user_name` varchar(255) DEFAULT NULL,
   `vehicle_type_id` bigint(20) UNSIGNED DEFAULT NULL,
@@ -540,27 +595,29 @@ CREATE TABLE `toll_tickets` (
 -- Dumping data for table `toll_tickets`
 --
 
-INSERT INTO `toll_tickets` (`id`, `ticket_no`, `terminal_id`, `terminal_name`, `user_id`, `user_name`, `vehicle_type_id`, `vehicle_type_name`, `ticket_price`, `amount_given`, `return_change`, `payment_method`, `driver_name`, `driver_contact`, `vehicle_reg_no`, `slug`, `status`, `created_at`, `updated_at`) VALUES
-(1, '1738661110Vfl', 1, 'Terminal-1', 1, 'Admin', 1, 'Trailer (Loaded/Empty)', 565, NULL, NULL, 1, NULL, NULL, NULL, '1738661110pzLN6', 1, '2025-02-04 09:25:10', NULL),
-(2, '1738661268dRN', 1, 'Terminal-1', 1, 'Admin', 1, 'Trailer (Loaded/Empty)', 565, NULL, NULL, 1, NULL, NULL, NULL, '1738661268zOl3Z', 1, '2025-02-04 09:27:48', NULL),
-(3, '1738661275TVq', 1, 'Terminal-1', 1, 'Admin', 1, 'Trailer (Loaded/Empty)', 565, NULL, NULL, 1, NULL, NULL, NULL, '1738661275EamAT', 1, '2025-02-04 09:27:55', NULL),
-(4, '1738661335ptK', 1, 'Terminal-1', 1, 'Admin', 1, 'Trailer (Loaded/Empty)', 565, NULL, NULL, 1, NULL, NULL, NULL, '173866133523f1M', 1, '2025-02-04 09:28:55', NULL),
-(5, '1738661470USW', 1, 'Terminal-1', 1, 'Admin', 1, 'Trailer (Loaded/Empty)', 565, NULL, NULL, 1, NULL, NULL, NULL, '1738661470d3QfW', 1, '2025-02-04 09:31:10', NULL),
-(6, '1738671959hZT', 1, 'Terminal-1', 1, 'Admin', 7, 'Mini Bus/Coaster', 80, NULL, NULL, 1, NULL, NULL, NULL, '1738671959yvxA2', 1, '2025-02-04 12:25:59', NULL),
-(7, '1738750185Z4u', 1, 'Terminal-1', 1, 'Admin', 9, 'Four-Wheel Drive Vehicle', 60, NULL, NULL, 1, NULL, NULL, NULL, '1738750185LAWau', 1, '2025-02-05 15:09:45', NULL),
-(8, '1738790113BJW', 1, 'Terminal-1', 1, 'Admin', 10, 'Sedan Car', 40, NULL, NULL, 1, NULL, NULL, NULL, '1738790113nKvlS', 1, '2025-02-06 02:15:13', NULL),
-(9, '250206-1', 1, 'Terminal-1', 1, 'Admin', 11, 'Four-W Passenger Vehicle', 40, NULL, NULL, 1, NULL, NULL, NULL, '17387912309E4jN', 1, '2025-02-06 02:33:50', '2025-02-06 02:33:50'),
-(10, '250206-2', 1, 'Terminal-1', 1, 'Admin', 11, 'Four-W Passenger Vehicle', 40, NULL, NULL, 1, NULL, NULL, NULL, '1738791413XF8QP', 1, '2025-02-06 02:36:53', '2025-02-06 02:36:53'),
-(11, '250206-3', 1, 'Terminal-1', 1, 'Admin', 11, 'Four-W Passenger Vehicle', 40, NULL, NULL, 1, NULL, NULL, NULL, '1738791432lEptO', 1, '2025-02-06 02:37:12', '2025-02-06 02:37:12'),
-(12, '250206-4', 1, 'Terminal-1', 1, 'Admin', 11, 'Four-W Passenger Vehicle', 40, NULL, NULL, 1, NULL, NULL, NULL, '1738791479roGYT', 1, '2025-02-06 02:37:59', '2025-02-06 02:37:59'),
-(13, '250206-5', 1, 'Terminal-1', 1, 'Admin', 11, 'Four-W Passenger Vehicle', 40, NULL, NULL, 1, NULL, NULL, NULL, '1738791517vmVZB', 1, '2025-02-06 02:38:37', '2025-02-06 02:38:37'),
-(14, '250206-6', 1, 'Terminal-1', 1, 'Admin', 11, 'Four-W Passenger Vehicle', 40, NULL, NULL, 1, NULL, NULL, NULL, '1738791546u6jXM', 1, '2025-02-06 02:39:06', '2025-02-06 02:39:06'),
-(15, '250206-7', 1, 'Terminal-1', 1, 'Admin', 11, 'Four-W Passenger Vehicle', 40, NULL, NULL, 1, NULL, NULL, NULL, '1738791575CDZm6', 1, '2025-02-06 02:39:35', '2025-02-06 02:39:35'),
-(16, '250206-8', 1, 'Terminal-1', 1, 'Admin', 11, 'Four-W Passenger Vehicle', 40, NULL, NULL, 1, NULL, NULL, NULL, '1738791588HTV3y', 1, '2025-02-06 02:39:48', '2025-02-06 02:39:48'),
-(17, '250206-9', 1, 'Terminal-1', 1, 'Admin', 11, 'Four-W Passenger Vehicle', 40, NULL, NULL, 1, NULL, NULL, NULL, '1738791742BPN7b', 1, '2025-02-06 02:42:22', '2025-02-06 02:42:22'),
-(18, '250206-10', 1, 'Terminal-1', 1, 'Admin', 9, 'Four-Wheel Drive Vehicle', 60, NULL, NULL, 1, NULL, NULL, NULL, '1738791846unZRE', 1, '2025-02-06 02:44:06', '2025-02-06 02:44:06'),
-(19, '250206-11', 1, 'Terminal-1', 1, 'Admin', 9, 'Four-Wheel Drive Vehicle', 60, NULL, NULL, 1, NULL, NULL, NULL, '1738791858ZSieR', 1, '2025-02-06 02:44:18', '2025-02-06 02:44:18'),
-(20, '250206-12', 1, 'Terminal-1', 1, 'Admin', 5, 'Mini Truck', 170, NULL, NULL, 1, NULL, NULL, NULL, '1738791890AUhbT', 1, '2025-02-06 02:44:50', '2025-02-06 02:44:50');
+INSERT INTO `toll_tickets` (`id`, `ticket_no`, `terminal_id`, `terminal_name`, `counter_id`, `counter_name`, `user_id`, `user_name`, `vehicle_type_id`, `vehicle_type_name`, `ticket_price`, `amount_given`, `return_change`, `payment_method`, `driver_name`, `driver_contact`, `vehicle_reg_no`, `slug`, `status`, `created_at`, `updated_at`) VALUES
+(1, '1738661110Vfl', 1, 'Terminal-1', NULL, NULL, 1, 'Admin', 1, 'Trailer (Loaded/Empty)', 565, NULL, NULL, 1, NULL, NULL, NULL, '1738661110pzLN6', 1, '2025-02-04 09:25:10', NULL),
+(2, '1738661268dRN', 1, 'Terminal-1', NULL, NULL, 1, 'Admin', 1, 'Trailer (Loaded/Empty)', 565, NULL, NULL, 1, NULL, NULL, NULL, '1738661268zOl3Z', 1, '2025-02-04 09:27:48', NULL),
+(3, '1738661275TVq', 1, 'Terminal-1', NULL, NULL, 1, 'Admin', 1, 'Trailer (Loaded/Empty)', 565, NULL, NULL, 1, NULL, NULL, NULL, '1738661275EamAT', 1, '2025-02-04 09:27:55', NULL),
+(4, '1738661335ptK', 1, 'Terminal-1', NULL, NULL, 1, 'Admin', 1, 'Trailer (Loaded/Empty)', 565, NULL, NULL, 1, NULL, NULL, NULL, '173866133523f1M', 1, '2025-02-04 09:28:55', NULL),
+(5, '1738661470USW', 1, 'Terminal-1', NULL, NULL, 1, 'Admin', 1, 'Trailer (Loaded/Empty)', 565, NULL, NULL, 1, NULL, NULL, NULL, '1738661470d3QfW', 1, '2025-02-04 09:31:10', NULL),
+(6, '1738671959hZT', 1, 'Terminal-1', NULL, NULL, 1, 'Admin', 7, 'Mini Bus/Coaster', 80, NULL, NULL, 1, NULL, NULL, NULL, '1738671959yvxA2', 1, '2025-02-04 12:25:59', NULL),
+(7, '1738750185Z4u', 1, 'Terminal-1', NULL, NULL, 1, 'Admin', 9, 'Four-Wheel Drive Vehicle', 60, NULL, NULL, 1, NULL, NULL, NULL, '1738750185LAWau', 1, '2025-02-05 15:09:45', NULL),
+(8, '1738790113BJW', 1, 'Terminal-1', NULL, NULL, 1, 'Admin', 10, 'Sedan Car', 40, NULL, NULL, 1, NULL, NULL, NULL, '1738790113nKvlS', 1, '2025-02-06 02:15:13', NULL),
+(9, '250206-1', 1, 'Terminal-1', NULL, NULL, 1, 'Admin', 11, 'Four-W Passenger Vehicle', 40, NULL, NULL, 1, NULL, NULL, NULL, '17387912309E4jN', 1, '2025-02-06 02:33:50', '2025-02-06 02:33:50'),
+(10, '250206-2', 1, 'Terminal-1', NULL, NULL, 1, 'Admin', 11, 'Four-W Passenger Vehicle', 40, NULL, NULL, 1, NULL, NULL, NULL, '1738791413XF8QP', 1, '2025-02-06 02:36:53', '2025-02-06 02:36:53'),
+(11, '250206-3', 1, 'Terminal-1', NULL, NULL, 1, 'Admin', 11, 'Four-W Passenger Vehicle', 40, NULL, NULL, 1, NULL, NULL, NULL, '1738791432lEptO', 1, '2025-02-06 02:37:12', '2025-02-06 02:37:12'),
+(12, '250206-4', 1, 'Terminal-1', NULL, NULL, 1, 'Admin', 11, 'Four-W Passenger Vehicle', 40, NULL, NULL, 1, NULL, NULL, NULL, '1738791479roGYT', 1, '2025-02-06 02:37:59', '2025-02-06 02:37:59'),
+(13, '250206-5', 1, 'Terminal-1', NULL, NULL, 1, 'Admin', 11, 'Four-W Passenger Vehicle', 40, NULL, NULL, 1, NULL, NULL, NULL, '1738791517vmVZB', 1, '2025-02-06 02:38:37', '2025-02-06 02:38:37'),
+(14, '250206-6', 1, 'Terminal-1', NULL, NULL, 1, 'Admin', 11, 'Four-W Passenger Vehicle', 40, NULL, NULL, 1, NULL, NULL, NULL, '1738791546u6jXM', 1, '2025-02-06 02:39:06', '2025-02-06 02:39:06'),
+(15, '250206-7', 1, 'Terminal-1', NULL, NULL, 1, 'Admin', 11, 'Four-W Passenger Vehicle', 40, NULL, NULL, 1, NULL, NULL, NULL, '1738791575CDZm6', 1, '2025-02-06 02:39:35', '2025-02-06 02:39:35'),
+(16, '250206-8', 1, 'Terminal-1', NULL, NULL, 1, 'Admin', 11, 'Four-W Passenger Vehicle', 40, NULL, NULL, 1, NULL, NULL, NULL, '1738791588HTV3y', 1, '2025-02-06 02:39:48', '2025-02-06 02:39:48'),
+(17, '250206-9', 1, 'Terminal-1', NULL, NULL, 1, 'Admin', 11, 'Four-W Passenger Vehicle', 40, NULL, NULL, 1, NULL, NULL, NULL, '1738791742BPN7b', 1, '2025-02-06 02:42:22', '2025-02-06 02:42:22'),
+(18, '250206-10', 1, 'Terminal-1', NULL, NULL, 1, 'Admin', 9, 'Four-Wheel Drive Vehicle', 60, NULL, NULL, 1, NULL, NULL, NULL, '1738791846unZRE', 1, '2025-02-06 02:44:06', '2025-02-06 02:44:06'),
+(19, '250206-11', 1, 'Terminal-1', NULL, NULL, 1, 'Admin', 9, 'Four-Wheel Drive Vehicle', 60, NULL, NULL, 1, NULL, NULL, NULL, '1738791858ZSieR', 1, '2025-02-06 02:44:18', '2025-02-06 02:44:18'),
+(20, '250206-12', 1, 'Terminal-1', NULL, NULL, 1, 'Admin', 5, 'Mini Truck', 170, NULL, NULL, 1, NULL, NULL, NULL, '1738791890AUhbT', 1, '2025-02-06 02:44:50', '2025-02-06 02:44:50'),
+(21, '250206-13', 1, 'Terminal-1', 1, 'Counter-1', 1, 'Admin', 5, 'Mini Truck', 170, NULL, NULL, 1, NULL, NULL, NULL, '1738804262xp14P', 1, '2025-02-06 06:11:02', '2025-02-06 06:11:02'),
+(22, '250206-14', 1, 'Terminal-1', 3, 'Counter-2', 1, 'Admin', 7, 'Mini Bus/Coaster', 80, NULL, NULL, 1, NULL, NULL, NULL, '1738804319XBNe7', 1, '2025-02-06 06:11:59', '2025-02-06 06:11:59');
 
 -- --------------------------------------------------------
 
@@ -571,6 +628,7 @@ INSERT INTO `toll_tickets` (`id`, `ticket_no`, `terminal_id`, `terminal_name`, `
 CREATE TABLE `users` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `terminal_id` int(11) DEFAULT NULL,
+  `counter_id` int(11) DEFAULT NULL,
   `image` varchar(255) DEFAULT NULL,
   `name` varchar(255) NOT NULL,
   `phone` varchar(255) DEFAULT NULL,
@@ -590,9 +648,9 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `terminal_id`, `image`, `name`, `phone`, `email`, `email_verified_at`, `verification_code`, `password`, `remember_token`, `user_type`, `address`, `status`, `created_at`, `updated_at`) VALUES
-(1, NULL, NULL, 'Admin', '01900000000', 'admin@gmail.com', '2025-02-02 03:54:50', '12312', '$2y$12$oHWN0HLlomKGtI9bp503POf.uujhNJmq6bS3M8f3u0PAcrHZYLzEq', NULL, 1, 'Dhaka, Bangladesh', 1, '2025-02-02 03:54:50', NULL),
-(3, 1, NULL, 'Forrest Burks', '+1 (726) 844-4643', 'hevyxa@mailinator.com', NULL, NULL, '$2y$10$XIqdyr/GOVeEJTFCmBY7iOoc08XJUcm5Bz/npKv.F3w2P8FuMwaKa', NULL, 2, 'Dolor quos laboris s', 1, '2025-02-06 02:12:25', NULL);
+INSERT INTO `users` (`id`, `terminal_id`, `counter_id`, `image`, `name`, `phone`, `email`, `email_verified_at`, `verification_code`, `password`, `remember_token`, `user_type`, `address`, `status`, `created_at`, `updated_at`) VALUES
+(1, NULL, NULL, NULL, 'Admin', '01900000000', 'admin@gmail.com', '2025-02-02 03:54:50', '12312', '$2y$12$oHWN0HLlomKGtI9bp503POf.uujhNJmq6bS3M8f3u0PAcrHZYLzEq', NULL, 1, 'Dhaka, Bangladesh', 1, '2025-02-02 03:54:50', NULL),
+(3, 1, 3, NULL, 'Forrest Burks', '+1 (726) 844-4643', 'hevyxa@mailinator.com', NULL, NULL, '$2y$10$rSrK8VtefA9bjkkBoXP68.DEiDv0rlggb8OH7kNBfWKd4LFXYHXVW', NULL, 2, 'Dolor quos laboris s', 1, '2025-02-06 02:12:25', '2025-02-06 06:00:46');
 
 -- --------------------------------------------------------
 
@@ -613,7 +671,7 @@ CREATE TABLE `user_roles` (
 --
 
 INSERT INTO `user_roles` (`id`, `name`, `description`, `created_at`, `updated_at`) VALUES
-(1, 'System Operator', NULL, '2025-02-02 09:00:23', '2025-02-06 02:08:28');
+(1, 'System Operator', NULL, '2025-02-02 09:00:23', '2025-02-06 07:59:34');
 
 -- --------------------------------------------------------
 
@@ -698,26 +756,50 @@ INSERT INTO `user_role_permissions` (`id`, `user_id`, `role_id`, `role_name`, `p
 (58, 2, 1, 'System Operator', 3, '_debugbar/assets/stylesheets', 'debugbar.assets.css', '2025-02-02 09:01:13', NULL),
 (59, 2, 1, 'System Operator', 2, '_debugbar/clockwork/{id}', 'debugbar.clockwork', '2025-02-02 09:01:13', NULL),
 (60, 2, 1, 'System Operator', 1, '_debugbar/open', 'debugbar.openhandler', '2025-02-02 09:01:13', NULL),
-(61, 3, 1, 'System Operator', 73, 'print/toll/ticket/{slug}', 'PrintTollTicket', '2025-02-06 02:13:16', NULL),
-(62, 3, 1, 'System Operator', 71, 'view/toll/tickets', 'ViewTollTickets', '2025-02-06 02:13:16', NULL),
-(63, 3, 1, 'System Operator', 70, 'save/toll/ticket', 'SaveTollTicket', '2025-02-06 02:13:16', NULL),
-(64, 3, 1, 'System Operator', 69, 'create/toll/ticket', 'CreateTollTicket', '2025-02-06 02:13:16', NULL),
-(65, 3, 1, 'System Operator', 35, 'change/password', 'changePassword', '2025-02-06 02:13:16', NULL),
-(66, 3, 1, 'System Operator', 34, 'change/password/page', 'changePasswordPage', '2025-02-06 02:13:16', NULL),
-(67, 3, 1, 'System Operator', 33, 'clear/cache', 'ClearCache', '2025-02-06 02:13:16', NULL),
-(68, 3, 1, 'System Operator', 32, 'home', 'home', '2025-02-06 02:13:16', NULL),
-(69, 3, 1, 'System Operator', 31, 'password/confirm', NULL, '2025-02-06 02:13:16', NULL),
-(70, 3, 1, 'System Operator', 30, 'logout', 'logout', '2025-02-06 02:13:16', NULL),
-(71, 3, 1, 'System Operator', 29, 'login', NULL, '2025-02-06 02:13:16', NULL),
-(72, 3, 1, 'System Operator', 27, 'config-clear', NULL, '2025-02-06 02:13:16', NULL),
-(73, 3, 1, 'System Operator', 26, '/', NULL, '2025-02-06 02:13:16', NULL),
-(74, 3, 1, 'System Operator', 7, 'makesulg', NULL, '2025-02-06 02:13:16', NULL),
-(75, 3, 1, 'System Operator', 6, '_debugbar/queries/explain', 'debugbar.queries.explain', '2025-02-06 02:13:16', NULL),
-(76, 3, 1, 'System Operator', 5, '_debugbar/cache/{key}/{tags?}', 'debugbar.cache.delete', '2025-02-06 02:13:16', NULL),
-(77, 3, 1, 'System Operator', 4, '_debugbar/assets/javascript', 'debugbar.assets.js', '2025-02-06 02:13:16', NULL),
-(78, 3, 1, 'System Operator', 3, '_debugbar/assets/stylesheets', 'debugbar.assets.css', '2025-02-06 02:13:16', NULL),
-(79, 3, 1, 'System Operator', 2, '_debugbar/clockwork/{id}', 'debugbar.clockwork', '2025-02-06 02:13:16', NULL),
-(80, 3, 1, 'System Operator', 1, '_debugbar/open', 'debugbar.openhandler', '2025-02-06 02:13:16', NULL);
+(122, 3, 1, 'System Operator', 110, 'view/counter/sessions', 'ViewCounterSessions', '2025-02-06 07:59:20', NULL),
+(123, 3, 1, 'System Operator', 73, 'print/toll/ticket/{slug}', 'PrintTollTicket', '2025-02-06 07:59:20', NULL),
+(124, 3, 1, 'System Operator', 71, 'view/toll/tickets', 'ViewTollTickets', '2025-02-06 07:59:20', NULL),
+(125, 3, 1, 'System Operator', 70, 'save/toll/ticket', 'SaveTollTicket', '2025-02-06 07:59:20', NULL),
+(126, 3, 1, 'System Operator', 69, 'create/toll/ticket', 'CreateTollTicket', '2025-02-06 07:59:20', NULL),
+(127, 3, 1, 'System Operator', 35, 'change/password', 'changePassword', '2025-02-06 07:59:20', NULL),
+(128, 3, 1, 'System Operator', 34, 'change/password/page', 'changePasswordPage', '2025-02-06 07:59:20', NULL),
+(129, 3, 1, 'System Operator', 33, 'clear/cache', 'ClearCache', '2025-02-06 07:59:20', NULL),
+(130, 3, 1, 'System Operator', 32, 'home', 'home', '2025-02-06 07:59:20', NULL),
+(131, 3, 1, 'System Operator', 31, 'password/confirm', NULL, '2025-02-06 07:59:20', NULL),
+(132, 3, 1, 'System Operator', 30, 'logout', 'logout', '2025-02-06 07:59:20', NULL),
+(133, 3, 1, 'System Operator', 29, 'login', NULL, '2025-02-06 07:59:20', NULL),
+(134, 3, 1, 'System Operator', 27, 'config-clear', NULL, '2025-02-06 07:59:20', NULL),
+(135, 3, 1, 'System Operator', 26, '/', NULL, '2025-02-06 07:59:20', NULL),
+(136, 3, 1, 'System Operator', 7, 'makesulg', NULL, '2025-02-06 07:59:20', NULL),
+(137, 3, 1, 'System Operator', 6, '_debugbar/queries/explain', 'debugbar.queries.explain', '2025-02-06 07:59:20', NULL),
+(138, 3, 1, 'System Operator', 5, '_debugbar/cache/{key}/{tags?}', 'debugbar.cache.delete', '2025-02-06 07:59:20', NULL),
+(139, 3, 1, 'System Operator', 4, '_debugbar/assets/javascript', 'debugbar.assets.js', '2025-02-06 07:59:20', NULL),
+(140, 3, 1, 'System Operator', 3, '_debugbar/assets/stylesheets', 'debugbar.assets.css', '2025-02-06 07:59:20', NULL),
+(141, 3, 1, 'System Operator', 2, '_debugbar/clockwork/{id}', 'debugbar.clockwork', '2025-02-06 07:59:20', NULL),
+(142, 3, 1, 'System Operator', 1, '_debugbar/open', 'debugbar.openhandler', '2025-02-06 07:59:20', NULL),
+(143, 3, NULL, NULL, 113, 'submit/counter/checkout', 'SubmitCounterCheckout', '2025-02-06 07:59:20', NULL),
+(144, 3, NULL, NULL, 112, 'submit/counter/checkin', 'SubmitCounterCheckin', '2025-02-06 07:59:20', NULL),
+(145, 3, NULL, NULL, 110, 'view/counter/sessions', 'ViewCounterSessions', '2025-02-06 07:59:20', NULL),
+(146, 3, NULL, NULL, 73, 'print/toll/ticket/{slug}', 'PrintTollTicket', '2025-02-06 07:59:20', NULL),
+(147, 3, NULL, NULL, 71, 'view/toll/tickets', 'ViewTollTickets', '2025-02-06 07:59:20', NULL),
+(148, 3, NULL, NULL, 70, 'save/toll/ticket', 'SaveTollTicket', '2025-02-06 07:59:20', NULL),
+(149, 3, NULL, NULL, 69, 'create/toll/ticket', 'CreateTollTicket', '2025-02-06 07:59:20', NULL),
+(150, 3, NULL, NULL, 35, 'change/password', 'changePassword', '2025-02-06 07:59:20', NULL),
+(151, 3, NULL, NULL, 34, 'change/password/page', 'changePasswordPage', '2025-02-06 07:59:20', NULL),
+(152, 3, NULL, NULL, 33, 'clear/cache', 'ClearCache', '2025-02-06 07:59:20', NULL),
+(153, 3, NULL, NULL, 32, 'home', 'home', '2025-02-06 07:59:20', NULL),
+(154, 3, NULL, NULL, 31, 'password/confirm', NULL, '2025-02-06 07:59:20', NULL),
+(155, 3, NULL, NULL, 30, 'logout', 'logout', '2025-02-06 07:59:20', NULL),
+(156, 3, NULL, NULL, 29, 'login', NULL, '2025-02-06 07:59:20', NULL),
+(157, 3, NULL, NULL, 27, 'config-clear', NULL, '2025-02-06 07:59:20', NULL),
+(158, 3, NULL, NULL, 26, '/', NULL, '2025-02-06 07:59:20', NULL),
+(159, 3, NULL, NULL, 7, 'makesulg', NULL, '2025-02-06 07:59:20', NULL),
+(160, 3, NULL, NULL, 6, '_debugbar/queries/explain', 'debugbar.queries.explain', '2025-02-06 07:59:20', NULL),
+(161, 3, NULL, NULL, 5, '_debugbar/cache/{key}/{tags?}', 'debugbar.cache.delete', '2025-02-06 07:59:20', NULL),
+(162, 3, NULL, NULL, 4, '_debugbar/assets/javascript', 'debugbar.assets.js', '2025-02-06 07:59:20', NULL),
+(163, 3, NULL, NULL, 3, '_debugbar/assets/stylesheets', 'debugbar.assets.css', '2025-02-06 07:59:20', NULL),
+(164, 3, NULL, NULL, 2, '_debugbar/clockwork/{id}', 'debugbar.clockwork', '2025-02-06 07:59:20', NULL),
+(165, 3, NULL, NULL, 1, '_debugbar/open', 'debugbar.openhandler', '2025-02-06 07:59:20', NULL);
 
 -- --------------------------------------------------------
 
@@ -766,6 +848,12 @@ INSERT INTO `vehicle_types` (`id`, `icon`, `type_name`, `price`, `description`, 
 -- Indexes for table `counters`
 --
 ALTER TABLE `counters`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `counter_sessions`
+--
+ALTER TABLE `counter_sessions`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -861,6 +949,12 @@ ALTER TABLE `counters`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
+-- AUTO_INCREMENT for table `counter_sessions`
+--
+ALTER TABLE `counter_sessions`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT for table `failed_jobs`
 --
 ALTER TABLE `failed_jobs`
@@ -876,13 +970,13 @@ ALTER TABLE `general_infos`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=114;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=116;
 
 --
 -- AUTO_INCREMENT for table `permission_routes`
 --
 ALTER TABLE `permission_routes`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=114;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -894,7 +988,7 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT for table `role_permissions`
 --
 ALTER TABLE `role_permissions`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=125;
 
 --
 -- AUTO_INCREMENT for table `terminals`
@@ -906,7 +1000,7 @@ ALTER TABLE `terminals`
 -- AUTO_INCREMENT for table `toll_tickets`
 --
 ALTER TABLE `toll_tickets`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -924,7 +1018,7 @@ ALTER TABLE `user_roles`
 -- AUTO_INCREMENT for table `user_role_permissions`
 --
 ALTER TABLE `user_role_permissions`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=166;
 
 --
 -- AUTO_INCREMENT for table `vehicle_types`

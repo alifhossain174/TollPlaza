@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Counter;
+use App\Models\CounterSession;
 use App\Models\GeneralInfo;
 use Carbon\Carbon;
 use App\Models\Terminal;
@@ -18,19 +20,50 @@ use Illuminate\Support\Facades\Auth;
 class TollTicketController extends Controller
 {
     public function createTollTicket(){
-        $vehicleTypes = VehicleType::where('status', 1)->orderBy('serial', 'asc')->get();
-        $terminals = Terminal::where('status', 1)->orderBy('name', 'asc')->get();
-        return view('backend.toll_ticket.create', compact('vehicleTypes', 'terminals'));
+
+        if(CounterSession::where('user_id', Auth::user()->id)->where('counter_status', 0)->exists()){
+            $vehicleTypes = VehicleType::where('status', 1)->orderBy('serial', 'asc')->get();
+            $counters = DB::table('counters')
+                            ->leftJoin('terminals', 'counters.terminal_id', 'terminals.id')
+                            ->select('counters.*', 'terminals.name as terminal_name')
+                            ->where('counters.status', 1)
+                            ->orderBy('counters.name', 'asc')
+                            ->get();
+
+            return view('backend.toll_ticket.create', compact('vehicleTypes', 'counters'));
+        } else {
+            if(Auth::user()->user_type == 1){
+                $counters = DB::table('counters')
+                ->leftJoin('terminals', 'counters.terminal_id', 'terminals.id')
+                ->select('counters.*', 'terminals.name as terminal_name')
+                ->where('counters.status', 1)
+                ->orderBy('counters.name', 'asc')
+                ->get();
+            } else {
+                $counters = DB::table('counters')
+                ->leftJoin('terminals', 'counters.terminal_id', 'terminals.id')
+                ->select('counters.*', 'terminals.name as terminal_name')
+                ->where('counters.status', 1)
+                ->where('counters.id', Auth::user()->id)
+                ->orderBy('counters.name', 'asc')
+                ->get();
+            }
+
+            return view('backend.toll_ticket.counters',compact('counters'));
+        }
+
     }
 
     public function saveTollTicket(Request $request){
 
         if(Auth::user()->user_type == 1){
-            $terminalId = $request->terminal_id;
-            $terminalInfo = Terminal::where('id', $terminalId)->first();
+            $counterId = $request->counter_id;
+            $counterInfo = Counter::where('id', $counterId)->first();
+            $terminalInfo = Terminal::where('id', $counterInfo->terminal_id)->first();
         } else {
-            $terminalId = Auth::user()->terminal_id;
-            $terminalInfo = Terminal::where('id', $terminalId)->first();
+            $counterId = Auth::user()->counter_id;
+            $counterInfo = Counter::where('id', $counterId)->first();
+            $terminalInfo = Terminal::where('id', $counterInfo->terminal_id)->first();
         }
 
         $vehicleTypeInfo = VehicleType::where('id', $request->vehicle_type_id)->first();
@@ -55,8 +88,10 @@ class TollTicketController extends Controller
         // Now insert the new ticket safely with the generated ticket_no
         $ticket = new TollTicket();
         $ticket->ticket_no = $ticketNo;
-        $ticket->terminal_id = $terminalId;
+        $ticket->terminal_id = $terminalInfo ? $terminalInfo->id : null;
         $ticket->terminal_name = $terminalInfo ? $terminalInfo->name : null;
+        $ticket->counter_id = $counterInfo ? $counterInfo->id : null;
+        $ticket->counter_name = $counterInfo ? $counterInfo->name : null;
         $ticket->user_id = Auth::user()->id;
         $ticket->user_name = Auth::user()->name;
         $ticket->vehicle_type_id = $vehicleTypeInfo->id;
@@ -93,6 +128,9 @@ class TollTicketController extends Controller
                 }
                 if ($request->terminal_id != '') {
                     $query->where('terminal_id', $request->terminal_id);
+                }
+                if ($request->counter_id != '') {
+                    $query->where('counter_id', $request->counter_id);
                 }
                 if ($request->user_id != '') {
                     $query->where('user_id', $request->user_id);
@@ -152,8 +190,9 @@ class TollTicketController extends Controller
 
         $vehicleTypes = VehicleType::orderBy('serial', 'asc')->get();
         $terminals = Terminal::orderBy('name', 'asc')->get();
+        $counters = Counter::orderBy('name', 'asc')->get();
         $users = User::get();
-        return view('backend.toll_ticket.view', compact('terminals', 'users', 'vehicleTypes'));
+        return view('backend.toll_ticket.view', compact('terminals', 'users', 'vehicleTypes', 'counters'));
     }
 
     public function deleteTollTicket($id){

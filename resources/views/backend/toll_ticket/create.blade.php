@@ -104,19 +104,23 @@
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <label for="terminal_id">From Terminal<span class="text-danger">*</span> </label>
+                                            <label for="counter_id">From Counter<span class="text-danger">*</span> </label>
                                             @if(Auth::user()->user_type == 1)
-                                            <select class="form-control" name="terminal_id" id="terminal_id" required>
+                                            <select class="form-control" name="counter_id" id="counter_id" required>
                                                 <option value="">Select One</option>
-                                                @foreach ($terminals as $terminal)
-                                                <option value="{{$terminal->id}}">{{$terminal->name}}</option>
+                                                @foreach ($counters as $counter)
+                                                <option value="{{$counter->id}}">{{$counter->name}} ({{$counter->terminal_name}})</option>
                                                 @endforeach
                                             </select>
                                             @else
                                             @php
-                                                $userTerminal = App\Models\Terminal::where('id', Auth::user()->terminal_id)->first();
+                                                $userCounter = DB::table('counters')
+                                                                ->leftJoin('terminals', 'counters.terminal_id', 'terminals.id')
+                                                                ->select('counters.*', 'terminals.name as terminal_name')
+                                                                ->where('counters.id', Auth::user()->counter_id)
+                                                                ->first();
                                             @endphp
-                                            <input type="text" class="form-control" id="terminal_id" value="{{$userTerminal->name}}" required readonly>
+                                            <input type="text" class="form-control" id="counter_id" value="{{$userCounter->name}} ({{$userCounter->terminal_name}})" required readonly>
                                             @endif
                                         </div>
                                     </div>

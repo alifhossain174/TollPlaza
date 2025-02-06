@@ -84,6 +84,16 @@
                     </div>
                     <div class="d-flex align-items-center">
 
+                        @if(DB::table('counter_sessions')->where('user_id', Auth::user()->id)->where('counter_status', 0)->exists())
+                        <div class="dropdown d-inline-block ml-2">
+                            <a href="javascript:void(0)" id="counterCheckoutBtn" class="btn text-white rounded" style="background: #c31432;
+                                background: -webkit-linear-gradient(to right, #240b36, #c31432);  /* Chrome 10-25, Safari 5.1-6 */
+                                background: linear-gradient(to right, #240b36, #c31432);">
+                                <i class="fas fa-sign-out-alt"></i> Counter Checkout
+                            </a>
+                        </div>
+                        @endif
+
                         <div class="dropdown d-inline-block ml-2">
                             <button type="button" class="btn header-item" id="page-header-user-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <img class="rounded-circle header-profile-user" src="{{ url('assets') }}/images/users/avatar-1.jpg" alt="Header Avatar">
@@ -142,6 +152,31 @@
     <!-- Overlay-->
     <div class="menu-overlay"></div>
 
+    <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form id="productForm2" name="productForm2" class="form-horizontal">
+                    <div class="modal-header">
+                        <h5 class="modal-title font-weight-bold">Counter Checkout</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Closing Balance</label>
+                            <input type="text" id="closing_balance" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" id="counterCheckoutSubmit" class="btn btn-primary">Checkout</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 
     <!-- jQuery  -->
     <script src="{{ url('assets') }}/js/jquery.min.js"></script>
@@ -173,6 +208,47 @@
                 Sidebar.scrollTop = 0;
                 localStorage.setItem('scroll_nav', 0);
             }
+        });
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $('#counterCheckoutBtn').click(function () {
+            $('#productForm2').trigger("reset");
+            $('#exampleModal2').modal('show');
+        });
+
+        $('#counterCheckoutSubmit').click(function (e) {
+            e.preventDefault();
+
+            var formData = new FormData();
+            formData.append("closing_balance", $("#closing_balance").val());
+
+            $(this).html('Checking Out..');
+            $.ajax({
+                data: formData,
+                url: "{{ url('submit/counter/checkout') }}",
+                type: "POST",
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    toastr.success("Checked Out", "Checked Out Successfully");
+                    $('#counterCheckoutSubmit').html('Checked Out');
+                    $('#productForm2').trigger("reset");
+                    $('#exampleModal2').modal('hide');
+                    location.reload(true);
+                },
+                error: function (data) {
+                    toastr.error("Failed", "Something Went Wrong");
+                    console.log('Error:', data);
+                    $('#submitCounterCheckIn').html('Try Again');
+                }
+            });
+
         });
     </script>
 
