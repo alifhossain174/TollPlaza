@@ -44,7 +44,7 @@ class TollTicketController extends Controller
                 ->leftJoin('terminals', 'counters.terminal_id', 'terminals.id')
                 ->select('counters.*', 'terminals.name as terminal_name')
                 ->where('counters.status', 1)
-                ->where('counters.id', Auth::user()->id)
+                ->where('counters.id', Auth::user()->counter_id)
                 ->orderBy('counters.name', 'asc')
                 ->get();
             }
