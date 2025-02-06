@@ -48,10 +48,10 @@
 @endsection
 
 @section('page_title')
-    System Users
+    Counter Operators
 @endsection
 @section('page_heading')
-    View All System Users
+    View All Counter Operators
 @endsection
 
 @section('content')
@@ -59,7 +59,7 @@
         <div class="col-lg-12 col-xl-12">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title mb-3">System Users List</h4>
+                    <h4 class="card-title mb-3">Counter Operators List</h4>
                     <div class="table-responsive">
                         <label id="customFilter">
                             <a href="{{url('add/new/system/user')}}" class="btn btn-success btn-sm" id="addNewFlag" style="margin-left: 5px"><i class="feather-plus"></i> Add Operator</a>
@@ -68,26 +68,15 @@
                             <thead>
                                 <tr>
                                     <th class="text-center">SL</th>
+                                    <th class="text-center">Terminal</th>
+                                    <th class="text-center">Counter</th>
                                     <th class="text-center">Name</th>
                                     <th class="text-center">Email</th>
                                     <th class="text-center">Phone</th>
-                                    <th class="text-center">Address</th>
-                                    <th class="text-center">Account Created</th>
                                     <th class="text-center">User Type</th>
                                     <th class="text-center">Action</th>
                                 </tr>
                             </thead>
-                            {{-- <tfoot>
-                                <tr>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                </tr>
-                            </tfoot> --}}
                             <tbody>
 
                             </tbody>
@@ -120,13 +109,19 @@
                     name: 'DT_RowIndex'
                 },
                 {
+                    data: 'terminal_name',
+                    name: 'terminal_name'
+                },
+                {
+                    data: 'counter_name',
+                    name: 'counter_name'
+                },
+                {
                     data: 'name',
                     name: 'name'
-                }, //orderable: true, searchable: true
+                },
                 {data: 'email', name: 'email'},
                 {data: 'phone', name: 'phone'},
-                {data: 'address', name: 'address'},
-                {data: 'created_at', name: 'created_at'},
                 {data: 'user_type', name: 'user_type'},
                 {data: 'action', name: 'action', orderable: false, searchable: false},
             ],

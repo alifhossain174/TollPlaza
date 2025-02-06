@@ -1,10 +1,10 @@
 @extends('backend.master')
 
 @section('page_title')
-    System Operators
+    Counter Operators
 @endsection
 @section('page_heading')
-    Add New System Operator
+    Add New Counter Operator
 @endsection
 
 @section('header_css')
@@ -23,10 +23,31 @@
         <div class="col-lg-12 col-xl-12">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title mb-3">System Operator Create Form</h4>
+                    <h4 class="card-title mb-3">Counter Operator Create Form</h4>
 
                     <form class="needs-validation" method="POST" action="{{url('create/system/user')}}" enctype="multipart/form-data">
                         @csrf
+
+                        <div class="form-group row">
+                            <label for="terminal_id" class="col-sm-2 col-form-label">Select Terminal <span class="text-danger">*</span></label>
+                            <div class="col-sm-8">
+                                <select class="form-control" name="terminal_id" id="terminal_id" required>
+                                    <option value="">Select One</option>
+                                    @foreach ($terminals as $terminal)
+                                    <option value="{{$terminal->id}}">{{$terminal->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="counter_id" class="col-sm-2 col-form-label">Select Counter <span class="text-danger">*</span></label>
+                            <div class="col-sm-8">
+                                <select class="form-control" name="counter_id" id="counter_id" required>
+                                    <option value="">Select One</option>
+                                </select>
+                            </div>
+                        </div>
 
                         <div class="form-group row">
                             <label for="colFormLabel" class="col-sm-2 col-form-label">Full Name <span class="text-danger">*</span></label>
@@ -62,18 +83,6 @@
                                         {{ $message }}
                                     @enderror
                                 </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="email" class="col-sm-2 col-form-label">Select Terminal <span class="text-danger">*</span></label>
-                            <div class="col-sm-8">
-                                <select class="form-control" name="terminal_id" id="terminal_id" required>
-                                    <option value="">Select One</option>
-                                    @foreach ($terminals as $terminal)
-                                    <option value="{{$terminal->id}}">{{$terminal->name}}</option>
-                                    @endforeach
-                                </select>
                             </div>
                         </div>
 
@@ -132,6 +141,28 @@
         const form = document.querySelector("form");
         form.addEventListener('submit', function (e) {
             e.preventDefault();
+        });
+
+        $(document).ready(function () {
+            $('#terminal_id').on('change', function () {
+                var terminal_id = this.value;
+                $("#counter_id").html('');
+                $.ajax({
+                    url: "{{url('/terminal/wise/counter')}}",
+                    type: "POST",
+                    data: {
+                        terminal_id: terminal_id,
+                        _token: '{{csrf_token()}}'
+                    },
+                    dataType: 'json',
+                    success: function (result) {
+                        $('#counter_id').html('<option value="">Select Counter</option>');
+                        $.each(result, function (key, value) {
+                            $("#counter_id").append('<option value="' + value.id + '">' + value.name + '</option>');
+                        });
+                    }
+                });
+            });
         });
     </script>
 @endsection

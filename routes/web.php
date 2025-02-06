@@ -121,6 +121,9 @@ Route::group(['middleware' => ['auth', 'CheckUserType', 'DemoMode']], function (
     Route::get('/delete/counter/{id}', [CounterController::class, 'deleteCounter'])->name('DeleteCounter');
     Route::get('/edit/counter/{slug}', [CounterController::class, 'editCounter'])->name('EditCounter');
     Route::post('/update/counter', [CounterController::class, 'updateCounter'])->name('UpdateCounter');
+    Route::post('/terminal/wise/counter', [CounterController::class, 'terminalWiseCounter'])->name('TerminalWiseCounter');
+    Route::get('/view/counter/sessions', [CounterController::class, 'viewCounterSessions'])->name('ViewCounterSessions');
+    Route::get('/complete/counter/session/{slug}', [CounterController::class, 'completeCounterSession'])->name('CompleteCounterSession');
 
     // Toll Ticket
     Route::get('/create/toll/ticket', [TollTicketController::class, 'createTollTicket'])->name('CreateTollTicket');

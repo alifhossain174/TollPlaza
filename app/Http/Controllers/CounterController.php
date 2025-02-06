@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Counter;
+use App\Models\CounterSession;
 use App\Models\Terminal;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -88,5 +89,60 @@ class CounterController extends Controller
 
         Toastr::success('Counter Updated', 'Success');
         return redirect('/view/counters');
+    }
+
+    public function terminalWiseCounter(Request $request){
+        $data = Counter::where("terminal_id", $request->terminal_id)->where('status', 1)->select('name', 'id')->get();
+        return response()->json($data);
+    }
+
+    public function viewCounterSessions(Request $request){
+        if ($request->ajax()) {
+
+            $data = CounterSession::orderBy('id', 'desc')->get();
+
+            return Datatables::of($data)
+                    ->editColumn('status', function($data) {
+                        if($data->status == 1){
+                            return '<span style="color:green; font-weight: 600">Completed</span>';
+                        } else {
+                            return '<span style="color:#DF3554; font-weight: 600">Pending</span>';
+                        }
+                    })
+                    ->editColumn('checkin_time', function($data) {
+                        if($data->checkin_time)
+                        return date("d/m/y h:i a", strtotime($data->checkin_time));
+                    })
+                    ->editColumn('checkout_time', function($data) {
+                        if($data->checkout_time)
+                        return date("d/m/y h:i a", strtotime($data->checkout_time));
+                    })
+                    ->editColumn('opening_balance', function($data) {
+                        if($data->opening_balance)
+                        return number_format($data->opening_balance)."/=";
+                    })
+                    ->editColumn('closing_balance', function($data) {
+                        if($data->closing_balance)
+                        return number_format($data->closing_balance)."/=";
+                    })
+                    ->addIndexColumn()
+                    ->addColumn('action', function($data){
+                        $btn = "";
+                        if($data->status == 0)
+                            $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip" data-id="'.$data->slug.'" data-original-title="Complete" class="btn-sm btn-success rounded completeBtn"><i class="fas fa-check"></i></a>';
+                        return $btn;
+                    })
+                    ->rawColumns(['action', 'status'])
+                    ->make(true);
+        }
+        return view('backend.counter.sessions');
+    }
+
+    public function completeCounterSession($slug){
+        CounterSession::where('slug', $slug)->update([
+            'status' => 1,
+            'updated_at' => Carbon::now()
+        ]);
+        return response()->json(['success' => 'Session Completed successfully.']);
     }
 }

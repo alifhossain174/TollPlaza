@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Counter;
 use App\Models\Order;
 use App\Models\Terminal;
 use App\Models\User;
@@ -21,12 +22,16 @@ class UserController extends Controller
     public function viewAllSystemUsers(Request $request){
         if ($request->ajax()) {
 
-            $data = User::whereIn('user_type', [1,2])->where('id', '!=', 1)->orderBy('id', 'desc')->get();
+            $data = DB::table('users')
+                    ->leftJoin('terminals', 'users.terminal_id', 'terminals.id')
+                    ->leftJoin('counters', 'users.counter_id', 'counters.id')
+                    ->select('users.*', 'terminals.name as terminal_name', 'counters.name as counter_name')
+                    ->whereIn('user_type', [1,2])
+                    ->where('users.id', '!=', 1)
+                    ->orderBy('users.id', 'desc')
+                    ->get();
 
             return Datatables::of($data)
-                    ->editColumn('created_at', function($data) {
-                        return date("Y-m-d h:i:s a", strtotime($data->created_at));
-                    })
                     ->editColumn('user_type', function($data) {
                         if($data->user_type == 2){
                             return '<a href="javascript:void(0)" style="background: #090; font-weight: 600;" data-toggle="tooltip" data-id="'.$data->id.'" data-original-title="Make SuperAdmin" class="btn-sm btn-success rounded makeSuperAdmin">Make SuperAdmin</a>';
@@ -71,6 +76,7 @@ class UserController extends Controller
             'password' => Hash::make($request->password),
             'user_type' => 2,
             'terminal_id' => $request->terminal_id,
+            'counter_id' => $request->counter_id,
             'created_at' => Carbon::now()
         ]);
 
@@ -88,7 +94,8 @@ class UserController extends Controller
     public function editSystemUser($id){
         $userInfo = User::where('id', $id)->first();
         $terminals = Terminal::orderBy('name', 'asc')->get();
-        return view('backend.users.edit_system_user', compact('userInfo', 'terminals'));
+        $counters = Counter::where('terminal_id', $userInfo->terminal_id)->get();
+        return view('backend.users.edit_system_user', compact('userInfo', 'terminals', 'counters'));
     }
 
     public function updateSystemUser(Request $request){
@@ -102,6 +109,8 @@ class UserController extends Controller
             'email' => $request->email,
             'phone' => $request->phone,
             'address' => $request->address,
+            'terminal_id' => $request->terminal_id,
+            'counter_id' => $request->counter_id,
             // 'user_type' => 2,
             'updated_at' => Carbon::now()
         ]);

@@ -53,6 +53,7 @@
         </ul>
     </li>
     @endif
+    @if(checkAuth("view/counter/sessions"))<li><a href="{{ url('/view/counter/sessions') }}"><i class="fas fa-users"></i><span>Counter Sessions</span></a></li>@endif
 
 
     @if(checkAuth("general/info") || checkAuth("file-manager"))
@@ -93,7 +94,7 @@
     <li class="menu-title" style="color: khaki; text-shadow: 1px 1px 2px black;">User Role Permission</li>
     @endif
 
-    @if(checkAuth("view/system/users")) <li><a href="{{ url('/view/system/users') }}"><i class="fas fa-user-shield"></i><span>System Operators</span></a></li> @endif
+    @if(checkAuth("view/system/users")) <li><a href="{{ url('/view/system/users') }}"><i class="fas fa-user-shield"></i><span>Counter Operators</span></a></li> @endif
     @if(checkAuth("view/permission/routes")) <li><a href="{{ url('/view/permission/routes') }}"><i class="feather-git-merge"></i><span>Permission Routes</span></a></li> @endif
     @if(checkAuth("view/user/roles")) <li><a href="{{ url('/view/user/roles') }}"><i class="feather-user-plus"></i><span>User Roles</span></a></li> @endif
     @if(checkAuth("view/user/role/permission")) <li><a href="{{ url('/view/user/role/permission') }}"><i class="mdi mdi-security"></i><span>Assign Role Permission</span></a></li> @endif

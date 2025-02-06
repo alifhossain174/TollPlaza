@@ -32,6 +32,8 @@
             <li><a href="{{ url('/view/counters') }}">View All Counters</a></li>
         </ul>
     </li>
+    <li><a href="{{ url('/view/counter/sessions') }}"><i class="fas fa-users"></i><span>Counter Sessions</span></a></li>
+
 
     <hr style="border-color: #c8c8c836; margin-top: 12px; margin-bottom: 5px;">
     <li class="menu-title" style="color: khaki; text-shadow: 1px 1px 2px black;">System Config</li>
@@ -56,7 +58,7 @@
 
     <hr style="border-color: #c8c8c836; margin-top: 12px; margin-bottom: 5px;">
     <li class="menu-title" style="color: khaki; text-shadow: 1px 1px 2px black;">User Role Permission</li>
-    <li><a href="{{ url('/view/system/users') }}"><i class="fas fa-user-shield"></i><span>System Operators</span></a></li>
+    <li><a href="{{ url('/view/system/users') }}"><i class="fas fa-user-shield"></i><span>Counter Operators</span></a></li>
     <li><a href="{{ url('/view/permission/routes') }}"><i class="feather-git-merge"></i><span>Permission Routes</span></a></li>
     <li><a href="{{ url('/view/user/roles') }}"><i class="feather-user-plus"></i><span>User Roles</span></a></li>
     <li><a href="{{ url('/view/user/role/permission') }}"><i class="mdi mdi-security"></i><span>Assign Role Permission</span></a></li>
