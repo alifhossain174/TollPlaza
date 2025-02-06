@@ -128,7 +128,7 @@
                     <div class="row align-items-center">
                         <div class="col">
                             <h6 class="text-uppercase font-size-12 text-muted mb-3">Todays Ticket Collection</h6>
-                            <span class="h3 mb-0"> {{number_format(DB::table('toll_tickets')->where('terminal_id', Auth::user()->terminal_id)->where('created_at', 'LIKE', date("Y-m-d")."%")->sum('ticket_price'))}}/= </span>
+                            <span class="h3 mb-0"> {{number_format(DB::table('toll_tickets')->where('user_id', Auth::user()->id)->where('created_at', 'LIKE', date("Y-m-d")."%")->sum('ticket_price'))}}/= </span>
                         </div>
                     </div> <!-- end row -->
 
@@ -162,7 +162,7 @@
                     <div class="row align-items-center">
                         <div class="col">
                             <h6 class="text-uppercase font-size-12 text-muted mb-3">Total Ticket Collection</h6>
-                            <span class="h3 mb-0"> {{number_format(DB::table('toll_tickets')->where('terminal_id', Auth::user()->terminal_id)->sum('ticket_price'))}}/= </span>
+                            <span class="h3 mb-0"> {{number_format(DB::table('toll_tickets')->where('user_id', Auth::user()->id)->sum('ticket_price'))}}/= </span>
                         </div>
                     </div> <!-- end row -->
 
