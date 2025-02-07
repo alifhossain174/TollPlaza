@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 07, 2025 at 07:36 PM
+-- Generation Time: Feb 07, 2025 at 09:29 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -854,7 +854,9 @@ ALTER TABLE `counters`
 -- Indexes for table `counter_sessions`
 --
 ALTER TABLE `counter_sessions`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `counter_id` (`counter_id`);
 
 --
 -- Indexes for table `failed_jobs`

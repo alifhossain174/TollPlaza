@@ -232,9 +232,20 @@
         $('#counterCheckoutSubmit').click(function (e) {
             e.preventDefault();
 
-            let balance = $("#closing_balance").val().trim();
-            if (balance === '' || isNaN(balance) || parseFloat(balance) < 0) {
+            let openingBalance = $('#opening_balance').val().trim();
+            let closingBalance = $("#closing_balance").val().trim();
+            if (closingBalance === '' || isNaN(closingBalance) || parseFloat(closingBalance) < 0) {
                 toastr.error("Please enter a valid number greater than or equal to 0");
+                return false;
+            }
+
+            if(openingBalance === '' || isNaN(openingBalance) || parseFloat(openingBalance) < 0){
+                toastr.error("Wait For the Opening Balance to Show");
+                return false;
+            }
+
+            if(parseFloat(closingBalance) < parseFloat(openingBalance)){
+                toastr.error("Closing cannot be smaller than Opening");
                 return false;
             }
 
