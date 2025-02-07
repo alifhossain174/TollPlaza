@@ -125,6 +125,7 @@ Route::group(['middleware' => ['auth', 'CheckUserType', 'DemoMode']], function (
     Route::get('/view/counter/sessions', [CounterController::class, 'viewCounterSessions'])->name('ViewCounterSessions');
     Route::get('/complete/counter/session/{slug}', [CounterController::class, 'completeCounterSession'])->name('CompleteCounterSession');
     Route::post('/submit/counter/checkin', [CounterController::class, 'submitCounterCheckin'])->name('SubmitCounterCheckin');
+    Route::get('/counter/session/info', [CounterController::class, 'counterSessionInfo'])->name('CounterSessionInfo');
     Route::post('/submit/counter/checkout', [CounterController::class, 'submitCounterCheckout'])->name('SubmitCounterCheckout');
 
     // Toll Ticket

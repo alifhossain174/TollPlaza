@@ -164,8 +164,12 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
+                            <label>Opening Balance</label>
+                            <input type="text" id="opening_balance" class="form-control" readonly>
+                        </div>
+                        <div class="form-group">
                             <label>Closing Balance</label>
-                            <input type="text" id="closing_balance" class="form-control" required>
+                            <input type="number" id="closing_balance" class="form-control" required>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -219,10 +223,20 @@
         $('#counterCheckoutBtn').click(function () {
             $('#productForm2').trigger("reset");
             $('#exampleModal2').modal('show');
+            $('#opening_balance').val("Loading Opening Balance...");
+            $.get("{{ url('counter/session/info') }}", function (data) {
+                $('#opening_balance').val(data.opening_balance);
+            })
         });
 
         $('#counterCheckoutSubmit').click(function (e) {
             e.preventDefault();
+
+            let balance = $("#closing_balance").val().trim();
+            if (balance === '' || isNaN(balance) || parseFloat(balance) < 0) {
+                toastr.error("Please enter a valid number greater than or equal to 0");
+                return false;
+            }
 
             var formData = new FormData();
             formData.append("closing_balance", $("#closing_balance").val());

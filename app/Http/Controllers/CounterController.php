@@ -150,8 +150,11 @@ class CounterController extends Controller
                         return number_format($data->opening_balance)."/=";
                     })
                     ->editColumn('closing_balance', function($data) {
-                        if($data->closing_balance)
+                        if($data->closing_balance !== null && $data->closing_balance >= 0)
                         return number_format($data->closing_balance)."/=";
+                    })
+                    ->editColumn('balance_missmatch', function($data) {
+                        return number_format($data->balance_missmatch)."/=";
                     })
                     ->addIndexColumn()
                     ->addColumn('action', function($data){
@@ -183,6 +186,7 @@ class CounterController extends Controller
         $counterInfo = Counter::where('id', $request->checkin_counter_id)->first();
         $terminalInfo = Terminal::where('id', $counterInfo->terminal_id)->first();
         $counterSession = CounterSession::where('counter_id', $counterInfo->id)->orderBy('id', 'desc')->first();
+        $lastClosing = $counterSession ? $counterSession->closing_balance : 0;
 
         CounterSession::insert([
             'terminal_id' => $terminalInfo ? $terminalInfo->id : null,
@@ -193,8 +197,8 @@ class CounterController extends Controller
             'user_name' => Auth::user()->name,
             'checkin_time' => Carbon::now(),
             'checkout_time' => null,
-            'opening_balance' => $counterSession ? $counterSession->closing_balance : 0,
-            'balance_missmatch' => $request->balance_missmatch,
+            'opening_balance' => $request->current_opening, //$counterSession ? $counterSession->closing_balance : 0,
+            'balance_missmatch' => $lastClosing - $request->current_opening,
             'counter_status' => 0, //occupied
             'status' => 0,
             'slug' => time().str::random(5),
@@ -213,5 +217,10 @@ class CounterController extends Controller
         $lastCounterSession->save();
 
         return response()->json(['success' => 'Counter Checked Out successfully.']);
+    }
+
+    public function counterSessionInfo(){
+        $data = CounterSession::where("user_id", Auth::user()->id)->where('counter_status', 0)->orderBy('id', 'desc')->first();
+        return response()->json($data);
     }
 }

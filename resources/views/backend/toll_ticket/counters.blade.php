@@ -106,9 +106,9 @@
                                         <button class="btn btn-sm btn-danger d-inline-block mt-3 font-weight-bold" disabled><i class="fas fa-sign-in-alt"></i> Occupied</button>
                                         @else
                                         @php
-                                            $currentOpening = $counterSession ? $counterSession->closing_balance : 0;
+                                            $lastClosing = $counterSession ? $counterSession->closing_balance : 0;
                                         @endphp
-                                        <button onclick="counterCheckIn({{$counter->id}},{{$currentOpening}})" class="btn btn-sm btn-success d-inline-block mt-3 font-weight-bold"><i class="fas fa-sign-in-alt"></i> Check In</button>
+                                        <button onclick="counterCheckIn({{$counter->id}},{{$lastClosing}})" class="btn btn-sm btn-success d-inline-block mt-3 font-weight-bold"><i class="fas fa-sign-in-alt"></i> Check In</button>
                                         @endif
 
                                     </div>
@@ -135,12 +135,16 @@
                     <div class="modal-body">
                         <input type="hidden" id="checkin_counter_id" class="form-control">
                         <div class="form-group">
-                            <label>Last Closing/Current Opening</label>
-                            <input type="text" id="current_opening" class="form-control" readonly>
+                            <label>Last Closing</label>
+                            <input type="number" id="last_closing" class="form-control" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Current Opening</label>
+                            <input type="number" id="current_opening" onkeyup="calculateBalanceMissMatch(this.value)" class="form-control">
                         </div>
                         <div class="form-group">
                             <label>Balance Short/Excessive</label>
-                            <input type="number" id="balance_missmatch" placeholder="e.g. +200/-500" class="form-control">
+                            <input type="number" id="balance_missmatch" placeholder="e.g. +200/-500" class="form-control" readonly>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -156,11 +160,19 @@
 
 @section('footer_js')
     <script>
-        function counterCheckIn(counterId, currentOpening){
+        function counterCheckIn(counterId, lastClosing){
             $('#productForm').trigger("reset");
             $('#exampleModal').modal('show');
             $("#checkin_counter_id").val(counterId);
-            $("#current_opening").val(currentOpening);
+            $("#last_closing").val(lastClosing);
+            $("#current_opening").val(lastClosing);
+            $("#balance_missmatch").val(Number($("#current_opening").val()) - Number($("#last_closing").val()))
+        }
+
+        function calculateBalanceMissMatch(openingBalance){
+            var lastClosing = Number($("#last_closing").val());
+            var currentOpening = Number($("#current_opening").val());
+            $("#balance_missmatch").val(currentOpening - lastClosing)
         }
 
         $.ajaxSetup({
@@ -172,9 +184,14 @@
         $('#submitCounterCheckIn').click(function (e) {
             e.preventDefault();
 
+            if (!$("#current_opening").val() || isNaN($("#current_opening").val())) {
+                toastr.error("Please Provide a Valid Opening Balance");
+                return false;
+            }
+
             var formData = new FormData();
             formData.append("checkin_counter_id", $("#checkin_counter_id").val());
-            formData.append("balance_missmatch", $("#balance_missmatch").val());
+            formData.append("current_opening", $("#current_opening").val());
 
             $(this).html('Wait..');
             $.ajax({

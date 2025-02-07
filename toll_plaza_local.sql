@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 06, 2025 at 04:01 AM
+-- Generation Time: Feb 07, 2025 at 07:36 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -77,10 +77,10 @@ CREATE TABLE `counter_sessions` (
 --
 
 INSERT INTO `counter_sessions` (`id`, `terminal_id`, `terminal_name`, `counter_id`, `counter_name`, `user_id`, `user_name`, `checkin_time`, `checkout_time`, `opening_balance`, `closing_balance`, `balance_missmatch`, `slug`, `counter_status`, `status`, `created_at`, `updated_at`) VALUES
-(1, 1, 'Terminal-1', 3, 'Counter-2', 1, 'Admin', '2025-02-06 08:31:17', '2025-02-06 08:52:30', 0, 750, NULL, '17388090777qv74', 1, 1, '2025-02-06 07:31:17', '2025-02-06 07:57:00'),
-(2, 1, 'Terminal-1', 3, 'Counter-2', 1, 'Admin', '2025-02-06 08:53:00', '2025-02-06 08:53:12', 750, 1050, NULL, '17388103808XyPG', 1, 1, '2025-02-06 07:53:00', '2025-02-06 07:57:02'),
-(3, 1, 'Terminal-1', 3, 'Counter-2', 3, 'Forrest Burks', '2025-02-06 09:00:21', '2025-02-06 09:00:35', 1050, 1500, NULL, '1738810821PnQnn', 1, 0, '2025-02-06 08:00:21', '2025-02-06 08:00:35'),
-(4, 1, 'Terminal-1', 3, 'Counter-2', 3, 'Forrest Burks', '2025-02-06 09:00:44', NULL, 1500, NULL, NULL, '1738810844sFt3u', 0, 0, '2025-02-06 08:00:44', NULL);
+(3, 1, 'Terminal-1', 1, 'Counter-1', 1, 'Admin', '2025-02-08 00:19:20', '2025-02-08 00:19:52', 0, 0, '0', '17389523604s7YQ', 1, 1, '2025-02-07 23:19:20', '2025-02-07 23:27:51'),
+(4, 1, 'Terminal-1', 1, 'Counter-1', 1, 'Admin', '2025-02-08 00:20:10', '2025-02-08 00:20:18', 0, 500, '0', '1738952410onkF0', 1, 1, '2025-02-07 23:20:10', '2025-02-07 23:27:53'),
+(5, 1, 'Terminal-1', 1, 'Counter-1', 1, 'Admin', '2025-02-08 00:22:55', '2025-02-08 00:26:13', 500, 750, '0', '17389525751wOst', 1, 1, '2025-02-07 23:22:55', '2025-02-07 23:27:56'),
+(6, 1, 'Terminal-1', 1, 'Counter-1', 1, 'Admin', '2025-02-08 00:26:27', '2025-02-08 00:35:54', 700, 800, '50', '1738952787JCkzu', 1, 0, '2025-02-07 23:26:27', '2025-02-07 23:35:54');
 
 -- --------------------------------------------------------
 
@@ -952,7 +952,7 @@ ALTER TABLE `counters`
 -- AUTO_INCREMENT for table `counter_sessions`
 --
 ALTER TABLE `counter_sessions`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
